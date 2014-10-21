@@ -1,0 +1,30 @@
+{
+  "name": "Tinng web client",
+  "version": "0.0.1",
+  "homepage": "https://github.com/lerayne/tinng-client-web",
+  "authors": [
+    "Michael Yegorov <lerayne@gmail.com>"
+  ],
+  "description": "Web client for tinng service",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1",
+    "polymer": "Polymer/polymer#~0.4.2",
+    "es6-promise-polyfill": "~1.0.0",
+    "core-iconset": "Polymer/core-iconset#~0.4.2",
+    "core-toolbar": "Polymer/core-toolbar#~0.4.2",
+    "paper-button": "Polymer/paper-button#~0.4.2",
+    "paper-fab": "Polymer/paper-fab#~0.4.2",
+    "paper-icon-button": "Polymer/paper-icon-button#~0.4.2"
+  }
+}
