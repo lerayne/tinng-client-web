@@ -6,6 +6,7 @@ body {
 
 }
 
-body /deep/ paper-icon-button {
-	padding: 8px 9px;
+/* fix of button's non-square size */
+body /deep/ paper-icon-button::shadow core-icon {
+	display: block;
 }

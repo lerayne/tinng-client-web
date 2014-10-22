@@ -17,11 +17,12 @@
 
 	<!-- Polymer components -->
 	<link rel="import" href="./bower_components/polymer/polymer.html">
-	<link rel="import" href="bower_components/core-icons/core-icons.html">
-	<link rel="import" href="bower_components/font-roboto/roboto.html">
+	<link rel="import" href="./bower_components/core-icons/core-icons.html">
+	<link rel="import" href="./bower_components/font-roboto/roboto.html">
 
 
 	<!-- Tinng components -->
+	<link rel="import" href="./components/tinng-header/tinng-header.html">
 	<link rel="import" href="./components/page-main/page-main.html">
 
 
@@ -29,8 +30,11 @@
 	<script src="./scripts/main.js"></script>
 </head>
 
-<body fullbleed horizontal layout>
+<body fullbleed vertical layout unresolved>
 
-	<!--<lib-vulcanized></lib-vulcanized>-->
+	<tinng-header></tinng-header>
+
+	<div id="app-frame" flex horizontal layout></div>
+
 </body>
 </html>
