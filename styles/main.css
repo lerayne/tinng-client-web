@@ -1,0 +1,11 @@
+body {
+	font-family: "RobotoDraft", Arial, sans-serif;
+}
+
+.tinng-page {
+
+}
+
+body /deep/ paper-icon-button {
+	padding: 8px 9px;
+}
