@@ -24,7 +24,6 @@
     "core-iconset": "Polymer/core-iconset#~0.4.2",
     "core-toolbar": "Polymer/core-toolbar#~0.4.2",
     "paper-button": "Polymer/paper-button#~0.4.2",
-    "paper-fab": "Polymer/paper-fab#~0.4.2",
-    "paper-icon-button": "Polymer/paper-icon-button#~0.4.2"
+    "paper-fab": "Polymer/paper-fab#~0.4.2"
   }
 }
