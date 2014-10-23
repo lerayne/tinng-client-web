@@ -5,6 +5,6 @@
 $(function(){
 
 	// in Polymer you now can create new actibe elements as easy as this:
-	$('#app-frame').append($('<page-main></page-main>'));
+	$('#app-frame').append($('<page-main>'));
 
 })

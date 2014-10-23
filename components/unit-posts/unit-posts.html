@@ -1,4 +1,5 @@
 <link rel="import" href="../unit-base/unit-base.html">
+<link rel="import" href="../card-post/card-post.html">
 
 <polymer-element name="unit-posts" extends="unit-base" vertical layout>
 	<template>
@@ -25,11 +26,25 @@
 			<span>Posts</span>
 		</core-toolbar>
 
-		<div class="content" flex></div>
+		<div class="content" flex>
+			<template repeat="{{post in posts}}">
+				<card-post model="{{post}}"></card-post>
+			</template>
+		</div>
 
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+
+			created:function(){
+				this.posts = [
+					{message:1},
+					{message:2},
+					{message:3},
+					{message:4},
+				]
+			}
+		});
 	</script>
 </polymer-element>
