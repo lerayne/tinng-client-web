@@ -1,25 +1,38 @@
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
 
-<polymer-element name="page-main" class="tinng-page" horizontal layout flex>
+<polymer-element name="page-main" class="tinng-page" horizontal layout flex on-fabtest="{{hideTopics}}">
 	<template>
 
 		<style>
 			:host {
 
 			}
+
+			.unit::shadow .content {
+				background-color: #eceff1; /* google blue grey 50 */
+				border-right:1px solid #d8e2e6; /* google blue grey 100 + custom lighter */
+				overflow-x: hidden;
+				overflow-y: scroll;
+			}
 		</style>
 
-		<div class="column">
-			<unit-topics></unit-topics>
+		<div class="column" id="col1" vertical layout style="width:30%">
+			<unit-topics class="unit" id="unit-topics" flex></unit-topics>
 		</div>
-		<div class="column" flex>
-			<unit-posts></unit-posts>
+		<div class="column" vertical layout flex>
+			<unit-posts class="unit" id="unit-posts" flex></unit-posts>
 		</div>
 		<div class="column"></div>
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+			hideTopics:function(){
+				console.log('unit-topics', $(this))
+				$(this.$.col1).animate({width:0}, 200)
+				this.fire('core-signal', {name:'unit-topics', data:{command:'suspend'}})
+			}
+		});
 	</script>
 </polymer-element>

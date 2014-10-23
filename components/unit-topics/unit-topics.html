@@ -1,25 +1,37 @@
 <link rel="import" href="../unit-base/unit-base.html">
+<link rel="import" href="../card-topic/card-topic.html">
 
-<polymer-element name="unit-topics" extends="unit-base">
+<polymer-element name="unit-topics" extends="unit-base" vertical layout>
 	<template>
 		<style>
 			:host {
-
+				min-width: 350px;
 			}
 
 			core-toolbar {
 				background-color: #039be5; /*Google Light Blue 600*/
 				color:#fff;
 				font-weight: 300;
+				border-right:1px solid #03a9f4; /* google light blue 500 */
+			}
+
+			core-toolbar, core-toolbar::shadow .toolbar-tools {
+				height:56px;
 			}
 
 			paper-fab {
 				background-color: #ff6f00; /* google amber 900 */
-				position: fixed;
+				position: absolute;
 				bottom:30px;
-				right:30px;
+				right:45px;
 			}
+
+
 		</style>
+
+		<core-signals
+				on-core-signal-unit-topics="{{parseSignal}}">
+		</core-signals>
 
 		<core-toolbar>
 
@@ -28,11 +40,46 @@
 			<span>Topics</span>
 		</core-toolbar>
 
-		<paper-fab icon="add" class="recenteringTouch"></paper-fab>
+		<div class="content" flex>
+			<template repeat="{{topic in topics}}">
+				<card-topic model="{{topic}}"></card-topic>
+			</template>
+		</div>
+
+		<paper-fab icon="add" on-tap="{{fabTap}}"></paper-fab>
 
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+			created:function(){
+
+				this.topics = [
+					{id:1, message:'111', title:'Topic 1'},
+					{id:2, message:'222', title:'Topic 2'}
+				];
+			},
+
+			actions: {
+				fab: {
+					tap:function(){
+						console.log(this)
+					}
+				}
+			},
+
+			fabTap:function(){
+				console.log('fire fab')
+				this.fire('fabtest', {data:{sender:this}})
+			},
+
+			parseSignal:function(event, data){
+				console.log(data)
+
+				if (data.command == 'suspend'){
+					console.info ('SUSPEND!')
+				}
+			}
+		});
 	</script>
 </polymer-element>

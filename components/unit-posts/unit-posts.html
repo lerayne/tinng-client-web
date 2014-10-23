@@ -1,6 +1,6 @@
 <link rel="import" href="../unit-base/unit-base.html">
 
-<polymer-element name="unit-posts" extends="unit-base">
+<polymer-element name="unit-posts" extends="unit-base" vertical layout>
 	<template>
 		<style>
 			:host {
@@ -12,6 +12,10 @@
 				color:#fff;
 				font-weight: 300;
 			}
+
+			core-toolbar, core-toolbar::shadow .toolbar-tools {
+				height:56px;
+			}
 		</style>
 
 		<core-toolbar>
@@ -20,6 +24,8 @@
 
 			<span>Posts</span>
 		</core-toolbar>
+
+		<div class="content" flex></div>
 
 	</template>
 
