@@ -17,19 +17,52 @@
 			core-toolbar, core-toolbar::shadow .toolbar-tools {
 				height:56px;
 			}
+
+			paper-icon-button {
+				color:#01579b;
+			}
+
+			.editor {
+				min-height: 80px;
+				background-color: #fff;
+				padding: 20px;
+			}
+
+			textarea {
+				margin-right:20px;
+				font-size: 150%;
+				padding:5px;
+			}
+
+			.send {
+				width:100px
+			}
 		</style>
+
+		<core-signals
+			on-core-signal-secondary-close="{{ meSingle }}"
+		></core-signals>
 
 		<core-toolbar>
 
+			<paper-icon-button hidden?="{{ !fullframe }}" icon="chevron-left"></paper-icon-button>
 			<paper-icon-button icon="menu"></paper-icon-button>
 
-			<span>Posts</span>
+			<span>Name of the topic</span>
 		</core-toolbar>
 
 		<div class="content" flex>
 			<template repeat="{{post in posts}}">
 				<card-post model="{{post}}"></card-post>
 			</template>
+		</div>
+
+		<div class="editor" horizontal layout>
+			<textarea flex></textarea>
+			<paper-button self-center raised class="highlight send">
+				Send
+				<core-icon icon="send"></core-icon>
+			</paper-button>
 		</div>
 
 	</template>
@@ -43,7 +76,13 @@
 					{message:2},
 					{message:3},
 					{message:4},
-				]
+				];
+
+				this.fullframe = false;
+			},
+
+			meSingle:function(){
+				this.fullframe = true;
 			}
 		});
 	</script>

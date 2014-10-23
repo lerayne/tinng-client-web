@@ -6,6 +6,8 @@
 		<style>
 			:host {
 				min-width: 350px;
+				overflow: hidden;
+				position: relative;
 			}
 
 			core-toolbar {
@@ -19,25 +21,67 @@
 				height:56px;
 			}
 
+			core-toolbar.medium-tall {
+				height: 112px;
+			}
+
 			paper-fab {
-				background-color: #ff6f00; /* google amber 900 */
+				background-color: #ffab00; /* google amber A700 */
 				position: absolute;
 				bottom:30px;
 				right:45px;
+			}
+
+			paper-icon-button {
+				color:#01579b;
+			}
+
+			#menu {
+				width:250px;
+				min-height: 200px;
+				position: absolute;
+				top:0;
+				left:0;
+				background-color: #fff;
+				z-index: 100;
+			}
+
+			#menu core-toolbar {
+				background-color: #b0bec5; /* google blue grey 200 */
+				color:white;
+				border:none;
+			}
+
+			#menu paper-icon-button {
+				color:#455a64; /* google blue grey 700 */
 			}
 
 
 		</style>
 
 		<core-signals
-				on-core-signal-unit-topics="{{parseSignal}}">
-		</core-signals>
+				on-core-signal-unit-topics="{{parseSignal}}"
+		></core-signals>
+
+		<div id="menu" hidden?="{{ !menuVisible }}">
+			<paper-shadow z="1"></paper-shadow>
+			<core-toolbar>
+				<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
+				<span flex>Menu</span>
+			</core-toolbar>
+		</div>
 
 		<core-toolbar>
 
-			<paper-icon-button icon="menu"></paper-icon-button>
+			<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
 
-			<span>Topics</span>
+			<span flex>Topics</span>
+
+			<!-- sow only when used in sub-space -->
+			<span id="controlsEmbedded">
+				<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
+				<paper-icon-button icon="highlight-remove" on-tap="{{ suspend }}"></paper-icon-button>
+			</span>
 		</core-toolbar>
 
 		<div class="content" flex>
@@ -52,6 +96,8 @@
 
 	<script>
 		Polymer({
+			menuVisible: false,
+
 			created:function(){
 
 				this.topics = [
@@ -68,9 +114,9 @@
 				}
 			},
 
-			fabTap:function(){
-				console.log('fire fab')
-				this.fire('fabtest', {data:{sender:this}})
+			suspend:function(){
+				this.fire('suspend', {sender:this})
+				this.fire('core-signal', {name:'secondary-close'})
 			},
 
 			parseSignal:function(event, data){
@@ -79,6 +125,14 @@
 				if (data.command == 'suspend'){
 					console.info ('SUSPEND!')
 				}
+			},
+
+			menuShow:function(){
+				this.menuVisible = true;
+			},
+
+			menuHide:function(){
+				this.menuVisible = false;
 			}
 		});
 	</script>

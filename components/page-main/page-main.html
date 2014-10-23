@@ -1,7 +1,7 @@
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
 
-<polymer-element name="page-main" class="tinng-page" horizontal layout flex on-fabtest="{{hideTopics}}">
+<polymer-element name="page-main" class="tinng-page" horizontal layout flex on-suspend="{{hideTopics}}">
 	<template>
 
 		<style>
@@ -10,8 +10,9 @@
 			}
 
 			.unit::shadow .content {
-				background-color: #eceff1; /* google blue grey 50 */
-				border-right:1px solid #d8e2e6; /* google blue grey 100 + custom lighter */
+				background-color: #f1f1f1; /* google blue grey 50 */
+				/*border-right:1px solid #d8e2e6; *//* google blue grey 100 + custom lighter */
+				border-right:1px solid #e5e5e5; /**/
 				overflow-x: hidden;
 				overflow-y: scroll;
 			}
