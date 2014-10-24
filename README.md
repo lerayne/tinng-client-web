@@ -14,10 +14,15 @@ Web client for tinng service
 
 ####First time instructions
 
-1. ``bower update``
-2. ``build.sh``
+First, run ``project-build.sh``
 
-Then you develop in ``index-source.html`` and run ``compact.sh`` to compile it to vulcanized and minified ``index.html`` and
+####After you pull changes (if it's not the first time)
+
+Run ``project-update.sh`` to get latest bower packages and create minimized indices;
+
+####After you develop
+
+You develop in ``index-source.html`` and run ``project-compact.sh`` to compile it to vulcanized and minified ``index.html`` and
  just vulcanized ``index-dev.html``
-  
-You also can run program in browser using ``[yourdomain]/index-source.html``
+ 
+ You also can run program in browser using ``[yourdomain]/index-source.html``

@@ -1,3 +1,3 @@
 #!/bin/bash
-compact.sh
+project-update.sh
 cp config-sample.html config.html
