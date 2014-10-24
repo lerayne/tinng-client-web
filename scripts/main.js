@@ -1,6 +1,10 @@
 /**
  * Created by Lerayne on 21.10.2014.
  */
+tinng = {
+	units:[]
+}
+
 
 $(function(){
 

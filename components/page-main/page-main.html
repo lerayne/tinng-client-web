@@ -10,15 +10,23 @@
 			}
 
 			.unit::shadow .content {
-				background-color: #f1f1f1; /* google blue grey 50 */
-				/*border-right:1px solid #d8e2e6; *//* google blue grey 100 + custom lighter */
-				border-right:1px solid #e5e5e5; /**/
+				background-color: #f1f1f1;
+				border-right:1px solid #e5e5e5;
 				overflow-x: hidden;
 				overflow-y: scroll;
 			}
+
+			.column {
+				transition:width 0.3s ease;
+				overflow-x:hidden;
+			}
+
+			.column.hidden {
+				width:0 !important;
+			}
 		</style>
 
-		<div class="column" id="col1" vertical layout style="width:30%">
+		<div class="column {{col1class}}" id="col1" vertical layout style="width:30%">
 			<unit-topics class="unit" id="unit-topics" flex></unit-topics>
 		</div>
 		<div class="column" vertical layout flex>
@@ -29,9 +37,10 @@
 
 	<script>
 		Polymer({
+			col1class: '',
+
 			hideTopics:function(){
-				console.log('unit-topics', $(this))
-				$(this.$.col1).animate({width:0}, 200)
+				this.col1class = 'hidden';
 				this.fire('core-signal', {name:'unit-topics', data:{command:'suspend'}})
 			}
 		});

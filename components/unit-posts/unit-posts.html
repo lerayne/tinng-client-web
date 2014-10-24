@@ -45,7 +45,7 @@
 
 		<core-toolbar>
 
-			<paper-icon-button hidden?="{{ !fullframe }}" icon="chevron-left"></paper-icon-button>
+			<paper-icon-button hidden?="{{ !fullframe }}" icon="arrow-back"></paper-icon-button>
 			<paper-icon-button icon="menu"></paper-icon-button>
 
 			<span>Name of the topic</span>
@@ -79,6 +79,10 @@
 				];
 
 				this.fullframe = false;
+			},
+
+			ready:function(){
+				tinng.units.push(this);
 			},
 
 			meSingle:function(){

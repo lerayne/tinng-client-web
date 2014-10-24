@@ -1,5 +1,6 @@
 <link rel="import" href="../unit-base/unit-base.html">
 <link rel="import" href="../card-topic/card-topic.html">
+<link rel="import" href="../../bower_components/core-animation/core-animation.html">
 
 <polymer-element name="unit-topics" extends="unit-base" vertical layout>
 	<template>
@@ -12,13 +13,13 @@
 
 			core-toolbar {
 				background-color: #039be5; /*Google Light Blue 600*/
-				color:#fff;
+				color: #fff;
 				font-weight: 300;
-				border-right:1px solid #03a9f4; /* google light blue 500 */
+				border-right: 1px solid #03a9f4; /* google light blue 500 */
 			}
 
 			core-toolbar, core-toolbar::shadow .toolbar-tools {
-				height:56px;
+				height: 56px;
 			}
 
 			core-toolbar.medium-tall {
@@ -28,32 +29,37 @@
 			paper-fab {
 				background-color: #ffab00; /* google amber A700 */
 				position: absolute;
-				bottom:30px;
-				right:45px;
+				bottom: 30px;
+				right: 45px;
 			}
 
 			paper-icon-button {
-				color:#01579b;
+				color: #01579b;
 			}
 
 			#menu {
-				width:250px;
+				width: 250px;
 				min-height: 200px;
 				position: absolute;
-				top:0;
-				left:0;
+				top: 0;
+				left: -250px;
 				background-color: #fff;
 				z-index: 100;
+				transition:left 0.2s ease;
+			}
+
+			#menu.visible {
+				left:0;
 			}
 
 			#menu core-toolbar {
 				background-color: #b0bec5; /* google blue grey 200 */
-				color:white;
-				border:none;
+				color: white;
+				border: none;
 			}
 
 			#menu paper-icon-button {
-				color:#455a64; /* google blue grey 700 */
+				color: #455a64; /* google blue grey 700 */
 			}
 
 
@@ -61,9 +67,9 @@
 
 		<core-signals
 				on-core-signal-unit-topics="{{parseSignal}}"
-		></core-signals>
+				></core-signals>
 
-		<div id="menu" hidden?="{{ !menuVisible }}">
+		<div id="menu" class="{{menuVisible ? 'visible' : ''}}">
 			<paper-shadow z="1"></paper-shadow>
 			<core-toolbar>
 				<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
@@ -75,7 +81,7 @@
 
 			<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
 
-			<span flex>Topics</span>
+			<span id="unitHeader" flex>Topics</span>
 
 			<!-- sow only when used in sub-space -->
 			<span id="controlsEmbedded">
@@ -96,42 +102,48 @@
 
 	<script>
 		Polymer({
-			menuVisible: false,
+			menuVisible:false,
 
-			created:function(){
+			created: function () {
 
 				this.topics = [
-					{id:1, message:'111', title:'Topic 1'},
-					{id:2, message:'222', title:'Topic 2'}
+					{id: 1, message: '111', title: 'Topic 1'},
+					{id: 2, message: '222', title: 'Topic 2'}
 				];
+
+
+			},
+
+			ready:function(){
+				tinng.units.push(this);
 			},
 
 			actions: {
 				fab: {
-					tap:function(){
+					tap: function () {
 						console.log(this)
 					}
 				}
 			},
 
-			suspend:function(){
-				this.fire('suspend', {sender:this})
-				this.fire('core-signal', {name:'secondary-close'})
+			suspend: function () {
+				this.fire('suspend', {sender: this})
+				this.fire('core-signal', {name: 'secondary-close'})
 			},
 
-			parseSignal:function(event, data){
+			parseSignal: function (event, data) {
 				console.log(data)
 
-				if (data.command == 'suspend'){
-					console.info ('SUSPEND!')
+				if (data.command == 'suspend') {
+					console.info('SUSPEND!')
 				}
 			},
 
-			menuShow:function(){
+			menuShow: function () {
 				this.menuVisible = true;
 			},
 
-			menuHide:function(){
+			menuHide: function () {
 				this.menuVisible = false;
 			}
 		});
