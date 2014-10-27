@@ -15,3 +15,13 @@ body /deep/ .highlight {
 	background-color: #ffab00; /* google amber A700 */
 	color:#fff;
 }
+
+#outdated {
+	position: absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+
+	height:auto;
+}

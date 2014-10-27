@@ -1,4 +1,4 @@
 #!/bin/bash
 
 bower update
-compact.sh
+project-compact.sh

@@ -5,7 +5,9 @@
 	<title>TINNG Polymerized</title>
 
 	<!-- global styling -->
+	<link rel="stylesheet" href="./bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">
 	<link rel="stylesheet" href="./styles/main.css">
+
 
 	<!-- shims -->
 	<script src="./bower_components/es6-promise-polyfill/promise.min.js"></script>
@@ -14,6 +16,7 @@
 	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="./bower_components/lodash/dist/lodash.min.js"></script>
 	<script src="./bower_components/platform/platform.js"></script>
+	<script src="./bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.js"></script>
 
 	<!-- Polymer components -->
 	<link rel="import" href="./bower_components/polymer/polymer.html">
@@ -35,7 +38,7 @@
 
 <body fullbleed vertical layout unresolved>
 
-	<div hidden id="skin"></div>
+	<div id="outdated"></div>
 
 	<tinng-header></tinng-header>
 
