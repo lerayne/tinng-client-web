@@ -5,7 +5,6 @@
 	<title>TINNG Polymerized</title>
 
 	<!-- global styling -->
-	<link rel="stylesheet" href="./bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">
 	<link rel="stylesheet" href="./styles/main.css">
 
 
@@ -16,7 +15,6 @@
 	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="./bower_components/lodash/dist/lodash.min.js"></script>
 	<script src="./bower_components/platform/platform.js"></script>
-	<script src="./bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.js"></script>
 
 	<!-- Polymer components -->
 	<link rel="import" href="./bower_components/polymer/polymer.html">
@@ -38,11 +36,33 @@
 
 <body fullbleed vertical layout unresolved>
 
-	<div id="outdated"></div>
+<!--[if lt IE 9]>
+	<div class="outdated message">
+			<h1>Данный сайт недоступен для устаревших браузеров</h1>
+			<p style="margin-top:-20px">(это Internet Explorer 9 и его более ранние версии)</p>
+			<a style="color:#fff; background:#039be5; padding:25px; text-decoration:none; margin:10px 0; line-height:80px" class="button" href="http://outdatedbrowser.com/ru">Выбрать современный браузер</a>
+			<h3>Почему устаревший браузер это плохо?</h3>
+			<p style="padding:0 20%; font-size:80%; color:#777">
+				Мы, разработчики, хотим сделать интернет удобнее, красивее, наполнить его новыми возможностями — и современные браузеры позволяют нам делать это.
+				<br>Но, к сожалению, многие еще пользуются устаревшими, из-за чего нам приходится искуственно ограничивать возможности наших сайтов — чтобы они выглядели
+				и функционировали одинаково у всех пользователей. Эта практика повсеместна и приводит к торможению развития инернета в целом.
+				<br><br>
+				Кроме того, современные браузеры намного более безопасны для вашего компьютера, так как они постоянно обновляются, чтобы противостоять изобретательности злоумышленников.
+				<br><br>
+				Данный сайт использует очень много современных технологий, от которых нам пришлось бы отказаться. Поэтому мы решили полностью прекратить поддержку устаревших браузеров.
+				К счастью, все современные — бесплатны и очень просты в установке. Поэтому, мы просим вас:
+			</p>
 
-	<tinng-header></tinng-header>
+			<h3>Поддержите развитие интернета, откажитесь от устаревшего браузера!</h3>
 
-	<div id="app-frame" flex horizontal layout></div>
+
+	</div>
+	<div class="outdated curtain"></div>
+<!-- [endif]-->
+
+<tinng-header></tinng-header>
+
+<div id="app-frame" flex horizontal layout></div>
 
 </body>
 </html>

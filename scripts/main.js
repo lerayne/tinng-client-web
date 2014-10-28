@@ -6,9 +6,7 @@ tinng = {
 }
 
 
-if (navigator.userAgent.indexOf('MSIE 8') != -1 || navigator.userAgent.indexOf('MSIE 9') != -1) {
-	location.href = 'http://outdatedbrowser.com/ru';
-}
+
 
 
 $(function(){
@@ -21,7 +19,10 @@ $(function(){
 		languagePath: 'bower_components/outdated-browser/outdatedbrowser/lang/ru.html'
 	});*/
 
-	// in Polymer you now can create new actibe elements as easy as this:
-	$('#app-frame').append($('<page-main>'));
+	if (navigator.userAgent.indexOf('MSIE') == -1 || navigator.userAgent.indexOf('MSIE 10') != -1) {
 
+		// in Polymer you now can create new actibe elements as easy as this:
+		$('#app-frame').append($('<page-main>'));
+
+	}
 })
