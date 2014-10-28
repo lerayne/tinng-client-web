@@ -24,5 +24,11 @@ $(function(){
 		// in Polymer you now can create new actibe elements as easy as this:
 		$('#app-frame').append($('<page-main>'));
 
+	} else {
+
+		$.get('includes/outdated.html').then(function(html){
+			$('#app-frame').append(html);
+		})
+
 	}
 })
