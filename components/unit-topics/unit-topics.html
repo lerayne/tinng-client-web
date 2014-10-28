@@ -45,7 +45,18 @@
 				left: -250px;
 				background-color: #fff;
 				z-index: 100;
-				transition:left 0.2s ease;
+				transition:left 0.4s;
+				transition-timing-function:ease;
+			}
+
+			.menu-show-ease {
+				/* http://matthewlein.com/ceaser/ easeOutCirc */
+				transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000) !important;
+			}
+
+			.menu-hide-ease {
+				/* http://matthewlein.com/ceaser/ easeInCirc */
+				transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
 			}
 
 			#menu.visible {
@@ -69,7 +80,7 @@
 				on-core-signal-unit-topics="{{parseSignal}}"
 				></core-signals>
 
-		<div id="menu" class="{{menuVisible ? 'visible' : ''}}">
+		<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{menuClass}}">
 			<paper-shadow z="1"></paper-shadow>
 			<core-toolbar>
 				<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
@@ -141,10 +152,12 @@
 
 			menuShow: function () {
 				this.menuVisible = true;
+				this.menuClass = 'menu-show-ease';
 			},
 
 			menuHide: function () {
 				this.menuVisible = false;
+				this.menuClass = 'menu-hide-ease';
 			}
 		});
 	</script>
