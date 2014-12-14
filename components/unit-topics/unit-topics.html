@@ -42,10 +42,10 @@
 				min-height: 200px;
 				position: absolute;
 				top: 0;
-				left: -250px;
+				left: -260px;
 				background-color: #fff;
 				z-index: 100;
-				transition:left 0.4s;
+				transition:left 0.3s;
 				transition-timing-function:ease;
 			}
 
@@ -80,12 +80,16 @@
 				on-core-signal-unit-topics="{{parseSignal}}"
 				></core-signals>
 
-		<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{menuClass}}">
-			<paper-shadow z="1"></paper-shadow>
-			<core-toolbar>
-				<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
-				<span flex>Menu</span>
-			</core-toolbar>
+		<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{ menuClass }}">
+			<paper-shadow z="1">
+				<core-toolbar>
+					<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
+					<span flex>Menu</span>
+				</core-toolbar>
+				<div class="menu-body" style="min-height: 200px">
+
+				</div>
+			</paper-shadow>
 		</div>
 
 		<core-toolbar>
