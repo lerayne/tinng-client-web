@@ -12,9 +12,12 @@
 	<script src="./bower_components/es6-promise-polyfill/promise.min.js"></script>
 
 	<!-- libraries -->
-	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+	<!--[if lte IE 9]>			<script src="./bower_components/jquery-compat/dist/jquery.min.js"></script>	<![endif]-->
+	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/jquery/dist/jquery.min.js"></script> 		<![endif]>
+
 	<script src="./bower_components/lodash/dist/lodash.min.js"></script>
-	<script src="./bower_components/platform/platform.js"></script>
+	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/webcomponentsjs/webcomponents.min.js"></script> <![endif]>
 
 	<!-- Polymer components -->
 	<link rel="import" href="./bower_components/polymer/polymer.html">
@@ -38,7 +41,8 @@
 
 	<tinng-header></tinng-header>
 
-	<div id="app-frame" flex horizontal layout></div>
+	<!-- old style (new appends to body directly) -->
+	<!--<div id="app-frame" flex horizontal layout></div>-->
 
 </body>
 </html>
