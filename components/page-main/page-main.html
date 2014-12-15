@@ -1,7 +1,10 @@
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
 
-<polymer-element name="page-main" class="tinng-page" horizontal layout flex on-suspend="{{hideTopics}}">
+<polymer-element name="page-main" class="tinng-page" horizontal layout flex
+	 on-suspend="{{hideTopics}}"
+	 on-reveal="{{showTopics}}"
+>
 	<template>
 
 		<style>
@@ -59,6 +62,10 @@
 			hideTopics:function(){
 				this.col1class = 'hidden';
 				this.fire('core-signal', {name:'unit-topics', data:{command:'suspend'}})
+			},
+
+			showTopics:function(){
+				this.col1class = '';
 			}
 		});
 	</script>

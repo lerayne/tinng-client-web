@@ -35,7 +35,7 @@
 		<unit-posts-deco>
 			<core-toolbar>
 
-				<paper-icon-button hidden?="{{ !fullframe }}" icon="arrow-back"></paper-icon-button>
+				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<paper-icon-button icon="menu"></paper-icon-button>
 
 				<span>Name of the topic</span>
@@ -66,7 +66,7 @@
 					{message:1},
 					{message:2},
 					{message:3},
-					{message:4},
+					{message:4}
 				];
 
 				this.fullframe = false;
@@ -78,6 +78,11 @@
 
 			meSingle:function(){
 				this.fullframe = true;
+			},
+
+			goBack:function(){
+				this.fullframe = false;
+				this.fire('reveal', {sender:this})
 			}
 		});
 	</script>
