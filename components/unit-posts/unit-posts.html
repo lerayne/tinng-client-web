@@ -81,7 +81,9 @@
 			},
 
 			goBack:function(){
-				this.fullframe = false;
+
+				this.async(function(){this.fullframe = false;}, null, 250)
+
 				this.fire('reveal', {sender:this})
 			}
 		});
