@@ -19,13 +19,14 @@
   "dependencies": {
     "jquery": "~2.1.1",
     "lodash": "~2.4.1",
-    "polymer": "Polymer/polymer#~0.4.2",
+    "polymer": "Polymer/polymer#~0.5.1",
     "es6-promise-polyfill": "~1.0.0",
-    "core-iconset": "Polymer/core-iconset#~0.4.2",
-    "core-toolbar": "Polymer/core-toolbar#~0.4.2",
-    "paper-button": "Polymer/paper-button#~0.4.2",
-    "paper-fab": "Polymer/paper-fab#~0.4.2",
-    "core-signals": "Polymer/core-signals#~0.4.2",
-    "core-animation": "Polymer/core-animation#~0.4.2"
+    "core-iconset": "Polymer/core-iconset#~0.5.1",
+    "core-toolbar": "Polymer/core-toolbar#~0.5.1",
+    "paper-button": "Polymer/paper-button#~0.5.1",
+    "paper-fab": "Polymer/paper-fab#~0.5.1",
+    "core-signals": "Polymer/core-signals#~0.5.1",
+    "core-animation": "Polymer/core-animation#~0.5.1",
+    "jquery-compat": "jquery#~1.11"
   }
 }
