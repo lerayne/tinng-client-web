@@ -1,0 +1,40 @@
+<link rel="import" href="../unit-base-deco/unit-base-deco.html">
+
+<polymer-element name="unit-topics-deco" extends="unit-base-deco" noscript>
+	<template>
+		<style>
+			:host {
+
+			}
+
+			::content core-toolbar {
+				/*background-color: #039be5; *//*Google Light Blue 600*/
+				background-color: #01579B; /*Google Light Blue 800*/
+				color:#fff;
+				font-weight: 300;
+				border-right: 1px solid #0065b5;
+			}
+
+			::content paper-icon-button {
+				color:#039BE5;
+			}
+
+			::content #menu {
+				background-color: #fff;
+			}
+
+			::content #menu core-toolbar {
+				background-color: #b0bec5; /* google blue grey 200 */
+				color: white;
+				border: none;
+			}
+
+			::content #menu paper-icon-button {
+				color: #455a64; /* google blue grey 700 */
+			}
+		</style>
+
+		<content></content>
+
+	</template>
+</polymer-element>

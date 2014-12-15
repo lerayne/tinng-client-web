@@ -8,18 +8,8 @@
 
 			}
 
-			core-toolbar {
-				background-color: #039be5; /*Google Light Blue 600*/
-				color:#fff;
-				font-weight: 300;
-			}
-
 			core-toolbar, core-toolbar::shadow .toolbar-tools {
 				height:56px;
-			}
-
-			paper-icon-button {
-				color:#01579b;
 			}
 
 			.editor {
@@ -42,27 +32,29 @@
 			on-core-signal-secondary-close="{{ meSingle }}"
 		></core-signals>
 
-		<core-toolbar>
+		<unit-posts-deco>
+			<core-toolbar>
 
-			<paper-icon-button hidden?="{{ !fullframe }}" icon="arrow-back"></paper-icon-button>
-			<paper-icon-button icon="menu"></paper-icon-button>
+				<paper-icon-button hidden?="{{ !fullframe }}" icon="arrow-back"></paper-icon-button>
+				<paper-icon-button icon="menu"></paper-icon-button>
 
-			<span>Name of the topic</span>
-		</core-toolbar>
+				<span>Name of the topic</span>
+			</core-toolbar>
 
-		<div class="content" flex>
-			<template repeat="{{post in posts}}">
-				<card-post model="{{post}}"></card-post>
-			</template>
-		</div>
+			<div class="content" flex>
+				<template repeat="{{post in posts}}">
+					<card-post model="{{post}}"></card-post>
+				</template>
+			</div>
 
-		<div class="editor" horizontal layout>
-			<textarea flex></textarea>
-			<paper-button self-center raised class="highlight send">
-				Send
-				<core-icon icon="send"></core-icon>
-			</paper-button>
-		</div>
+			<div class="editor" horizontal layout>
+				<textarea flex></textarea>
+				<paper-button self-center raised class="highlight send">
+					Send
+					<core-icon icon="send"></core-icon>
+				</paper-button>
+			</div>
+		</unit-posts-deco>
 
 	</template>
 

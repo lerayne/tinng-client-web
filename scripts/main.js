@@ -1,11 +1,11 @@
 /**
  * Created by Lerayne on 21.10.2014.
  */
+
+// tinng global scope root var
 tinng = {
 	units:[]
 }
-
-
 
 
 

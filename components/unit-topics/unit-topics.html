@@ -11,13 +11,6 @@
 				position: relative;
 			}
 
-			core-toolbar {
-				background-color: #039be5; /*Google Light Blue 600*/
-				color: #fff;
-				font-weight: 300;
-				border-right: 1px solid #03a9f4; /* google light blue 500 */
-			}
-
 			core-toolbar, core-toolbar::shadow .toolbar-tools {
 				height: 56px;
 			}
@@ -26,24 +19,12 @@
 				height: 112px;
 			}
 
-			paper-fab {
-				background-color: #ffab00; /* google amber A700 */
-				position: absolute;
-				bottom: 30px;
-				right: 45px;
-			}
-
-			paper-icon-button {
-				color: #01579b;
-			}
-
 			#menu {
 				width: 250px;
 				min-height: 200px;
 				position: absolute;
 				top: 0;
 				left: -260px;
-				background-color: #fff;
 				z-index: 100;
 				transition:left 0.3s;
 				transition-timing-function:ease;
@@ -63,16 +44,6 @@
 				left:0;
 			}
 
-			#menu core-toolbar {
-				background-color: #b0bec5; /* google blue grey 200 */
-				color: white;
-				border: none;
-			}
-
-			#menu paper-icon-button {
-				color: #455a64; /* google blue grey 700 */
-			}
-
 
 		</style>
 
@@ -80,38 +51,42 @@
 				on-core-signal-unit-topics="{{parseSignal}}"
 				></core-signals>
 
-		<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{ menuClass }}">
-			<paper-shadow z="1">
-				<core-toolbar>
-					<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
-					<span flex>Menu</span>
-				</core-toolbar>
-				<div class="menu-body" style="min-height: 200px">
+		<unit-topics-deco>
 
-				</div>
-			</paper-shadow>
-		</div>
+			<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{ menuClass }}">
+				<paper-shadow z="1">
+					<core-toolbar>
+						<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
+						<span flex>Menu</span>
+					</core-toolbar>
+					<div class="menu-body" style="min-height: 200px">
 
-		<core-toolbar>
+					</div>
+				</paper-shadow>
+			</div>
 
-			<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
+			<core-toolbar>
 
-			<span id="unitHeader" flex>Topics</span>
+				<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
 
-			<!-- sow only when used in sub-space -->
-			<span id="controlsEmbedded">
-				<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
-				<paper-icon-button icon="highlight-remove" on-tap="{{ suspend }}"></paper-icon-button>
-			</span>
-		</core-toolbar>
+				<span id="unitHeader" flex>Topics</span>
 
-		<div class="content" flex>
-			<template repeat="{{topic in topics}}">
-				<card-topic model="{{topic}}"></card-topic>
-			</template>
-		</div>
+				<!-- sow only when used in sub-space -->
+				<span id="controlsEmbedded">
+					<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
+					<paper-icon-button icon="highlight-remove" on-tap="{{ suspend }}"></paper-icon-button>
+				</span>
+			</core-toolbar>
 
-		<paper-fab icon="add" on-tap="{{fabTap}}"></paper-fab>
+			<div class="content" flex>
+				<template repeat="{{topic in topics}}">
+					<card-topic model="{{topic}}"></card-topic>
+				</template>
+			</div>
+
+			<paper-fab icon="add" on-tap="{{fabTap}}"></paper-fab>
+
+		</unit-topics-deco>
 
 	</template>
 

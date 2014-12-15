@@ -1,7 +1,7 @@
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
 
-<polymer-element name="page-main" class="tinng-page" horizontal layout center-justified flex on-suspend="{{hideTopics}}">
+<polymer-element name="page-main" class="tinng-page" horizontal layout flex on-suspend="{{hideTopics}}">
 	<template>
 
 		<style>
@@ -34,19 +34,21 @@
 			}
 		</style>
 
-		<div class="main-block" horizontal layout>
+		<page-main-deco>
+			<div class="main-block" horizontal layout>
 
-			<div class="column {{col1class}}" id="col1" vertical layout style="width:30%">
-				<unit-topics class="unit" id="unit-topics" flex></unit-topics>
+				<div class="column {{col1class}}" id="col1" vertical layout style="width:30%">
+					<unit-topics class="unit" id="unit-topics" flex></unit-topics>
+				</div>
+
+				<div class="column" vertical layout flex>
+					<unit-posts class="unit" id="unit-posts" flex></unit-posts>
+				</div>
+
+				<div class="column"></div>
+
 			</div>
-
-			<div class="column" vertical layout flex>
-				<unit-posts class="unit" id="unit-posts" flex></unit-posts>
-			</div>
-
-			<div class="column"></div>
-
-		</div>
+		</page-main-deco>
 
 	</template>
 

@@ -1,0 +1,23 @@
+<polymer-element name="page-main-deco" noscript horizontal layout center-justified flex>
+	<template>
+		<style>
+			:host {
+				background: url('images/bg1.jpg') center center no-repeat;
+				background-size: cover;
+			}
+
+			::content .main-block {
+				transition: margin 0.3s;
+			}
+
+			@media (min-height: 1000px) {
+				::content .main-block {
+					margin:50px auto 20px;
+				}
+			}
+		</style>
+
+		<content></content>
+
+	</template>
+</polymer-element>
