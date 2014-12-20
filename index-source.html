@@ -25,16 +25,24 @@
 	<link rel="import" href="./bower_components/font-roboto/roboto.html">
 	<link rel="import" href="./bower_components/core-signals/core-signals.html">
 
+	<!-- global functions and vars -->
+	<script src="./script/globals.js"></script>
+	<script src="./i18n/en.js"></script>
+
 	<!-- configuration section -->
 	<link rel="import" href="./config.html">
 
 	<!-- Tinng components -->
+	<link rel="import" href="./components/text-string/text-string.html">
 	<link rel="import" href="./components/tinng-header/tinng-header.html">
 	<link rel="import" href="./components/page-main/page-main.html">
 
 
-	<!-- JS initer -->
-	<script src="./scripts/main.js"></script>
+	<!-- Scripts -->
+	<script src="./script/class/Funcs.js"></script>
+	<script src="./script/class/Connection/XHRShortPoll.js"></script>
+	<script src="./script/class/Connection/Connection.js"></script>
+	<script src="./script/main.js"></script>
 </head>
 
 <body fullbleed vertical layout unresolved>

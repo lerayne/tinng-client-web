@@ -27,6 +27,7 @@
     "paper-fab": "Polymer/paper-fab#^0.5.2",
     "core-signals": "Polymer/core-signals#^0.5.2",
     "core-animation": "Polymer/core-animation#^0.5.2",
-    "jquery-compat": "jquery#^1.11"
+    "jquery-compat": "jquery#^1.11",
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.2"
   }
 }
