@@ -8,12 +8,12 @@
 
 // в данной реализации класс абсолютно закрывает содержимое внутреннего, но возможна и иная комбирация - в этом случае
 // нужен return new InternalClass() в конструкторе. Само собой, возможна и полузакрытая схема
-tinng.protos.Connection = function (config) {
+tinng.class.Connection = function (config) {
 
 	this.subscribers = [];
 
 	// настройки по умолчанию и их перегрузка
-	this.conf = t.funcs.objectConfig(config, this.defaultConf = {
+	this.conf = tinng.funcs.objectConfig(config, this.defaultConf = {
 		server:'',
 		autostart:true,
 		callback:function(){}
@@ -21,8 +21,8 @@ tinng.protos.Connection = function (config) {
 
 	// заглушка на определение класса, который должен будет исполнять роль connection
 	if (true) {
-		this.wrappedClass = tinng.protos.strategic.XHRShortPoll;
-		this.wrappedClassName = 'tinng.protos.strategic.XHRShortPoll';
+		this.wrappedClass = tinng.class.strategic.XHRShortPoll;
+		this.wrappedClassName = 'tinng.class.strategic.XHRShortPoll';
 	}
 	var wrapped = new this.wrappedClass(this.conf.server, this.conf.callback, this.conf.autostart);
 	//this.engine = wrapped;
@@ -126,7 +126,7 @@ tinng.protos.Connection = function (config) {
 	}
 }
 
-tinng.protos.Connection.prototype = {
+tinng.class.Connection.prototype = {
 	subscriberId:function(object){
 		if (this.subscribers.indexOf(object) == -1) this.subscribers.push(object)
 

@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-tinng.protos.strategic.XHRShortPoll = function(server, callback, autostart){
-	t.funcs.bind(this);
+tinng.class.strategic.XHRShortPoll = function(server, callback, autostart){
+	tinng.funcs.bind(this);
 
 	this.serverURL = server;
 	this.parseCallback = callback;
@@ -27,7 +27,7 @@ tinng.protos.strategic.XHRShortPoll = function(server, callback, autostart){
 	this.latest_change = 0;
 }
 
-tinng.protos.strategic.XHRShortPoll.prototype = {
+tinng.class.strategic.XHRShortPoll.prototype = {
 
 	// интерфейсные методы
 	refresh:function(){
@@ -38,13 +38,13 @@ tinng.protos.strategic.XHRShortPoll.prototype = {
 
 		switch (mode){
 			case 'active':
-				this.waitTime = t.cfg['poll_timer'];
+				this.waitTime = tinng.cfg['poll_timer'];
 				this.refresh();
 
 				break;
 
 			case 'passive':
-				this.waitTime = t.cfg['poll_timer_blurred'];
+				this.waitTime = tinng.cfg['poll_timer_blurred'];
 
 				break;
 		}
@@ -144,7 +144,7 @@ tinng.protos.strategic.XHRShortPoll.prototype = {
 
 	// отправка запроса
 	subscriptionSend:function () {
-		if (this.active && t.cfg.maintenance == 0) setTimeout(this.$_subscriptionSend, 0);
+		if (this.active && tinng.cfg.maintenance == 0) setTimeout(this.$_subscriptionSend, 0);
 		return true;
 	},
 
@@ -178,8 +178,8 @@ tinng.protos.strategic.XHRShortPoll.prototype = {
 	query:function(channel, callback, data){
 
 		data.user = {
-			login: t.funcs.getCookie('login'),
-			pass: t.funcs.getCookie('pass')
+			login: tinng.funcs.getCookie('login'),
+			pass: tinng.funcs.getCookie('pass')
 		}
 
 		return $.ajax({
@@ -204,7 +204,7 @@ tinng.protos.strategic.XHRShortPoll.prototype = {
 	},
 
 	retry:function(){
-		t.ui.showMessage(t.txt.connection_error);
+		//todo t.ui.showMessage(t.txt.connection_error);
 		console.warn('Registered connection loss. Trying to restart')
 		this.subscriptionCancel();
 		this.subscriptionSend();
@@ -213,7 +213,7 @@ tinng.protos.strategic.XHRShortPoll.prototype = {
 	// Останавливает ротор
 	subscriptionCancel:function () {
 
-		this.timeout = t.funcs.advClearTimeout(this.timeout);
+		this.timeout = tinng.funcs.advClearTimeout(this.timeout);
 
 		clearTimeout(this.connectionLossTO);
 

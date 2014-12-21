@@ -9,3 +9,12 @@ window.textLocalized = {};
 window.text = function(key){
 	return textLocalized[key] ? textLocalized[key] : (textDefault[key] ? textDefault[key] : key);
 };
+
+// tinng global scope root var
+tinng = {
+	units:[],
+	state:{},
+	class: {
+		strategic:{}
+	}
+}

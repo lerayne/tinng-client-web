@@ -22,7 +22,7 @@ Funcs.prototype = {
 	log:function (text) {
 
 
-		if (t.cfg['logging']) {
+		if (tinng.cfg['logging']) {
 			var date = new Date(), time;
 
 			if (date.toLocaleFormat) {
@@ -181,10 +181,6 @@ Funcs.prototype = {
 			if (object.propertyIsEnumerable(key)) i++;
 		}
 		return i;
-	},
-
-	txt:function(key){
-		return t.txt[key] ? t.txt[key] : key
 	},
 
 	getSortIndex:function(array, newValue, sortField, sortOrder, watchDirection){
