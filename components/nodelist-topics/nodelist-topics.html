@@ -1,0 +1,16 @@
+<link rel="import" href="../nodelist-base/nodelist-base.html">
+<link rel="import" href="../card-topic/card-topic.html">
+
+<polymer-element name="nodelist-topics" extends="nodelist-base">
+	<template>
+
+		<template repeat="{{ node in nodes }}">
+			<card-topic model="{{ node }}"></card-topic>
+		</template>
+
+	</template>
+
+	<script>
+		Polymer()
+	</script>
+</polymer-element>

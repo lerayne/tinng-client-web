@@ -2,37 +2,25 @@
  * Created by Lerayne on 21.10.2014.
  */
 
-var connectionCallback = function(result, actions){
+(function(){
 
-	if (!!result.feeds){
+	// on result returned from connection
+	var connectionCallback = function(result, actions){
 
-		if (result.feeds instanceof Array) {
-			$(result.feeds).each(function(i, subscriber){
-				console.log(i, subscriber)
+		if (!!result.feeds){
+
+			_(result.feeds).each(function(subscriber){
 
 				for (var key in subscriber) {
 					$(window).trigger(key+'-update', [subscriber[key]])
 				}
 			})
-		} else {
-			for (var i in result.feeds) {
-				var subscriber = result.feeds[i];
-
-				for (var key in subscriber) {
-					$(window).trigger(key+'-update', [subscriber[key]])
-				}
-			}
 		}
+	};
 
 
-	}
-}
-
-// initialization part 1: Basic DOM loaded
-$(function(){
-
-	// If this is not IE or its IE 10 - launch the webapp (IE11 and greater aren't having "MSIE" in userAgent)
-	if (navigator.userAgent.indexOf('MSIE') == -1 || navigator.userAgent.indexOf('MSIE 10') != -1) {
+	// main app launcher
+	var launchTinng = function(){
 
 		tinng.state.windowFocused = document.hasFocus();
 
@@ -61,20 +49,32 @@ $(function(){
 
 		// in Polymer you now can create new actibe elements as easy as this:
 		$('body').append($('<page-main>'));
+	};
 
-	} else {
 
-		// get outdated-browser warning
-		$.get('includes/outdated.html').then(function(html){
-			$('body').append(html);
-		});
+	// initialization part 1: Basic DOM loaded
+	$(function(){
+		console.info('Root DOM ready');
 
-	}
-})
+		// If this is not IE or its IE 10 - launch the webapp (IE11 and greater aren't having "MSIE" in userAgent)
+		if (navigator.userAgent.indexOf('MSIE') == -1 || navigator.userAgent.indexOf('MSIE 10') != -1) {
 
-// initialization part 2: Polymer finished it's work
-$(window).on('polymer-ready', function(){
-	console.log('Polymer is ready')
+			launchTinng();
 
-	tinng.connection.start();
-})
+		} else {
+			// get outdated-browser warning
+			$.get('includes/outdated.html').then(function(html){
+				$('body').append(html);
+			});
+		}
+	});
+
+
+	// initialization part 2: Polymer finished it's startup
+	$(window).on('polymer-ready', function(){
+		console.info('Polymer ready');
+
+		tinng.connection.start();
+	});
+
+})();

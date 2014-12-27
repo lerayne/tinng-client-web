@@ -1,5 +1,5 @@
 <link rel="import" href="../unit-base/unit-base.html">
-<link rel="import" href="../card-topic/card-topic.html">
+<link rel="import" href="../nodelist-topics/nodelist-topics.html">
 <link rel="import" href="../../bower_components/core-animation/core-animation.html">
 
 <polymer-element name="unit-topics" extends="unit-base" vertical layout>
@@ -48,8 +48,8 @@
 		</style>
 
 		<core-signals
-				on-core-signal-unit-topics="{{parseSignal}}"
-				></core-signals>
+			on-core-signal-unit-topics="{{parseSignal}}"
+		></core-signals>
 
 		<unit-topics-deco>
 
@@ -78,11 +78,7 @@
 				</span>
 			</core-toolbar>
 
-			<div class="content" flex>
-				<template repeat="{{topic in topics}}">
-					<card-topic model="{{topic}}"></card-topic>
-				</template>
-			</div>
+			<nodelist-topics nodes="{{topics}}" class="content" flex></nodelist-topics>
 
 			<paper-fab icon="add" on-tap="{{fabTap}}"></paper-fab>
 
@@ -92,20 +88,32 @@
 
 	<script>
 		Polymer({
+			// properties
+
 			text: text,
 
 			menuVisible:false,
 
+			// polymer
+
 			created: function () {
 
-				this.topics = [
-					{id: 1, message: '111', title: 'Topic 1'},
-					{id: 2, message: '222', title: 'Topic 2'}
-				];
+				this.topics = [];
+				this.subscribe();
 			},
 
-			ready:function(){
-				tinng.units.push(this);
+
+			// other
+
+			subscribe:function(){
+
+				tinng.connection.subscribe({
+					subscriber: this,
+					feedName: 'topics-main',
+					feed: {
+						feed: 'topics'
+					}
+				});
 			},
 
 			actions: {

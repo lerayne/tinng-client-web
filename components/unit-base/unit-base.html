@@ -14,6 +14,10 @@
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+			ready: function(){
+				tinng.units.push(this);
+			}
+		});
 	</script>
 </polymer-element>
