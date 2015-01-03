@@ -1,3 +1,6 @@
+<link rel="import" href="../block-tag/block-tag.html">
+<link rel="import" href="../block-user/block-user.html">
+
 <polymer-element name="card-topic" attributes="model">
 	<template>
 		<style>
@@ -6,9 +9,17 @@
 			}
 		</style>
 
-		<card-topic-deco>
-			<h2>{{model.title}}</h2>
-			<p>{{model.message}}</p>
+		<card-topic-deco model="[[model]]">
+			<h2 class="title">{{model.topic_name}}</h2>
+			<span class="message">{{model.message}}</span>
+
+			<block-user data="{{ {name: model.author, id: model.author_id, email: model.author_email} }}"></block-user>
+			<span class="created">{{model.created}}</span>
+			<span class="modified">{{model.modified}}</span>
+
+			<template repeat="{{tag in model.tags}}">
+				<block-tag data="{{tag}}">{{tag.name}}</block-tag>
+			</template>
 		</card-topic-deco>
 
 	</template>

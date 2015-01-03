@@ -42,11 +42,7 @@
 				<text-string>units.posts.sampleName</text-string>
 			</core-toolbar>
 
-			<div class="content" flex>
-				<template repeat="{{post in posts}}">
-					<card-post model="{{post}}"></card-post>
-				</template>
-			</div>
+			<nodelist-posts updates="{{posts}}" class="content" flex></nodelist-posts>
 
 			<div class="editor" horizontal layout>
 				<textarea flex></textarea>

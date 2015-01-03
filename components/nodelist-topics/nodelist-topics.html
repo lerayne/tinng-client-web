@@ -4,13 +4,45 @@
 <polymer-element name="nodelist-topics" extends="nodelist-base">
 	<template>
 
-		<template repeat="{{ node in nodes }}">
-			<card-topic model="{{ node }}"></card-topic>
-		</template>
+		<style>
+			#scroll {
+				padding: 15px 5px 1px 15px;
+			}
+		</style>
+
+		<div id="scroll">
+			<template repeat="{{ node in nodes }}">
+				<card-topic model="{{ node }}"></card-topic>
+			</template>
+		</div>
 
 	</template>
 
 	<script>
-		Polymer()
+		Polymer({
+
+			sortField: 'updated',
+
+			parseUpdates: function(old, nodes){
+
+				if (!this.nodes.length) {
+					// если это первичная загрузка
+					console.log('initial load', this.sort(nodes, this.sortField, this.sortOrder))
+
+					// если мы заполняем массив первый раз - нужно его отсортировать
+					this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
+
+				} else {
+					// если в массиве уже есть ноды
+					_(nodes).each(this.processNode);
+
+					// todo - нужно либо отключить соблюдение сортировки в processItem, либо сделать условие на выполнение sortSelf
+					// (было обновление) иначе - двойная работа. А еще лучше - сначала, если есть обновления, А ТАКЖЕ если от
+					// обновлений может зависеть порядок - обновить и отсортировать, а затем добавить/удалить с само-сортировкой.
+					// Чтобы понять, нужна ли сортировка - можно проверять, изменилось ли поле, по которому сортируем ;)
+					this.sortSelf();
+				}
+			}
+		})
 	</script>
 </polymer-element>

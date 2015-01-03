@@ -3,12 +3,79 @@
 <polymer-element name="card-topic-deco" extends="card-base-deco" noscript>
 	<template>
 		<style>
-			:host {
+			polyfill-next-selector {content:'[private] :host .private'}
+			:host-context([private]) .private {
+				display: inline-block;
+			}
 
+			polyfill-next-selector {content:'[selected] :host'}
+			:host-context([selected]) {
+				box-shadow: 0 3px 0 #9acd32;
+			}
+
+			polyfill-next-selector {content:'.title'}
+			::content .title {
+				color:#007bb7;
+				font-weight: bold;
+				font-size: 120%;
+			}
+
+			.topic-row {
+				margin-bottom:10px;
+			}
+
+			.private {
+				font-size: 90%;
+				color:#fff;
+				padding:1px 5px 2px;
+				background-color: #ccc;
+				margin-left:10px;
+				display:none;
+			}
+
+			polyfill-next-selector {content:'block-tag'}
+			::content block-tag {
+				cursor:pointer;
+			}
+
+			.datetime {
+				color:#ccc;
+				float:right;
+			}
+
+			.info {
+				margin-bottom:10px;
+			}
+
+			.tags {
+				margin-top:15px;
 			}
 		</style>
 
-		<content></content>
+		<div class="info">
+			<content select="block-user"></content>
+
+			<span class="datetime" >
+				<span hidden?=[[!!model.modified]]>
+					<content select=".created"></content>
+				</span>
+
+				<span hidden?=[[!model.modified]]>
+					<text-string>unit.topic.modified</text-string> <content select=".modified"></content>
+				</span>
+			</span>
+		</div>
+
+		<div class="topic-row">
+			<content select=".title"></content>
+			<text-string class="private">unit.topic.private</text-string>
+		</div>
+
+		<content select=".message"></content>
+
+		<div class="tags" hidden?=[[!model.tags]]>
+			<content select="block-tag"></content>
+		</div>
 
 	</template>
 </polymer-element>

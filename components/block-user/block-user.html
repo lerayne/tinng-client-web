@@ -1,0 +1,29 @@
+<polymer-element name="block-user" attributes="data">
+	<template>
+		<style>
+			:host {
+				display: inline-block;
+			}
+
+			.name {
+				font-weight: bold;
+			}
+
+			img {
+				border-radius: 100%;
+				vertical-align: top;
+				margin-right: 5px;
+			}
+		</style>
+
+		<template if="[[!!data.avatar]]">
+			<img _src="[[data.avatar]]">
+		</template>
+
+		<span class="name">{{data.name}}</span>
+	</template>
+
+	<script>
+		Polymer()
+	</script>
+</polymer-element>

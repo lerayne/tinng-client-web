@@ -185,6 +185,8 @@ Funcs.prototype = {
 
 	getSortIndex:function(array, newValue, sortField, sortOrder, watchDirection){
 		if (typeof sortOrder == 'undefined') sortOrder = 'asc';
+
+		// from which end of array will we look for matching value. Does not affect result, but affects performance on long arrays
 		if (typeof watchDirection == 'undefined') watchDirection = 'asc';
 
 		if (watchDirection == 'asc') {

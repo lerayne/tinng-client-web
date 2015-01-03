@@ -78,9 +78,9 @@
 				</span>
 			</core-toolbar>
 
-			<nodelist-topics nodes="{{topics}}" class="content" flex></nodelist-topics>
+			<nodelist-topics id="topicsList" updates="{{updates}}" class="content" flex></nodelist-topics>
 
-			<paper-fab icon="add" on-tap="{{fabTap}}"></paper-fab>
+			<paper-fab icon="add" on-tap="{{}}"></paper-fab>
 
 		</unit-topics-deco>
 
@@ -97,7 +97,7 @@
 
 			created: function () {
 
-				this.topics = [];
+				this.updates = [];
 
 				this.subscribe();
 			},
@@ -105,7 +105,7 @@
 
 			// other
 
-			subscribe:function(){
+			subscribe: function() {
 
 				tinng.connection.subscribe({
 					subscriber: this,
@@ -113,21 +113,14 @@
 					feed: {
 						feed: 'topics'
 					},
-					parser: this.parseTopics
+					parser: function(data) {
+						this.updates = data;
+					}
 				});
 			},
 
-			parseTopics:function(topics){
-				console.log('to parse:', topics, this)
-			},
 
-			actions: {
-				fab: {
-					tap: function () {
-						console.log(this)
-					}
-				}
-			},
+			// drafts
 
 			suspend: function () {
 				this.fire('suspend', {sender: this})
