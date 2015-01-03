@@ -91,7 +91,6 @@
 			// properties
 
 			text: text,
-
 			menuVisible:false,
 
 			// polymer
@@ -99,6 +98,7 @@
 			created: function () {
 
 				this.topics = [];
+
 				this.subscribe();
 			},
 
@@ -112,8 +112,13 @@
 					feedName: 'topics-main',
 					feed: {
 						feed: 'topics'
-					}
+					},
+					parser: this.parseTopics
 				});
+			},
+
+			parseTopics:function(topics){
+				console.log('to parse:', topics, this)
 			},
 
 			actions: {

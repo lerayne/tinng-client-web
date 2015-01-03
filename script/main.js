@@ -4,29 +4,13 @@
 
 (function(){
 
-	// on result returned from connection
-	var connectionCallback = function(result, actions){
-
-		if (!!result.feeds){
-
-			_(result.feeds).each(function(subscriber){
-
-				for (var key in subscriber) {
-					$(window).trigger(key+'-update', [subscriber[key]])
-				}
-			})
-		}
-	};
-
-
 	// main app launcher
-	var launchTinng = function(){
+	var onDOMReady = function(){
 
 		tinng.state.windowFocused = document.hasFocus();
 
 		tinng.connection = new tinng.class.Connection({
 			server: tinng.cfg.server_url,
-			callback:connectionCallback,
 			autostart: false
 		});
 
@@ -47,9 +31,19 @@
 			}
 		});
 
-		// in Polymer you now can create new actibe elements as easy as this:
+		// in Polymer you now can create new active elements as easy as this:
 		$('body').append($('<page-main>'));
 	};
+
+
+
+	// after polymer inited
+	var onPolymerReady = function(){
+
+		tinng.connection.start();
+	};
+
+
 
 
 	// initialization part 1: Basic DOM loaded
@@ -59,7 +53,7 @@
 		// If this is not IE or its IE 10 - launch the webapp (IE11 and greater aren't having "MSIE" in userAgent)
 		if (navigator.userAgent.indexOf('MSIE') == -1 || navigator.userAgent.indexOf('MSIE 10') != -1) {
 
-			launchTinng();
+			onDOMReady();
 
 		} else {
 			// get outdated-browser warning
@@ -74,7 +68,7 @@
 	$(window).on('polymer-ready', function(){
 		console.info('Polymer ready');
 
-		tinng.connection.start();
+		onPolymerReady();
 	});
 
 })();

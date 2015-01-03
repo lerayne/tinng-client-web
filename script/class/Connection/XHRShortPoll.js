@@ -18,10 +18,10 @@ tinng.class.strategic.XHRShortPoll = function(server, callback, autostart){
 	this.timeout = false; // текущий таймаут
 	this.connectionLossTO = false; // таймаут обрыва связи
 
+	//todo remove
 	this.$stateIndicator = $('.state-ind');
 
 	this.subscriptions = {};
-	//console.log('XHRShortPoll construct meta init')
 	this.meta = {};
 	this.actions = {};
 	this.latest_change = 0;
@@ -58,69 +58,51 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 	// внутренний класс подписки, которым пользуются внешние классы (пере)подписки и ее изменения
-	_subscribe:function(subscriberId, feedName, feed, reset){
-		var subscriberFeeds = this.subscriptions[subscriberId];
+	_subscribe:function(id, feedName, feed, reset){
 
-		// если такой подписчик уже есть
-		if (subscriberFeeds) {
+		if (!this.subscriptions[id]) { this.subscriptions[id] = {}; }
+		if (!this.subscriptions[id][feedName]) { this.subscriptions[id][feedName] = feed; }
 
-			// если такая подписка уже есть у подписчика
-			if (subscriberFeeds[feedName]){
-				for (var key in feed) {
-					subscriberFeeds[feedName][key] = feed[key];
-				}
+		// write all new params to this feed (iteration is to keep old params)
+		for (var key in feed) {
+			this.subscriptions[id][feedName][key] = feed[key];
+		}
 
-				// сбрасываем ее мету
-				if (reset && this.meta[subscriberId]) {
-					//console.log('META RESET on subscribe:', subscriberId, feedName)
-					this.meta[subscriberId][feedName] = {};
-				}
-
-				// иначе создаем новую подписку
-			} else subscriberFeeds[feedName] = feed;
-
-		} else { // иначе создаем подписчика и подписку у него
-			this.subscriptions[subscriberId] = {};
-			this.subscriptions[subscriberId][feedName] = feed;
+		// (re)setting metadata
+		// todo - check if there's no problems with protocol if meta is being set on new subscription's creation
+		// note: meta[id] is being created on server side
+		if (reset && this.meta[id]) {
+			this.meta[id][feedName] = {};
 		}
 	},
 
 	// подписывает, или изменяет параметры текущей подписки
-	subscribe:function(subscriberId, feedName, feed){
-		this._subscribe(subscriberId, feedName, feed, true)
+	subscribe:function(id, feedName, feed){
+		this._subscribe(id, feedName, feed, true)
 	},
 
 	// "мягко" изменяет параметры подписки, не меняя ее метаданные
 	// пока-что нужно для динамической подгрузки "страниц"
-	rescribe:function(subscriberId, feedName, feed){
-		this._subscribe(subscriberId, feedName, feed, false)
+	rescribe:function(id, feedName, feed){
+		this._subscribe(id, feedName, feed, false)
 	},
 
 	// отменяет подписку
-	unscribe:function(subscriberId, feedName){
+	unscribe:function(id, feedName){
 
 		// если такой вообще есть
-		if (this.subscriptions[subscriberId] && this.subscriptions[subscriberId][feedName]) {
+		if (this.subscriptions[id] && this.subscriptions[id][feedName]) {
 
-			delete this.subscriptions[subscriberId][feedName];
+			delete this.subscriptions[id][feedName];
 
-			if (this.meta[subscriberId]) {
-				//console.log('META DELETE on UNscribe:', subscriberId, feedName)
-				delete this.meta[subscriberId][feedName];
+			if (this.meta[id]) {
+				delete this.meta[id][feedName];
 			}
 
-			// считаем, сколько подписок осталось
-			var i = 0;
-			for (var key in this.subscriptions[subscriberId]) {
-				/*if (this.subscriptions[subscriberId].propertyIsEnumerable(key))*/ i++;
-			}
-
-			// если ни одной - прибиваем подписчика
-			if (i == 0) {
-				delete this.subscriptions[subscriberId];
-
-				//console.log('SUBSCRIBER DELETE:', subscriberId)
-				delete this.meta[subscriberId];
+			// если это была последняя подписка - прибиваем подписчика и мету
+			if (_(this.subscriptions[id]).isEmpty()) {
+				delete this.subscriptions[id];
+				delete this.meta[id];
 			}
 		}
 	},
@@ -144,12 +126,17 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 	// отправка запроса
 	subscriptionSend:function () {
-		if (this.active && tinng.cfg.maintenance == 0) setTimeout(this.$_subscriptionSend, 0);
+
+		if (this.active && tinng.cfg.maintenance == 0) {
+			// todo: этот враппер-таймаут нужен из-за несовершенства обертки XHR, баг вылазит во время создания новой темы -
+			// отправка запроса сразу после получения предыдущего происходит до закрытия соединения и новое соединение не проходит
+			setTimeout(this.$_subscriptionSend, 0);
+		}
+		// todo  - it can return more useful data!
 		return true;
 	},
 
-	// todo: этот враппер-таймаут нужен из-за несовершенства обертки XHR, баг вылазит во время создания новой темы -
-	// отправка запроса сразу после получения предыдущего происходит до закрытия соединения и новое соединение не проходит
+
 	$_subscriptionSend:function(){
 
 		//t.notifier.send('connection start', this.waitTime);
@@ -239,8 +226,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 			this.meta = {};
 			for (var i = 0; i < data.meta.length; i++) {
-				var metaItem = data.meta[i];
-				this.meta[i] = metaItem;
+				this.meta[i] = data.meta[i];
 			}
 		} else {
 			this.meta = data.meta;
