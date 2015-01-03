@@ -1,7 +1,7 @@
 <link rel="import" href="../block-tag/block-tag.html">
 <link rel="import" href="../block-user/block-user.html">
 
-<polymer-element name="card-topic" attributes="model">
+<polymer-element name="card-topic" attributes="model" on-tap="{{ selectTopic }}">
 	<template>
 		<style>
 			:host {
@@ -25,6 +25,23 @@
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+
+			//polymer
+			publish:{
+				private:{value:false, reflect:true}
+			},
+
+			computed:{
+				'ID':'+data.id',
+				'unread':'!!+data.unread',
+				'private':'!!+data.private'
+			},
+
+			//other
+			selectTopic:function(){
+				this.fire('core-signal', {name:'topic-select', data: {topic:this.model, sender:this}});
+			}
+		});
 	</script>
 </polymer-element>

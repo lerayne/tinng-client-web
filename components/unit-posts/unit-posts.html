@@ -31,6 +31,8 @@
 
 		<core-signals
 			on-core-signal-secondary-close="{{ meSingle }}"
+			on-core-signal-topic-select="{{ topicSelect }}"
+			on-core-signal-add-message="{{ addMessage }}"
 		></core-signals>
 
 		<unit-posts-deco>
@@ -39,15 +41,15 @@
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<paper-icon-button icon="menu"></paper-icon-button>
 
-				<text-string>units.posts.sampleName</text-string>
+				<text-string>unit.posts.sampleName</text-string>
 			</core-toolbar>
 
-			<nodelist-posts updates="{{posts}}" class="content" flex></nodelist-posts>
+			<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
 
 			<div class="editor" horizontal layout>
-				<textarea flex></textarea>
-				<paper-button self-center raised class="highlight send">
-					<text-string>units.posts.sendBtn</text-string>
+				<textarea id="messageInput" flex></textarea>
+				<paper-button self-center raised class="highlight send" on-tap="{{ addMessage }}">
+					<text-string>unit.posts.sendBtn</text-string>
 					<core-icon icon="send"></core-icon>
 				</paper-button>
 			</div>
@@ -58,21 +60,63 @@
 	<script>
 		Polymer({
 
+			//properties
+			fullframe: false,
+			selectedTopic:0,
+
+			//polymer
+			observe:{
+				'selectedTopic':'subscribe'
+			},
+
 			created:function(){
-				this.posts = [
-					{message:1},
-					{message:2},
-					{message:3},
-					{message:4}
-				];
-
-				this.fullframe = false;
+				this.updates = [];
 			},
 
-			ready:function(){
-				tinng.units.push(this);
+			//other
+			subscribe: function(){
+				this.updates = [];
+				this.$.postsList.clean();
+
+				tinng.connection.unscribe(this, 'posts-main');
+
+				tinng.connection.subscribe({
+					subscriber: this,
+					feedName: 'posts-main',
+					feed:{
+						feed:'posts',
+						limit:50,
+						topic: this.selectedTopic
+					},
+					parser:function(data){
+						this.updates = data;
+					}
+				})
 			},
 
+			topicSelect:function(event, details){
+
+				this.loading = true;
+
+				this.selectedTopic = details.topic.id;
+			},
+
+			addMessage: function(event, message){
+				var message = this.$.messageInput.value;
+
+				if (!!this.selectedTopic && !message.match(/^\s*$/)) {
+
+					tinng.connection.write({
+						action:'add_post',
+						topic: this.selectedTopic,
+						message: message
+					});
+
+					this.$.messageInput.value = '';
+				}
+			},
+
+			//draft
 			meSingle:function(){
 				this.fullframe = true;
 			},

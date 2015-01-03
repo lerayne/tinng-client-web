@@ -11,13 +11,41 @@
 
 		<div id="scroll">
 			<template repeat="{{ node in nodes }}">
-				<card-topic model="{{ node }}"></card-topic>
+				<card-post model="{{ node }}"></card-post>
 			</template>
 		</div>
 
 	</template>
 
 	<script>
-		Polymer()
+		Polymer({
+
+			//properties
+			sortOrder:'asc',
+
+			//other
+			parseUpdates:function(old, nodes){
+
+				this.loaded = true;
+				this.loading = false;
+
+				var firstLoad = !this.nodes.length;
+
+				if (firstLoad) {
+					// если это первичная загрузка
+
+					// если мы заполняем массив первый раз - нужно его отсортировать
+					this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
+
+				} else {
+					// если в массиве уже есть ноды
+					_(nodes).each(this.processNode);
+				}
+
+				if (firstLoad || this.isAtBottom()) {
+					this.async(this.toBottom)
+				}
+			}
+		})
 	</script>
 </polymer-element>

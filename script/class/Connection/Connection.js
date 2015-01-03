@@ -144,9 +144,10 @@ tinng.class.Connection.prototype = {
 			var id = that.subscriberId(params.subscriber);
 
 			// memorize parse callbacks in this object
-			if (!that.parseCallbacks[id]){ that.parseCallbacks[id] = []; }
-			that.parseCallbacks[id][params.feedName] = params.parser.bind(params.subscriber);
-
+			if (params.parser){
+				if (!that.parseCallbacks[id]){ that.parseCallbacks[id] = []; }
+				that.parseCallbacks[id][params.feedName] = params.parser.bind(params.subscriber);
+			}
 			//that['copy_'+funcName](id, params.feedName, params.feed); //useless?
 			object[funcName].call(object, id, params.feedName, params.feed);
 		};

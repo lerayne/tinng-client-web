@@ -1,11 +1,11 @@
 window.textDefault = {
 	"global.menu":"Menu",
 
-	"units.topics.unitName": "Topics",
+	"unit.topics.unitName": "Topics",
+	"unit.topics.private":"Private",
+	"unit.topics.modified":"modified",
 
-	"units.posts.sampleName": "Topic's name",
-	"units.posts.sendBtn": "Send",
-
-	"unit.topic.private":"Private",
-	"unit.topic.modified":"modified"
+	"unit.posts.sampleName": "Topic's name",
+	"unit.posts.sendBtn": "Send",
+	"unit.posts.modified":"modified"
 }

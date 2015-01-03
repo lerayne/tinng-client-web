@@ -29,11 +29,19 @@
 
 			created:function(){
 				this.nodes = [];
+
+				tinng.funcs.bind(this, [
+					'processNode'
+				]);
 			},
 
 			//other
 			parseUpdates:function(old, nodes){
 				console.log('updates', nodes)
+			},
+
+			clean:function(){
+				this.nodes = [];
 			},
 
 			processNode:function(data){
@@ -43,9 +51,8 @@
 				// находим индекс нужного элемента по id
 				var existingItemIndex = _(this.nodes).findIndex({id: data.id});
 
-
+				// если такого элемента нет - добавляем новый элемент в коллекцию
 				if (existingItemIndex == -1) {
-					// если такого элемента нет - добавляем новый элемент в коллекцию
 
 					// установка this.sortOrder в последний параметр актуальна только для сортировки по времени
 					var sortIndex = tinng.funcs.getSortIndex(this.nodes, data, this.sortField, this.sortOrder, this.sortOrder)

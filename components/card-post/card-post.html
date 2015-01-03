@@ -1,4 +1,4 @@
-<polymer-element name="card-post" attributes="model">
+<polymer-element name="card-post" attributes="model" touch-action="pan-y">
 	<template>
 		<style>
 			:host {
@@ -6,13 +6,45 @@
 			}
 		</style>
 
-		<card-post-deco>
-			<p>{{model.message}}</p>
+		<card-post-deco model="{{model}}">
+			<block-user data="{{ {name: model.author, id: model.author_id, email: model.author_email, avatar: model.avatar} }}"></block-user>
+
+			<span class="created">{{model.created}}</span>
+			<span class="modified">{{model.modified}}</span>
+
+			<div id="message"></div>
+
+			<template if="{{!+model.topic_id}}" repeat="{{tag in model.tags}}">
+				<block-tag data="{{tag}}">{{tag.name}}</block-tag>
+			</template>
 		</card-post-deco>
 
 	</template>
 
 	<script>
-		Polymer();
+		Polymer({
+
+			//properties
+			ID:0,
+
+			//polymer
+			publish:{
+				unread:{value:false, reflect:true},
+				selected:{value:false, reflect:true}
+			},
+
+			created:function(){
+				//this.model = {};
+			},
+
+			observe:{
+				'model.message':'setMessage'
+			},
+
+			//other
+			setMessage:function(old, value){
+				this.$.message.innerHTML = value;
+			}
+		});
 	</script>
 </polymer-element>

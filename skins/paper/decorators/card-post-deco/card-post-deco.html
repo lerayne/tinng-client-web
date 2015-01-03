@@ -3,12 +3,65 @@
 <polymer-element name="card-post-deco" extends="card-base-deco" noscript>
 	<template>
 		<style>
-			:host {
+			polyfill-next-selector {content:'block-tag'}
+			::content block-tag {
+				cursor:pointer;
+			}
 
+			polyfill-next-selector {content:'block-author'}
+			::content block-user {
+				position: relative;
+			}
+
+			polyfill-next-selector {content:'block-author img'}
+			::content block-user::shadow img {
+				position: absolute;
+				/*top:-4px;*/
+			}
+
+			polyfill-next-selector {content:'block-author .name'}
+			::content block-user::shadow .name {
+				margin-left:60px;
+			}
+
+			polyfill-next-selector {content:'#message'}
+			::content #message {
+				margin-left:60px;
+			}
+
+			.datetime {
+				color:#ccc;
+				float:right;
+			}
+
+			.info {
+				margin-bottom:10px;
+			}
+
+			.tags {
+				margin-top:10px;
 			}
 		</style>
 
-		<content></content>
+		<div class="info">
+			<content select="block-user"></content>
+
+			<span class="datetime" >
+				<span hidden?=[[!!model.modified]]>
+					<content select=".created"></content>
+				</span>
+
+				<span hidden?=[[!model.modified]]>
+					<text-string>unit.posts.modified</text-string> <content select=".modified"></content>
+				</span>
+			</span>
+		</div>
+
+		<content select="#message"></content>
+
+		<div class="tags" hidden?=[[!!+data.topic_id]]>
+			<content select="block-tag"></content>
+		</div>
 
 	</template>
 </polymer-element>
