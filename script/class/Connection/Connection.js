@@ -170,7 +170,10 @@ tinng.class.Connection.prototype = {
 			_(result.feeds).each(function(feeds, id){
 
 				for (var feedName in feeds) {
-					that.parseCallbacks[id][feedName](feeds[feedName]);
+					if (that.parseCallbacks[id]){
+						that.parseCallbacks[id][feedName](feeds[feedName]);
+					}
+
 				}
 			})
 		}

@@ -24,13 +24,16 @@
 				margin-bottom:10px;
 			}
 
+			.topic-row ::content h2 {
+				display: inline-block;
+			}
+
 			.private {
 				font-size: 90%;
 				color:#fff;
 				padding:1px 5px 2px;
 				background-color: #ccc;
 				margin-left:10px;
-				display:none;
 			}
 
 			polyfill-next-selector {content:'block-tag'}
@@ -68,7 +71,7 @@
 
 		<div class="topic-row">
 			<content select=".title"></content>
-			<text-string class="private">unit.topics.private</text-string>
+			<text-string class="private" hidden?="{{ model.private == '0' }}">unit.topics.private</text-string>
 		</div>
 
 		<content select=".message"></content>

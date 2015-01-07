@@ -41,7 +41,7 @@
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<paper-icon-button icon="menu"></paper-icon-button>
 
-				<text-string>unit.posts.sampleName</text-string>
+				<span>{{topic.topic_name}}</span>
 			</core-toolbar>
 
 			<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
@@ -71,16 +71,14 @@
 
 			created:function(){
 				this.updates = [];
+				this.topic = {};
 			},
 
 			//other
 			subscribe: function(){
-				this.updates = [];
-				this.$.postsList.clean();
+				this.clean();
 
-				tinng.connection.unscribe(this, 'posts-main');
-
-				tinng.connection.subscribe({
+				tinng.connection.subscribe([{
 					subscriber: this,
 					feedName: 'posts-main',
 					feed:{
@@ -91,7 +89,28 @@
 					parser:function(data){
 						this.updates = data;
 					}
-				})
+				},{
+					subscriber:this,
+					feedName: 'topic-data-main',
+					feed:{
+						feed:'topic',
+						id: this.selectedTopic
+					},
+					parser:function(data){
+						this.topic = data;
+						console.log('topic', data)
+					}
+				}]);
+
+				this.$.postsList.showLoading();
+			},
+
+			clean:function(){
+				this.updates = [];
+				this.$.postsList.clean();
+
+				tinng.connection.unscribe(this, 'posts-main');
+				tinng.connection.unscribe(this, 'topic-data-main');
 			},
 
 			topicSelect:function(event, details){

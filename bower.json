@@ -18,16 +18,18 @@
   ],
   "dependencies": {
     "jquery": "^2.1.1",
+    "jquery-compat": "jquery#^1.11",
     "lodash": "^2.4.1",
-    "polymer": "Polymer/polymer#^0.5.2",
     "es6-promise-polyfill": "^1.0.0",
+    "polymer": "Polymer/polymer#^0.5.2",
     "core-iconset": "Polymer/core-iconset#^0.5.2",
     "core-toolbar": "Polymer/core-toolbar#^0.5.2",
     "paper-button": "Polymer/paper-button#^0.5.2",
     "paper-fab": "Polymer/paper-fab#^0.5.2",
     "core-signals": "Polymer/core-signals#^0.5.2",
     "core-animation": "Polymer/core-animation#^0.5.2",
-    "jquery-compat": "jquery#^1.11",
-    "paper-icon-button": "Polymer/paper-icon-button#~0.5.2"
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.2",
+    "paper-dialog": "Polymer/paper-dialog#~0.5.2",
+    "paper-input": "Polymer/paper-input#~0.5.2"
   }
 }

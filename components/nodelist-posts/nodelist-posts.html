@@ -26,9 +26,6 @@
 			//other
 			parseUpdates:function(old, nodes){
 
-				this.loaded = true;
-				this.loading = false;
-
 				var firstLoad = !this.nodes.length;
 
 				if (firstLoad) {
@@ -45,6 +42,17 @@
 				if (firstLoad || this.isAtBottom()) {
 					this.async(this.toBottom)
 				}
+
+				this.async(function(){
+					this.loaded = true;
+					this.loading = false;
+				}, null, 500)
+
+			},
+
+			showLoading:function(){
+				this.loaded = false;
+				this.loading = true;
 			}
 		})
 	</script>

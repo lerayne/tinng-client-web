@@ -166,8 +166,8 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 		data.user = {
 			login: tinng.funcs.getCookie('login'),
-			pass: tinng.funcs.getCookie('pass')
-		}
+			password: tinng.funcs.getCookie('password')
+		};
 
 		return $.ajax({
 			type:'post',

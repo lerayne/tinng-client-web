@@ -23,3 +23,28 @@ body /deep/ paper-fab {
 	bottom: 30px;
 	right: 45px;
 }
+
+body /deep/ paper-dialog {
+	min-width: 300px;
+	border-radius: 3px;
+}
+
+body /deep/ paper-dialog::shadow paper-shadow {
+	border-radius: 3px;
+}
+
+body /deep/ paper-dialog::shadow h1 {
+	margin-top:0;
+	color:#01579B;
+	font-weight: 300;
+}
+
+body /deep/ paper-button.action {
+	color:#01579B;
+}
+
+body /deep/ paper-dialog input[type="text"],
+body /deep/ paper-dialog input[type="password"]
+{
+	font-size: 120%;
+}

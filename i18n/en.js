@@ -1,5 +1,6 @@
 window.textDefault = {
 	"global.menu":"Menu",
+	"global.login":"Sign-in",
 
 	"unit.topics.unitName": "Topics",
 	"unit.topics.private":"Private",
@@ -7,5 +8,12 @@ window.textDefault = {
 
 	"unit.posts.sampleName": "Topic's name",
 	"unit.posts.sendBtn": "Send",
-	"unit.posts.modified":"modified"
-}
+	"unit.posts.modified":"modified",
+
+	"dialog.login.header":"Sign-in",
+	"dialog.login.loginLabel":"Login or e-mail",
+	"dialog.login.passwordLabel":"Password",
+	"dialog.login.cancelButton":"Cancel",
+	"dialog.login.loginButton":"Log in",
+	"dialog.login.logoutButton":"Log out"
+};
