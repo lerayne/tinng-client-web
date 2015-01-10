@@ -180,6 +180,10 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 					console.info('PHP backtrace:\n==============\n', response.debug)
 				}
 
+				if (response.php_message){
+					console.warn('PHP Message:\n============\n', response.php_message)
+				}
+
 				callback(response.data);
 			},
 			error: function(a, b, c){
