@@ -42,6 +42,16 @@
 					// Чтобы понять, нужна ли сортировка - можно проверять, изменилось ли поле, по которому сортируем ;)
 					this.sortSelf();
 				}
+			},
+
+			markSelected:function(id){
+				var currentSelected = _(this.nodes).find({selected:true});
+
+				if (typeof currentSelected != 'undefined') {
+					currentSelected.selected = false;
+				}
+
+				this.super(arguments);
 			}
 		})
 	</script>

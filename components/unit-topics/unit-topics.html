@@ -48,7 +48,8 @@
 		</style>
 
 		<core-signals
-			on-core-signal-unit-topics="{{parseSignal}}"
+			on-core-signal-unit-topics="{{ parseSignal }}"
+			on-core-signal-topic-load="{{ onTopicLoad }}"
 		></core-signals>
 
 		<unit-topics-deco>
@@ -122,14 +123,18 @@
 
 			// drafts
 
+			onTopicLoad:function(event, data, sender){
+
+				this.$.topicsList.markSelected(data.id);
+			},
+
 			suspend: function () {
-				this.fire('suspend', {sender: this})
+				this.fire('suspend', {sender: this});
 				this.fire('core-signal', {name: 'secondary-close'})
 			},
 
 			parseSignal: function (event, data) {
-				console.log(data)
-
+				//console.log(data);
 				if (data.command == 'suspend') {
 					console.info('SUSPEND!')
 				}

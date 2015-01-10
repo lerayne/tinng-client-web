@@ -78,6 +78,8 @@
 			subscribe: function(){
 				this.clean();
 
+				this.fire('core-signal', {name:'topic-load', data:{id: this.selectedTopic}});
+
 				tinng.connection.subscribe([{
 					subscriber: this,
 					feedName: 'posts-main',
@@ -98,7 +100,7 @@
 					},
 					parser:function(data){
 						this.topic = data;
-						console.log('topic', data)
+						//console.log('topic', data)
 					}
 				}]);
 

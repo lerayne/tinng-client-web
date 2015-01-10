@@ -105,6 +105,14 @@
 
 			toTop: function(){
 				this.$.scroll.scrollIntoView(true)
+			},
+
+			markSelected:function(id){
+				var node = _(this.nodes).find({id:id});
+
+				if (typeof node != 'undefined') {
+					node.selected = true;
+				}
 			}
 		})
 	</script>

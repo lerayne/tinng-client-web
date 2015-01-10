@@ -29,13 +29,15 @@
 
 			//polymer
 			publish:{
-				private:{value:false, reflect:true}
+				private:{value:false, reflect:true},
+				selected:{value:false, reflect:true}
 			},
 
 			computed:{
-				'ID':'+data.id',
-				'unread':'!!+data.unread',
-				'private':'!!+data.private'
+				ID:'+data.id',
+				unread:'!!+data.unread',
+				private:'!!+data.private',
+				selected:'model.selected'
 			},
 
 			//other
