@@ -33,6 +33,7 @@
 			on-core-signal-secondary-close="{{ meSingle }}"
 			on-core-signal-topic-select="{{ topicSelect }}"
 			on-core-signal-add-message="{{ addMessage }}"
+			on-core-signal-rescribe-all="{{ subscribe }}"
 		></core-signals>
 
 		<unit-posts-deco>
@@ -69,7 +70,7 @@
 				'selectedTopic':'subscribe'
 			},
 
-			created:function(){
+			ready:function(){
 				this.updates = [];
 				this.topic = {};
 			},

@@ -67,6 +67,9 @@
 
 			//other
 			subscribe: function(login, password) {
+
+				tinng.connection.unscribe(this, 'user');
+
 				tinng.connection.subscribe({
 					subscriber:this,
 					feedName:'user',
@@ -85,7 +88,7 @@
 
 			onResponse:function(loginData){
 
-				var newUser = _(this.user).isEmpty();
+				var newUser = _(this.user).isEmpty() || this.user == 'none';
 
 				this.user = loginData;
 
@@ -102,6 +105,7 @@
 
 					} else {
 						// login successful
+						console.log('logged in');
 
 						this.hideDialogLogin();
 						this.status = 'logged';
@@ -112,7 +116,8 @@
 							var expireDate = new Date(now.setMonth(now.getMonth()+12)); // remember for year
 							tinng.funcs.setCookie({name:'login', value:loginData.login, expires: expireDate});
 							tinng.funcs.setCookie({name:'password', value:this.$.inputPassword.value, expires: expireDate});
-							tinng.connection.refresh();
+
+							this.fire('core-signal', {name:'rescribe-all'});
 						}
 					}
 				}
@@ -131,17 +136,18 @@
 			},
 
 			logIn:function(){
-				console.log('login');
-
 				this.subscribe(this.$.inputLogin.value, this.$.inputPassword.value);
 			},
 
 			logOut:function(){
-				//this.status = 'anonymous';
-				//this.user = {};
+				this.status = 'anonymous';
+				this.user = {};
 				tinng.funcs.deleteCookie('login');
 				tinng.funcs.deleteCookie('password');
-				location.reload();
+
+				this.fire('core-signal', {name:'rescribe-all'});
+
+				//location.reload();
 			}
 
 		})
