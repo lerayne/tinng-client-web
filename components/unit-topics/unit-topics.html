@@ -49,7 +49,7 @@
 
 		<core-signals
 			on-core-signal-unit-topics="{{ parseSignal }}"
-			on-core-signal-topic-load="{{ onTopicLoad }}"
+			on-core-signal-topic-loaded="{{ onTopicLoaded }}"
 		></core-signals>
 
 		<unit-topics-deco>
@@ -123,7 +123,7 @@
 
 			// drafts
 
-			onTopicLoad:function(event, data, sender){
+			onTopicLoaded:function(event, data, sender){
 
 				this.$.topicsList.markSelected(data.id);
 			},

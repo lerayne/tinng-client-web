@@ -15,6 +15,6 @@ tinng = {
 	units:[],
 	state:{},
 	class: {
-		strategic:{}
+		strategic: {}
 	}
-}
+};

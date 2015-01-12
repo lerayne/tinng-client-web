@@ -17,7 +17,19 @@ body /deep/ .highlight {
 	color:#fff;
 }
 
+.highlight {
+	background-color: #ffab00; /* google amber A700 */
+	color:#fff;
+}
+
 body /deep/ paper-fab {
+	background-color: #ffab00; /* google amber A700 */
+	position: absolute;
+	bottom: 30px;
+	right: 45px;
+}
+
+paper-fab {
 	background-color: #ffab00; /* google amber A700 */
 	position: absolute;
 	bottom: 30px;
