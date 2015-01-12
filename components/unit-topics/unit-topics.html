@@ -50,6 +50,7 @@
 		<core-signals
 			on-core-signal-unit-topics="{{ parseSignal }}"
 			on-core-signal-topic-loaded="{{ onTopicLoaded }}"
+			on-core-signal-rescribe-all="{{ subscribe }}"
 		></core-signals>
 
 		<unit-topics-deco>
@@ -96,10 +97,9 @@
 
 			// polymer
 
-			created: function () {
 
+			ready:function(){
 				this.updates = [];
-
 				this.subscribe();
 			},
 
@@ -107,6 +107,8 @@
 			// other
 
 			subscribe: function() {
+
+				this.clean();
 
 				tinng.connection.subscribe({
 					subscriber: this,
@@ -118,6 +120,13 @@
 						this.updates = data;
 					}
 				});
+			},
+
+			clean:function(){
+				this.updates = [];
+				this.$.topicsList.clean();
+
+				tinng.connection.unscribe(this, 'topics-main');
 			},
 
 
