@@ -3,6 +3,10 @@
 <polymer-element name="card-post-deco" extends="card-base-deco" noscript>
 	<template>
 		<style>
+			:host {
+				min-height: 50px;
+			}
+
 			polyfill-next-selector {content:'block-tag'}
 			::content block-tag {
 				cursor:pointer;
