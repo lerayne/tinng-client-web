@@ -27,6 +27,16 @@
 			.send {
 				width:100px
 			}
+
+			polyfill-next-selector {content:'block-user .name'}
+			block-user::shadow .name {
+				display:none;
+			}
+
+			polyfill-next-selector {content:'block-user .avatar'}
+			block-user::shadow .avatar {
+				height:30px;
+			}
 		</style>
 
 		<core-signals
@@ -37,12 +47,23 @@
 		></core-signals>
 
 		<unit-posts-deco>
-			<core-toolbar>
+			<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
 
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
-				<paper-icon-button icon="menu"></paper-icon-button>
+				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
 				<span>{{topic.topic_name}}</span>
+
+				<template if="{{private}}">
+					<div flex vertical layout class="bottom" style="height:56px">
+						<text-string class="block tinytext">unit.posts.privateDisclaimer</text-string>
+						<div flex horizontal layout center>
+							<template repeat="{{reader in topic.private}}">
+								<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
+							</template>
+						</div>
+					</div>
+				</template>
 			</core-toolbar>
 
 			<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
@@ -68,6 +89,10 @@
 			//polymer
 			observe:{
 				'selectedTopic':'subscribe'
+			},
+
+			computed:{
+				private:'topic.private && topic.private != "0"'
 			},
 
 			ready:function(){

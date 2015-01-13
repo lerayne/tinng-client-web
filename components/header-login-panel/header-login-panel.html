@@ -48,14 +48,12 @@
 			created: function(){
 				this.user = {};
 
-				this.cookies = {};
-				this.cookies.login = tinng.funcs.getCookie('login');
-				this.cookies.password = tinng.funcs.getCookie('password');
+				var login = tinng.funcs.getCookie('login');
+				var password = tinng.funcs.getCookie('password');
 
-				console.log('cookie data', this.cookies);
-
-				if (this.cookies.login && this.cookies.password) {
-					this.subscribe(this.cookies.login, this.cookies.password);
+				if (login && password) {
+					this.loginFromCookies = true;
+					this.subscribe(login, password);
 				} else {
 					this.status = 'anonymous';
 				}
@@ -111,7 +109,7 @@
 						this.status = 'logged';
 
 						// if this was manual login
-						if (!this.cookies.login || !this.cookies.password){
+						if (!this.loginFromCookies){
 							var now = new Date();
 							var expireDate = new Date(now.setMonth(now.getMonth()+12)); // remember for year
 							tinng.funcs.setCookie({name:'login', value:loginData.login, expires: expireDate});

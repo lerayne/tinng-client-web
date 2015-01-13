@@ -60,3 +60,11 @@ body /deep/ paper-dialog input[type="password"]
 {
 	font-size: 120%;
 }
+
+body /deep/ .smalltext {
+	font-size: 85%;
+}
+
+body /deep/ .tinytext {
+	font-size: 70%;
+}
