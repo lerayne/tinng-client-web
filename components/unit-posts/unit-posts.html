@@ -37,6 +37,16 @@
 			block-user::shadow .avatar {
 				height:30px;
 			}
+
+			.allowed-users {
+				opacity: 1;
+				transition: opacity 0.18s ease-in;
+			}
+
+			.allowed-users[hidden] {
+				opacity:0;
+				display: flex !important;
+			}
 		</style>
 
 		<core-signals
@@ -47,23 +57,23 @@
 		></core-signals>
 
 		<unit-posts-deco>
-			<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
+			<core-toolbar class="core-narrow animate {{private ? 'medium-tall' : ''}}">
 
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
 				<span>{{topic.topic_name}}</span>
 
-				<template if="{{private}}">
-					<div flex vertical layout class="bottom" style="height:56px">
-						<text-string class="block tinytext">unit.posts.privateDisclaimer</text-string>
-						<div flex horizontal layout center>
-							<template repeat="{{reader in topic.private}}">
-								<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
-							</template>
-						</div>
+
+				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users" style="height:56px">
+					<text-string class="block tinytext">unit.posts.privateDisclaimer</text-string>
+					<div flex horizontal layout center>
+						<template repeat="{{reader in topic.private}}">
+							<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
+						</template>
 					</div>
-				</template>
+				</div>
+
 			</core-toolbar>
 
 			<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
