@@ -134,6 +134,8 @@
 
 			onTopicLoaded:function(event, data, sender){
 
+				console.log('topicLoaded', data)
+
 				this.$.topicsList.markSelected(data.id);
 			},
 

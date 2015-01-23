@@ -7,6 +7,8 @@
 	// main app launcher
 	var onDOMReady = function(){
 
+		tinng.router = new tinng.class.Router();
+
 		tinng.state.windowFocused = document.hasFocus();
 
 		tinng.connection = new tinng.class.Connection({

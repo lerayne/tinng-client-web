@@ -33,6 +33,19 @@
 				margin-left:60px;
 			}
 
+			polyfill-next-selector {content:'blockquote'}
+			::content blockquote {
+				background:#eee url(./images/quote.png) no-repeat 12px 12px;
+				margin:0;
+				padding:10px 10px 10px 40px;
+			}
+
+			polyfill-next-selector {content:'blockquote cite'}
+			::content blockquote cite {
+				color:#777;
+				display: block;
+			}
+
 			.datetime {
 				color:#ccc;
 				float:right;

@@ -98,6 +98,10 @@
 			ready:function(){
 				this.updates = [];
 				this.topic = {};
+
+				if (tinng.router.get('topic')) {
+					this.selectedTopic = _.parseInt(tinng.router.get('topic'));
+				}
 			},
 
 			//other
@@ -125,7 +129,6 @@
 					parser:function(data){
 						this.topic = data;
 						this.fire('core-signal', {name:'topic-loaded', data:{id: data.id}});
-						//console.log('topic', data)
 					}
 				}]);
 

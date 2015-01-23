@@ -25,6 +25,8 @@
 
 			parseUpdates: function(old, nodes){
 
+				_(nodes).each(this.prepareNode.bind(this));
+
 				if (!this.nodes.length) {
 					// если это первичная загрузка
 					console.log('initial load', this.sort(nodes, this.sortField, this.sortOrder))
@@ -45,12 +47,7 @@
 			},
 
 			markSelected:function(id){
-				var currentSelected = _(this.nodes).find({selected:true});
-
-				if (typeof currentSelected != 'undefined') {
-					currentSelected.selected = false;
-				}
-
+				this.clearSelection();
 				this.super(arguments);
 			}
 		})

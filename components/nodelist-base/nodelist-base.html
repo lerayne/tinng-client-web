@@ -24,11 +24,13 @@
 			observe:{
 				sortField:'sortSelf',
 				sortOrder:'sortSelf',
-				updates:'parseUpdates'
+				updates:'parseUpdates',
+				selectedIDs:'processSelected'
 			},
 
 			created:function(){
 				this.nodes = [];
+				this.selectedIDs = [];
 
 				tinng.funcs.bind(this, [
 					'processNode'
@@ -45,8 +47,6 @@
 			},
 
 			processNode:function(data){
-				// если у объекта нет id - присваеваем ему локальный клиентский id
-				if (!data.id) data.id = 'c'+(this.clientId++);
 
 				// находим индекс нужного элемента по id
 				var existingItemIndex = _(this.nodes).findIndex({id: data.id});
@@ -107,12 +107,44 @@
 				this.$.scroll.scrollIntoView(true)
 			},
 
-			markSelected:function(id){
-				var node = _(this.nodes).find({id:id});
+			prepareNode:function(node){
+				// если у объекта нет id - присваеваем ему локальный клиентский id
+				if (!node.id) node.id = 'client'+(this.clientId++);
 
-				if (typeof node != 'undefined') {
+				// making node selected on load
+				// todo - make selected node to be scrolled to on load
+				if (this.selectedIDs.indexOf(node.id) != -1) {
+					console.log(node.id, 'is selected');
 					node.selected = true;
 				}
+			},
+
+			markSelected:function(id){
+				this.selectedIDs.push(id);
+			},
+
+			clearSelection:function(){
+				this.selectedIDs = [];
+
+				_(this.nodes).each(function(node){
+					if (node.selected) {
+						node.selected = false;
+					}
+				})
+			},
+
+			processSelected:function(){
+				var that = this;
+
+				_(this.selectedIDs).each(function(id){
+					var node = _(that.nodes).find(function(node){
+						return node.id == id && !node.selected;
+					});
+
+					if (typeof node != 'undefined') {
+						node.selected = true;
+					}
+				})
 			}
 		})
 	</script>
