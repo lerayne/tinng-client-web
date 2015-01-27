@@ -68,3 +68,36 @@ body /deep/ .smalltext {
 body /deep/ .tinytext {
 	font-size: 70%;
 }
+
+body /deep/ core-toolbar::shadow .toolbar-tools {
+	padding:0;
+}
+
+@media not handheld {
+
+	/* toolbars, inside toolbar elements */
+	body /deep/ core-toolbar,
+	body /deep/ core-toolbar.core-narrow,
+	body /deep/ .core-narrow core-toolbar,
+	body /deep/ core-toolbar::shadow .toolbar-tools,
+	body /deep/ unit-posts::shadow .allowed-users {
+		height:48px
+	}
+
+	body /deep/ unit-posts::shadow .allowed-users block-user::shadow .avatar {
+		height:28px;
+	}
+
+	body /deep/ core-toolbar.core-narrow.medium-tall {
+		height:92px;
+	}
+
+	body /deep/ .main-block ::shadow core-toolbar > * {
+		margin: 0 4px;
+	}
+
+	body /deep/ tinng-header::shadow core-toolbar,
+	body /deep/ tinng-header::shadow core-toolbar::shadow .toolbar-tools {
+		height:38px;
+	}
+}

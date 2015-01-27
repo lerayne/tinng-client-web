@@ -36,8 +36,18 @@
 			polyfill-next-selector {content:'blockquote'}
 			::content blockquote {
 				background:#eee url(./images/quote.png) no-repeat 12px 12px;
-				margin:0;
+				margin:0 0 10px 0;
 				padding:10px 10px 10px 40px;
+			}
+
+			polyfill-next-selector {content:'blockquote p:first-child'}
+			::content blockquote p:first-child {
+				margin-top:0;
+			}
+
+			polyfill-next-selector {content:'blockquote p:last-child'}
+			::content blockquote p:last-child {
+				margin-bottom:0;
 			}
 
 			polyfill-next-selector {content:'blockquote cite'}

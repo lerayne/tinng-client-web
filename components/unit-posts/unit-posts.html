@@ -41,6 +41,7 @@
 			.allowed-users {
 				opacity: 1;
 				transition: opacity 0.18s ease-in;
+				height:56px;
 			}
 
 			.allowed-users[hidden] {
@@ -65,7 +66,7 @@
 				<span>{{topic.topic_name}}</span>
 
 
-				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users" style="height:56px">
+				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
 					<text-string class="block tinytext">unit.posts.privateDisclaimer</text-string>
 					<div flex horizontal layout center>
 						<template repeat="{{reader in topic.private}}">
