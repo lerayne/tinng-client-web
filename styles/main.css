@@ -69,9 +69,7 @@ body /deep/ .tinytext {
 	font-size: 70%;
 }
 
-body /deep/ core-toolbar::shadow .toolbar-tools {
-	padding:0;
-}
+
 
 @media not handheld {
 
@@ -84,12 +82,16 @@ body /deep/ core-toolbar::shadow .toolbar-tools {
 		height:48px
 	}
 
+	body /deep/ core-toolbar::shadow .toolbar-tools {
+		padding:0 4px;
+	}
+
 	body /deep/ unit-posts::shadow .allowed-users block-user::shadow .avatar {
 		height:28px;
 	}
 
 	body /deep/ core-toolbar.core-narrow.medium-tall {
-		height:92px;
+		height:96px;
 	}
 
 	body /deep/ .main-block ::shadow core-toolbar > * {
