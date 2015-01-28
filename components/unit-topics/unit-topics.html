@@ -71,9 +71,16 @@
 
 				<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
 
-					<text-string id="unitHeader" flex>unit.topics.unitName</text-string>
+				<text-string id="unitHeader" hidden?="{{ searchOn }}" flex>unit.topics.unitName</text-string>
 
-				<!-- sow only when used in sub-space -->
+				<div hidden?="{{ !searchOn }}" class="search" horizontal layout flex>
+					<input type="text">
+					<paper-icon-button icon="close" on-tap="{{ searchHide }}"></paper-icon-button>
+				</div>
+
+				<paper-icon-button icon="search" on-tap="{{ searchShow }}" hidden?="{{ searchOn }}"></paper-icon-button>
+
+				<!-- only when used in sub-space -->
 				<span id="controlsEmbedded" horizontal layout center>
 					<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
 					<paper-icon-button icon="highlight-remove" on-tap="{{ suspend }}"></paper-icon-button>
@@ -157,6 +164,14 @@
 			menuHide: function () {
 				this.menuVisible = false;
 				this.menuClass = 'menu-hide-ease';
+			},
+
+			searchShow:function(){
+				this.searchOn = true;
+			},
+
+			searchHide:function(){
+				this.searchOn = false;
 			}
 		});
 	</script>
