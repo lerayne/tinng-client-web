@@ -43,11 +43,8 @@
 					this.async(this.toBottom)
 				}
 
-				this.async(function(){
-					this.loaded = true;
-					this.loading = false;
-				}, null, 500)
-
+				this.loaded = true;
+				this.loading = false;
 			},
 
 			showLoading:function(){

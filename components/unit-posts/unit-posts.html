@@ -58,7 +58,7 @@
 		></core-signals>
 
 		<unit-posts-deco>
-			<core-toolbar class="core-narrow animate {{private ? 'medium-tall' : ''}}">
+			<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
 
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -67,7 +67,7 @@
 
 
 				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
-					<text-string class="block tinytext">unit.posts.privateDisclaimer</text-string>
+					<text-string hidden?="{{!private}}" class="block tinytext">unit.posts.privateDisclaimer</text-string>
 					<div flex horizontal layout center>
 						<template repeat="{{reader in topic.private}}">
 							<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
