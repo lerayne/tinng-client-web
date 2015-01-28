@@ -24,8 +24,7 @@
 			observe:{
 				sortField:'sortSelf',
 				sortOrder:'sortSelf',
-				updates:'parseUpdates',
-				selectedIDs:'processSelected'
+				updates:'parseUpdates'
 			},
 
 			created:function(){
@@ -114,13 +113,34 @@
 				// making node selected on load
 				// todo - make selected node to be scrolled to on load
 				if (this.selectedIDs.indexOf(node.id) != -1) {
-					console.log(node.id, 'is selected');
 					node.selected = true;
 				}
 			},
 
 			markSelected:function(id){
+
 				this.selectedIDs.push(id);
+
+				if (this.nodes.length){
+					var node = _(this.nodes).find({id:id});
+					if (typeof node != 'undefined'){
+						node.selected = true;
+					}
+				}
+			},
+
+			unmarkSelected:function(id){
+				var i = this.selectedIDs.indexOf(id);
+				if (i >= 0) {
+					this.selectedIDs.splice(i,1);
+				}
+
+				if (this.nodes.length){
+					var node = _(this.nodes).find({id:id});
+					if (typeof node != 'undefined' && node.selected){
+						node.selected = false;
+					}
+				}
 			},
 
 			clearSelection:function(){
@@ -129,20 +149,6 @@
 				_(this.nodes).each(function(node){
 					if (node.selected) {
 						node.selected = false;
-					}
-				})
-			},
-
-			processSelected:function(){
-				var that = this;
-
-				_(this.selectedIDs).each(function(id){
-					var node = _(that.nodes).find(function(node){
-						return node.id == id && !node.selected;
-					});
-
-					if (typeof node != 'undefined') {
-						node.selected = true;
 					}
 				})
 			}
