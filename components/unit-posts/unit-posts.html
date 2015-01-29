@@ -48,6 +48,15 @@
 				opacity:0;
 				display: flex !important;
 			}
+
+			.name-container {
+				padding:3px 6px;
+			}
+
+			.name-container[contenteditable] {
+				background-color: #fff;
+				color:#333;
+			}
 		</style>
 
 		<core-signals
@@ -63,7 +72,13 @@
 				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
-				<span>{{topic.topic_name}}</span>
+				<span flex>
+					<span class="name-container" contenteditable?="{{renameMode}}">{{topic.topic_name}}</span>
+				</span>
+
+				<paper-icon-button icon="create" hidden?="{{ !rights.canRename || renameMode  }}" on-tap="{{rename}}"></paper-icon-button>
+				<paper-icon-button icon="check" hidden?="{{ !renameMode }}" on-tap="{{exitRename}}"></paper-icon-button>
+				<paper-icon-button icon="cancel" hidden?="{{ !renameMode }}" on-tap="{{exitRename}}"></paper-icon-button>
 
 
 				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
@@ -103,12 +118,14 @@
 			},
 
 			computed:{
-				private:'topic.private && topic.private != "0"'
+				private:'topic.private && topic.private != "0"',
+
 			},
 
 			ready:function(){
 				this.updates = [];
 				this.topic = {};
+				this.rights = {canRename:false};
 
 				if (tinng.router.get('topic')) {
 					this.selectedTopic = _.parseInt(tinng.router.get('topic'));
@@ -139,6 +156,8 @@
 					},
 					parser:function(data){
 						this.topic = data;
+						// todo - set rights for topic here
+						this.rights.canRename = true;
 						this.fire('core-signal', {name:'topic-loaded', data:{id: data.id}});
 					}
 				}]);
@@ -148,6 +167,7 @@
 
 			clean:function(){
 				this.updates = [];
+				this.rights = {};
 				this.$.postsList.clean();
 
 				tinng.connection.unscribe(this, 'posts-main');
@@ -186,6 +206,14 @@
 				this.async(function(){this.fullframe = false;}, null, 250)
 
 				this.fire('reveal', {sender:this})
+			},
+
+			rename:function(){
+				this.renameMode = true;
+			},
+
+			exitRename:function(){
+				this.renameMode = false;
 			}
 		});
 	</script>
