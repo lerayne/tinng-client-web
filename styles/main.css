@@ -95,7 +95,7 @@ body /deep/ .tinytext {
 	}
 
 	body /deep/ .main-block ::shadow core-toolbar > * {
-		margin: 0 4px;
+		margin: 0 2px;
 	}
 
 	body /deep/ tinng-header::shadow core-toolbar,

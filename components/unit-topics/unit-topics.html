@@ -59,6 +59,10 @@
 				opacity: 1;
 			}
 
+			core-toolbar .search {
+				margin-right:0;
+			}
+
 
 		</style>
 
@@ -94,7 +98,7 @@
 							<div class="text-container" opaque?="{{searchOn}}" horizontal layout flex>
 								<input type="text">
 							</div>
-							<paper-icon-button icon="close" on-tap="{{ searchHide }}"></paper-icon-button>
+							<paper-icon-button style="margin-left:5px" icon="backspace" on-tap="{{ searchClearHide }}"></paper-icon-button>
 						</div>
 					</core-collapse>
 				</div>
@@ -104,7 +108,7 @@
 				<!-- only when used in sub-space -->
 				<span id="controlsEmbedded" horizontal layout center>
 					<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
-					<paper-icon-button icon="highlight-remove" on-tap="{{ suspend }}"></paper-icon-button>
+					<paper-icon-button icon="close" on-tap="{{ suspend }}"></paper-icon-button>
 				</span>
 			</core-toolbar>
 
@@ -192,7 +196,7 @@
 				this.searchToggle();
 			},
 
-			searchHide:function(){
+			searchClearHide:function(){
 				this.searchToggle();
 			},
 
