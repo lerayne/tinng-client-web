@@ -1,6 +1,7 @@
 <link rel="import" href="../unit-base/unit-base.html">
 <link rel="import" href="../nodelist-topics/nodelist-topics.html">
 <link rel="import" href="../../bower_components/core-animation/core-animation.html">
+<link rel="import" href="../../bower_components/core-collapse/core-collapse.html">
 
 <polymer-element name="unit-topics" extends="unit-base" vertical layout>
 	<template>
@@ -44,6 +45,20 @@
 				left:0;
 			}
 
+			#searchAnimator {
+				width: 100%;
+				transition: opacity 0.2s;
+				opacity: 1;
+			}
+
+			#searchAnimator.core-collapse-closed {
+				opacity: 0;
+			}
+
+			.text-container[opaque] {
+				opacity: 1;
+			}
+
 
 		</style>
 
@@ -71,14 +86,20 @@
 
 				<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
 
-				<text-string id="unitHeader" hidden?="{{ searchOn }}" flex>unit.topics.unitName</text-string>
+				<text-string hidden?="{{searchOn}}" id="unitHeader" flex>unit.topics.unitName</text-string>
 
-				<div hidden?="{{ !searchOn }}" class="search" horizontal layout flex>
-					<input type="text">
-					<paper-icon-button icon="close" on-tap="{{ searchHide }}"></paper-icon-button>
+				<div hidden hidden?="{{!searchOn}}" on-transitionend="{{ searchHideEnd }}" class="search" horizontal layout flex>
+					<core-collapse id="searchAnimator" horizontal duration="0.2" fixedSize="true">
+						<div horizontal layout style="width:100%">
+							<div class="text-container" opaque?="{{searchOn}}" horizontal layout flex>
+								<input type="text">
+							</div>
+							<paper-icon-button icon="close" on-tap="{{ searchHide }}"></paper-icon-button>
+						</div>
+					</core-collapse>
 				</div>
 
-				<paper-icon-button icon="search" on-tap="{{ searchShow }}" hidden?="{{ searchOn }}"></paper-icon-button>
+				<paper-icon-button icon="search" on-tap="{{ searchShow }}" hidden?="{{searchOn}}"></paper-icon-button>
 
 				<!-- only when used in sub-space -->
 				<span id="controlsEmbedded" horizontal layout center>
@@ -168,10 +189,21 @@
 
 			searchShow:function(){
 				this.searchOn = true;
+				this.searchToggle();
 			},
 
 			searchHide:function(){
-				this.searchOn = false;
+				this.searchToggle();
+			},
+
+			searchHideEnd:function(){
+				if (!this.$.searchAnimator.opened){
+					this.searchOn = false;
+				}
+			},
+
+			searchToggle:function(){
+				this.$.searchAnimator.toggle();
 			}
 		});
 	</script>
