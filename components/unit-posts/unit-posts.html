@@ -211,26 +211,15 @@
 		unlock:function(){
 			tinng.connection.query('service', null, {
 				action:'unlock_message',
-				id: this.topic.id
+				id: this.selectedTopic
 			})
-		},
-
-		lockCheck:function(callback){
-			return (function(response){
-				if (!response.locked) {
-					callback.call(this, response)
-				} else {
-					// todo - replace all alerts with non-blocking popups
-					alert('topic is locked')
-				}
-			}).bind(this);
 		},
 
 
 		checkAndLock:function(callback){
 			tinng.connection.query('service', callback.bind(this), {
 				action: 'check_n_lock',
-				id: this.topic.id
+				id: this.selectedTopic
 			});
 		},
 
@@ -255,7 +244,7 @@
 			tinng.connection.write({
 				action: 'update_message',
 				topic_name: this.$.topicName.innerText,
-				id: this.topic.id
+				id: this.selectedTopic
 			});
 		}
 	});
