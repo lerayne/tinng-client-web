@@ -10,6 +10,7 @@ window.textLocalized = {
 	"unit.posts.sendBtn": "ОК",
 	"unit.posts.modified":"изменено",
 	"unit.posts.privateDisclaimer":"Это тема с ограниченным доступом. Она доступна следующим пользователям:",
+	"unit.posts.loadMore":"Загрузить еще",
 
 	"dialog.login.header":"Войти",
 	"dialog.login.loginLabel":"Логин или e-mail",

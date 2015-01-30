@@ -7,9 +7,24 @@
 			#scroll {
 				padding: 15px 5px 1px 15px;
 			}
+
+			#loadMore {
+				margin-bottom:8px;
+				padding:2px 0;
+				cursor:pointer;
+				text-align: center;
+			}
+
+			#loadMore:hover {
+				background-color: #ddd;
+			}
 		</style>
 
 		<div id="scroll">
+			<div id="loadMore" hidden?="{{ !loadMore }}">
+				<text-string>unit.posts.loadMore</text-string>
+			</div>
+
 			<template repeat="{{ node in nodes }}">
 				<card-post model="{{ node }}"></card-post>
 			</template>
@@ -22,6 +37,12 @@
 
 			//properties
 			sortOrder:'asc',
+			headLoaded:false,
+
+			//polymer
+			computed:{
+				loadMore:'nodes.length && !headLoaded'
+			},
 
 			//other
 			parseUpdates:function(old, nodes){
@@ -30,6 +51,15 @@
 
 				if (firstLoad) {
 					// если это первичная загрузка
+
+					this.headLoaded = false;
+
+					console.log('nodes', this.topic, _(nodes).find({id:this.topic}))
+
+					if (typeof _(nodes).find({id:this.topic}) != 'undefined'){
+						console.log('topic head loaded');
+						this.headLoaded = true;
+					}
 
 					// если мы заполняем массив первый раз - нужно его отсортировать
 					this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
@@ -45,6 +75,17 @@
 
 				this.loaded = true;
 				this.loading = false;
+			},
+
+			processNode:function(data){
+				//console.log(data.id, this.topic);
+
+				if (data.id == this.topic){
+					console.log('topic head loaded')
+					this.headLoaded = true;
+				}
+
+				this.super(arguments);
 			},
 
 			showLoading:function(){

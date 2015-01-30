@@ -9,6 +9,7 @@ window.textDefault = {
 	"unit.posts.sampleName": "Topic's name",
 	"unit.posts.sendBtn": "Send",
 	"unit.posts.modified":"modified",
+	"unit.posts.loadMore":"Load more",
 
 	"dialog.login.header":"Sign-in",
 	"dialog.login.loginLabel":"Login or e-mail",
