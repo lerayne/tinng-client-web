@@ -3,218 +3,261 @@
 <link rel="import" href="../nodelist-posts/nodelist-posts.html">
 
 <polymer-element name="unit-posts" extends="unit-base" vertical layout>
-	<template>
-		<style>
-			:host {
+<template>
+	<style>
+		:host {
 
-			}
+		}
 
-			core-toolbar, core-toolbar::shadow .toolbar-tools {
-				height:56px;
-			}
+		core-toolbar, core-toolbar::shadow .toolbar-tools {
+			height: 56px;
+		}
 
-			.editor {
-				background-color: #fff;
-				padding: 20px;
-			}
+		.editor {
+			background-color: #fff;
+			padding: 20px;
+		}
 
-			textarea {
-				margin-right:20px;
-				font-size: 150%;
-				padding:5px;
-			}
+		textarea {
+			margin-right: 20px;
+			font-size: 150%;
+			padding: 5px;
+		}
 
-			.send {
-				width:100px
-			}
+		.send {
+			width: 100px
+		}
 
-			polyfill-next-selector {content:'block-user .name'}
-			block-user::shadow .name {
-				display:none;
-			}
+		polyfill-next-selector {
+			content: 'block-user .name'
+		}
 
-			polyfill-next-selector {content:'block-user .avatar'}
-			block-user::shadow .avatar {
-				height:30px;
-			}
+		block-user::shadow .name {
+			display: none;
+		}
 
-			.allowed-users {
-				opacity: 1;
-				transition: opacity 0.18s ease-in;
-				height:56px;
-			}
+		polyfill-next-selector {
+			content: 'block-user .avatar'
+		}
 
-			.allowed-users[hidden] {
-				opacity:0;
-				display: flex !important;
-			}
+		block-user::shadow .avatar {
+			height: 30px;
+		}
 
-			.name-container {
-				padding:3px 6px;
-			}
+		.allowed-users {
+			opacity: 1;
+			transition: opacity 0.18s ease-in;
+			height: 56px;
+		}
 
-			.name-container[contenteditable] {
-				background-color: #fff;
-				color:#333;
-			}
-		</style>
+		.allowed-users[hidden] {
+			opacity: 0;
+			display: flex !important;
+		}
+	</style>
 
-		<core-signals
+	<core-signals
 			on-core-signal-secondary-close="{{ meSingle }}"
 			on-core-signal-topic-select="{{ topicSelect }}"
 			on-core-signal-add-message="{{ addMessage }}"
 			on-core-signal-rescribe-all="{{ subscribe }}"
-		></core-signals>
+			></core-signals>
 
-		<unit-posts-deco>
-			<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
+	<unit-posts-deco>
+		<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
 
-				<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
-				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
+			<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
+			<!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
-				<span flex>
-					<span class="name-container" contenteditable?="{{renameMode}}">{{topic.topic_name}}</span>
-				</span>
+			<span flex>
+				<span id="topicName" class="name-container" contenteditable?="{{renameMode}}">{{topic.topic_name}}</span>
+			</span>
 
-				<paper-icon-button icon="create" hidden?="{{ !rights.canRename || renameMode  }}" on-tap="{{rename}}"></paper-icon-button>
-				<paper-icon-button icon="check" hidden?="{{ !renameMode }}" on-tap="{{exitRename}}"></paper-icon-button>
-				<paper-icon-button icon="cancel" hidden?="{{ !renameMode }}" on-tap="{{exitRename}}"></paper-icon-button>
+			<paper-icon-button icon="create" hidden?="{{ !rights.canRename || renameMode  }}" on-tap="{{ rename }}"></paper-icon-button>
+			<paper-icon-button icon="check-circle" hidden?="{{ !renameMode }}" on-tap="{{ saveName }}"></paper-icon-button>
+			<paper-icon-button icon="cancel" hidden?="{{ !renameMode }}" on-tap="{{ cancelRename }}"></paper-icon-button>
 
 
-				<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
-					<text-string hidden?="{{!private}}" class="block tinytext">unit.posts.privateDisclaimer</text-string>
-					<div flex horizontal layout center>
-						<template repeat="{{reader in topic.private}}">
-							<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
-						</template>
-					</div>
+			<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
+				<text-string hidden?="{{!private}}" class="block tinytext">unit.posts.privateDisclaimer</text-string>
+				<div flex horizontal layout center>
+					<template repeat="{{reader in topic.private}}">
+						<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
+					</template>
 				</div>
-
-			</core-toolbar>
-
-			<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
-
-			<div class="editor" horizontal layout>
-				<textarea id="messageInput" flex></textarea>
-				<paper-button self-center raised class="highlight send" on-tap="{{ addMessage }}">
-					<text-string>unit.posts.sendBtn</text-string>
-					<core-icon icon="send"></core-icon>
-				</paper-button>
 			</div>
-		</unit-posts-deco>
 
-	</template>
+		</core-toolbar>
 
-	<script>
-		Polymer({
+		<nodelist-posts id="postsList" updates="{{updates}}" class="content" flex></nodelist-posts>
 
-			//properties
-			fullframe: false,
-			selectedTopic:0,
+		<div class="editor" horizontal layout>
+			<textarea id="messageInput" flex></textarea>
+			<paper-button self-center raised class="highlight send" on-tap="{{ addMessage }}">
+				<text-string>unit.posts.sendBtn</text-string>
+				<core-icon icon="send"></core-icon>
+			</paper-button>
+		</div>
 
-			//polymer
-			observe:{
-				'selectedTopic':'subscribe'
-			},
+	</unit-posts-deco>
 
-			computed:{
-				private:'topic.private && topic.private != "0"',
+</template>
 
-			},
+<script>
+	Polymer({
 
-			ready:function(){
-				this.updates = [];
-				this.topic = {};
-				this.rights = {canRename:false};
+		//properties
+		fullframe: false,
+		selectedTopic: 0,
 
-				if (tinng.router.get('topic')) {
-					this.selectedTopic = _.parseInt(tinng.router.get('topic'));
-				}
-			},
+		//polymer
+		observe: {
+			'selectedTopic': 'subscribe'
+		},
 
-			//other
-			subscribe: function(){
-				this.clean();
+		computed: {
+			private: 'topic.private && topic.private != "0"',
 
-				tinng.connection.subscribe([{
-					subscriber: this,
-					feedName: 'posts-main',
-					feed:{
-						feed:'posts',
-						limit:50,
-						topic: this.selectedTopic
-					},
-					parser:function(data){
-						this.updates = data;
-					}
-				},{
-					subscriber:this,
-					feedName: 'topic-data-main',
-					feed:{
-						feed:'topic',
-						id: this.selectedTopic
-					},
-					parser:function(data){
-						this.topic = data;
-						// todo - set rights for topic here
-						this.rights.canRename = true;
-						this.fire('core-signal', {name:'topic-loaded', data:{id: data.id}});
-					}
-				}]);
+		},
 
-				this.$.postsList.showLoading();
-			},
+		ready: function () {
+			this.updates = [];
+			this.topic = {};
+			this.rights = {canRename: false};
 
-			clean:function(){
-				this.updates = [];
-				this.rights = {};
-				this.$.postsList.clean();
-
-				tinng.connection.unscribe(this, 'posts-main');
-				tinng.connection.unscribe(this, 'topic-data-main');
-			},
-
-			topicSelect:function(event, details){
-
-				this.loading = true;
-
-				this.selectedTopic = details.topic.id;
-			},
-
-			addMessage: function(event, message){
-				var message = this.$.messageInput.value;
-
-				if (!!this.selectedTopic && !message.match(/^\s*$/)) {
-
-					tinng.connection.write({
-						action:'add_post',
-						topic: this.selectedTopic,
-						message: message
-					});
-
-					this.$.messageInput.value = '';
-				}
-			},
-
-			//draft
-			meSingle:function(){
-				this.fullframe = true;
-			},
-
-			goBack:function(){
-
-				this.async(function(){this.fullframe = false;}, null, 250)
-
-				this.fire('reveal', {sender:this})
-			},
-
-			rename:function(){
-				this.renameMode = true;
-			},
-
-			exitRename:function(){
-				this.renameMode = false;
+			if (tinng.router.get('topic')) {
+				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
 			}
-		});
-	</script>
+		},
+
+		//other
+		subscribe: function () {
+			this.clean();
+
+			tinng.connection.subscribe([{
+				subscriber: this,
+				feedName: 'posts-main',
+				feed: {
+					feed: 'posts',
+					limit: 50,
+					topic: this.selectedTopic
+				},
+				parser: function (data) {
+					this.updates = data;
+				}
+			}, {
+				subscriber: this,
+				feedName: 'topic-data-main',
+				feed: {
+					feed: 'topic',
+					id: this.selectedTopic
+				},
+				parser: function (data) {
+					this.topic = data;
+					// todo - set rights for topic here
+					this.rights.canRename = true;
+					this.fire('core-signal', {name: 'topic-loaded', data: {id: data.id}});
+				}
+			}]);
+
+			this.$.postsList.showLoading();
+		},
+
+		clean: function () {
+			this.updates = [];
+			this.rights = {};
+			this.$.postsList.clean();
+
+			tinng.connection.unscribe(this, 'posts-main');
+			tinng.connection.unscribe(this, 'topic-data-main');
+		},
+
+		topicSelect: function (event, details) {
+
+			this.loading = true;
+
+			this.selectedTopic = details.topic.id;
+		},
+
+		addMessage: function (event, message) {
+			var message = this.$.messageInput.value;
+
+			if (!!this.selectedTopic && !message.match(/^\s*$/)) {
+
+				tinng.connection.write({
+					action: 'add_post',
+					topic: this.selectedTopic,
+					message: message
+				});
+
+				this.$.messageInput.value = '';
+			}
+		},
+
+		//draft
+		meSingle: function () {
+			this.fullframe = true;
+		},
+
+		goBack: function () {
+
+			this.async(function () {
+				this.fullframe = false;
+			}, null, 250);
+
+			this.fire('reveal', {sender: this})
+		},
+
+		unlock:function(){
+			tinng.connection.query('service', null, {
+				action:'unlock_message',
+				id: this.topic.id
+			})
+		},
+
+		lockCheck:function(callback){
+			return (function(response){
+				if (!response.locked) {
+					callback.call(this, response)
+				} else {
+					// todo - replace all alerts with non-blocking popups
+					alert('topic is locked')
+				}
+			}).bind(this);
+		},
+
+
+		checkAndLock:function(callback){
+			tinng.connection.query('service', callback.bind(this), {
+				action: 'check_n_lock',
+				id: this.topic.id
+			});
+		},
+
+		rename: function () {
+			this.checkAndLock(function(){
+				this.oldName = this.topic.topic_name;
+				this.renameMode = true;
+			});
+		},
+
+		cancelRename: function () {
+			this.unlock();
+			// todo - lurk mutation observer or wait for polymer to implement contenteditable feature
+			this.$.topicName.innerText = this.oldName;
+			this.renameMode = false;
+		},
+
+		saveName: function () {
+			this.unlock();
+			this.renameMode = false;
+
+			tinng.connection.write({
+				action: 'update_message',
+				topic_name: this.$.topicName.innerText,
+				id: this.topic.id
+			});
+		}
+	});
+</script>
 </polymer-element>

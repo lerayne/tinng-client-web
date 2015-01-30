@@ -176,15 +176,19 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 			crossDomain: true,
 			success: function(response){
 
-				if (response.debug) {
-					console.info('PHP backtrace:\n==============\n', response.debug)
+				if (typeof response != 'undefined' && response){
+					if (response.debug) {
+						console.info('PHP backtrace:\n==============\n', response.debug)
+					}
+
+					if (response.php_message){
+						console.warn('PHP Message:\n============\n', response.php_message)
+					}
 				}
 
-				if (response.php_message){
-					console.warn('PHP Message:\n============\n', response.php_message)
+				if (callback) {
+					callback(response);
 				}
-
-				callback(response.data);
 			},
 			error: function(a, b, c){
 				console.warn('XHR error:', a, b, c);
@@ -221,7 +225,8 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 	// Выполняется при удачном возвращении запроса
-	onResponse:function (data) {
+	onResponse:function (response) {
+		var data = response.data;
 
 		clearTimeout(this.connectionLossTO);
 
