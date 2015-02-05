@@ -10,6 +10,8 @@
 	"unit.posts.sendBtn": "Send",
 	"unit.posts.modified":"modified",
 	"unit.posts.loadMore":"Load more",
+	"unit.posts.edit":"Edit",
+	"unit.posts.delete":"Delete",
 
 	"dialog.login.header":"Sign-in",
 	"dialog.login.loginLabel":"Login or e-mail",

@@ -7,6 +7,7 @@
 	 on-reveal="{{showTopics}}"
 	 on-dialog="{{dialog}}"
 	 on-popup="{{popup}}"
+	 on-tap="{{hideOverlays}}"
 >
 	<template>
 
@@ -50,6 +51,7 @@
 		</style>
 
 		<page-main-deco>
+
 			<tinng-header>
 				<span>Tinng's name</span>
 				<span flex></span>
@@ -104,6 +106,10 @@
 				//todo - create alerting system
 				console.error(data.code)
 				alert(data.code)
+			},
+
+			hideOverlays:function(){
+				this.fire('core-signal', {name:'hide-overlays', data:this})
 			}
 		});
 	</script>

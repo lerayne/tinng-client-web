@@ -1,0 +1,92 @@
+<polymer-element name="tinng-dropmenu">
+	<template>
+		<style>
+			:host {
+				display:block;
+				position: relative;
+			}
+
+			.dropdown {
+				position: absolute;
+				background-color: #ffffff;
+			}
+
+			paper-icon-button {
+				color:#777;
+				padding: 0;
+			}
+
+			::content core-icon {
+				color:#777;
+				margin-right:5px;
+			}
+
+			::content paper-item {
+				color:#555;
+			}
+
+			::content paper-item:hover {
+				background-color: #eee;
+			}
+
+			paper-icon-button::shadow core-icon {
+				width:20px;
+				height:20px;
+			}
+
+			paper-icon-button {
+				border-radius: 100% 100% 0 0;
+			}
+
+			paper-icon-button[active] {
+				background-color: #eee;
+			}
+
+			:host(.right) paper-icon-button {
+				margin-left:5px;
+			}
+
+			:host(.right) .dropdown {
+				top:20px;
+				right:0;
+			}
+		</style>
+
+		<core-signals on-core-signal-hide-overlays="{{ hide }}"></core-signals>
+
+
+		<paper-icon-button active?="{{menuShown}}" icon="arrow-drop-down" on-tap="{{ toggle }}"></paper-icon-button>
+
+		<div class="dropdown" hidden?="{{ !menuShown }}">
+			<paper-shadow>
+				<content id="content"></content>
+			</paper-shadow>
+		</div>
+
+
+	</template>
+
+	<script>
+		Polymer({
+
+			menuShown:false,
+
+			attached:function(){
+				//console.log($(this).find('paper-item'))
+			},
+
+			toggle:function(e){
+				this.menuShown = !this.menuShown;
+
+				this.fire('core-signal', {name:'hide-overlays', data:this});
+				e.stopPropagation();
+			},
+
+			hide:function(e, sender){
+				if (sender != this){
+					this.menuShown = false;
+				}
+			}
+		});
+	</script>
+</polymer-element>

@@ -102,4 +102,10 @@ body /deep/ .tinytext {
 	body /deep/ tinng-header::shadow core-toolbar::shadow .toolbar-tools {
 		height:38px;
 	}
+
+	/* menu items */
+	body /deep/ paper-item::shadow .button-content {
+		padding:0.5em 1em 0.5em 0.7em;
+		font-size: 85%;
+	}
 }

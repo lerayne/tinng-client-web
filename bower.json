@@ -31,6 +31,7 @@
     "paper-icon-button": "Polymer/paper-icon-button#~0.5.4",
     "paper-dialog": "Polymer/paper-dialog#~0.5.4",
     "paper-input": "Polymer/paper-input#~0.5.4",
-    "core-collapse": "Polymer/core-collapse#~0.5.4"
+    "core-collapse": "Polymer/core-collapse#~0.5.4",
+    "paper-item": "Polymer/paper-item#~0.5.4"
   }
 }

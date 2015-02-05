@@ -75,10 +75,18 @@
 			.tags {
 				margin-top:10px;
 			}
+
+			.menu {
+				float:right;
+			}
 		</style>
 
 		<div class="info">
 			<content select="block-user"></content>
+
+			<span class="menu">
+				<content select=".menu"></content>
+			</span>
 
 			<span class="datetime" >
 				<span hidden?=[[!!model.modified]]>
@@ -89,6 +97,7 @@
 					<text-string>unit.posts.modified</text-string> <content select=".modified"></content>
 				</span>
 			</span>
+
 		</div>
 
 		<content select="#message"></content>

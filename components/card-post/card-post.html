@@ -1,3 +1,5 @@
+<link rel="import" href="../tinng-dropmenu/tinng-dropmenu.html">
+
 <polymer-element name="card-post" attributes="model" touch-action="pan-y">
 	<template>
 		<style>
@@ -8,6 +10,10 @@
 			blockquote footer {
 				display:none;
 			}
+
+			tinng-dropmenu {
+				margin-top:-3px;
+			}
 		</style>
 
 		<card-post-deco model="{{model}}">
@@ -15,6 +21,22 @@
 
 			<span class="created">{{model.created}}</span>
 			<span class="modified">{{model.modified}}</span>
+
+			<tinng-dropmenu class="menu right">
+				<template if="{{rights.canEdit}}">
+					<paper-item>
+						<core-icon icon="create"></core-icon>
+						<text-string>unit.posts.edit</text-string>
+					</paper-item>
+				</template>
+
+				<template if="{{rights.canDelete}}">
+					<paper-item>
+						<core-icon icon="delete"></core-icon>
+						<text-string>unit.posts.delete</text-string>
+					</paper-item>
+				</template>
+			</tinng-dropmenu>
 
 			<div id="message"></div>
 
@@ -37,17 +59,21 @@
 				selected:{value:false, reflect:true}
 			},
 
-			created:function(){
-				//this.model = {};
+			ready:function(){
+				this.rights = {
+					canEdit:true,
+					canDelete:true
+				}
 			},
 
 			observe:{
-				'model.message':'setMessage'
+				'model':'prepareModel'
 			},
 
 			//other
-			setMessage:function(old, value){
-				this.$.message.innerHTML = value;
+
+			prepareModel:function(old, model){
+				this.$.message.innerHTML = model.message;
 			}
 		});
 	</script>
