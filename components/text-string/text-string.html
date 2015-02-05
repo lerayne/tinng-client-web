@@ -9,10 +9,10 @@
 
 				var key = this.innerHTML;
 
-				if (textLocalized[key]) {
-					this.innerHTML = textLocalized[key];
-				} else if (textDefault[key]){
-					this.innerHTML = textDefault[key];
+				if (tinng.lang.textLocalized[key]) {
+					this.innerHTML = tinng.lang.textLocalized[key];
+				} else if (tinng.lang.textDefault[key]){
+					this.innerHTML = tinng.lang.textDefault[key];
 				}
 			}
 		})

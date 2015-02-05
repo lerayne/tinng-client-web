@@ -33,13 +33,13 @@
 			}
 		});
 
-		Promise.all(startupCalls).then(function(){
+		// when all pre-startup async calls resolved
+		Promise.all(tinng.service.startupCalls).then(function(){
 			console.log('all pre-startup async calls resolved')
 
+			// in Polymer you now can create new active elements as easy as this:
 			$('body').append($('<page-main>'));
 		})
-
-		// in Polymer you now can create new active elements as easy as this:
 	};
 
 

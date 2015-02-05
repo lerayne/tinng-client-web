@@ -157,7 +157,9 @@
 					// todo - set rights for topic here
 					// right now user.id is filled after topic load, so rename is unable on startup. THIS IS FINE!
 					// 'cause rigts should come from server, not be computed from existing data math
-					this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
+					if (tinng.user){
+						this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
+					}
 					this.fire('core-signal', {name: 'topic-loaded', data: {id: data.id}});
 				}
 			}]);
