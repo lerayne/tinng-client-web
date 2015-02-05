@@ -1,4 +1,4 @@
-window.textDefault = {
+{
 	"global.menu":"Menu",
 	"global.login":"Sign-in",
 
@@ -17,4 +17,4 @@ window.textDefault = {
 	"dialog.login.cancelButton":"Cancel",
 	"dialog.login.loginButton":"Log in",
 	"dialog.login.logoutButton":"Log out"
-};
+}

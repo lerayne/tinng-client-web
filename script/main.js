@@ -33,8 +33,13 @@
 			}
 		});
 
+		Promise.all(startupCalls).then(function(){
+			console.log('all pre-startup async calls resolved')
+
+			$('body').append($('<page-main>'));
+		})
+
 		// in Polymer you now can create new active elements as easy as this:
-		$('body').append($('<page-main>'));
 	};
 
 

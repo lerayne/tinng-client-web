@@ -1,4 +1,4 @@
-window.textLocalized = {
+{
 	"global.menu":"Меню",
 	"global.login":"Войти",
 
@@ -17,5 +17,5 @@ window.textLocalized = {
 	"dialog.login.passwordLabel":"Пароль",
 	"dialog.login.cancelButton":"Отмена",
 	"dialog.login.loginButton":"Вход",
-	"dialog.login.logoutButton":"Выход",
-};
+	"dialog.login.logoutButton":"Выход"
+}
