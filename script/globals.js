@@ -34,24 +34,25 @@ window.text = function(key){
 
 	var languages = [];
 
-	var getLanguage = function(lang){
+	var getLanguage = function(languages){
 
 		return new Promise(function(resolve){
 
+			var lang = languages.shift();
+
 			if (tinng.lang.languages[lang]) {
-				resolve(tinng.lang.languages[lang])
+				resolve(lang)
 			} else {
 				Promise.resolve($.getJSON('./i18n/'+lang+'.json')).then(function(json){
 
 					tinng.lang.languages[lang] = json;
-					tinng.lang.locale = lang;
-					resolve(json)
+					resolve(lang)
 
 				}, function(){
 					//if language not found
 					if (languages.length) {
 						//chain request next language
-						resolve(getLanguage(languages.shift()))
+						resolve(getLanguage(languages))
 					} else {
 						resolve({});
 					}
@@ -61,22 +62,23 @@ window.text = function(key){
 	};
 
 	// default language
-	var defaultLangRequest = getLanguage('en').then(function(lang){
-		tinng.lang.textDefault = tinng.lang.languages[tinng.lang.locale];
-
-		if (window.navigator && navigator.languages) {
-
-			languages = _(navigator.languages).clone();
-
-			var localLangRequest = getLanguage(languages.shift()).then(function(lang){
-				tinng.lang.textLocalized = tinng.lang.languages[tinng.lang.locale];
-			});
-			tinng.service.startupCalls.push(localLangRequest);
-		}
+	var defaultLangRequest = getLanguage(['en']).then(function(lang){
+		tinng.lang.textDefault = tinng.lang.languages[lang];
 	});
 	tinng.service.startupCalls.push(defaultLangRequest);
 
 	// language detection
+	if (window.navigator && navigator.languages) {
+
+		languages = _(navigator.languages).clone();
+
+		var localLangRequest = getLanguage(languages).then(function(lang){
+			tinng.lang.locale = lang;
+			tinng.lang.textLocalized = tinng.lang.languages[lang];
+		});
+		tinng.service.startupCalls.push(localLangRequest);
+	}
+
 
 
 })();
