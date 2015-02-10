@@ -1,5 +1,6 @@
 {
 	"excludes": {
 		"imports": ["config.html"]
-	}
+	},
+	"strip-excludes": false
 }
