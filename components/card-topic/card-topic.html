@@ -43,9 +43,6 @@
 			//other
 			selectTopic:function(){
 				this.fire('core-signal', {name:'topic-select', data: {topic:this.model, sender:this}});
-
-				//todo - raw way
-				tinng.router.note('topic', this.model.id);
 			}
 		});
 	</script>

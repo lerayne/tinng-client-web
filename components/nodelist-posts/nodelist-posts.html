@@ -21,7 +21,7 @@
 		</style>
 
 		<div id="scroll">
-			<div id="loadMore" hidden?="{{ !loadMore }}">
+			<div id="loadMore" hidden?="{{ !loadMoreBtn }}" on-tap="{{ loadMore }}">
 				<text-string>unit.posts.loadMore</text-string>
 			</div>
 
@@ -41,7 +41,7 @@
 
 			//polymer
 			computed:{
-				loadMore:'nodes.length && !headLoaded'
+				loadMoreBtn:'nodes.length && !headLoaded'
 			},
 
 			//other
@@ -91,6 +91,10 @@
 			showLoading:function(){
 				this.loaded = false;
 				this.loading = true;
+			},
+
+			loadMore:function(){
+				this.fire('load-more');
 			}
 		})
 	</script>

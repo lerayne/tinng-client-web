@@ -2,7 +2,7 @@
 <link rel="import" href="../card-post/card-post.html">
 <link rel="import" href="../nodelist-posts/nodelist-posts.html">
 
-<polymer-element name="unit-posts" extends="unit-base" vertical layout>
+<polymer-element name="unit-posts" extends="unit-base" vertical layout on-load-more="{{ loadMore }}">
 <template>
 	<style>
 		:host {
@@ -109,6 +109,8 @@
 		//properties
 		fullframe: false,
 		selectedTopic: 0,
+		postsPerSlice:50,
+		currentSliceTop: 0,
 
 		//polymer
 		observe: {
@@ -116,14 +118,11 @@
 		},
 
 		computed: {
-			private: 'topic.private && topic.private != "0"',
-
+			private: 'topic.private && topic.private != "0"'
 		},
 
 		ready: function () {
-			this.updates = [];
-			this.topic = {};
-			this.rights = {canRename: false};
+			this.initVars();
 
 			if (tinng.router.get('topic')) {
 				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
@@ -131,15 +130,35 @@
 		},
 
 		//other
+
+		initVars:function(){
+			this.updates = [];
+			this.topic = {};
+			this.rights = {canRename: false};
+			this.currentSliceTop = this.postsPerSlice;
+		},
+
+		clean: function () {
+			this.initVars();
+
+			this.$.postsList.clean();
+
+			tinng.connection.unscribe(this, 'posts-main');
+			tinng.connection.unscribe(this, 'topic-data-main');
+		},
+
 		subscribe: function () {
 			this.clean();
+
+			//todo - raw way
+			tinng.router.note('topic', this.selectedTopic);
 
 			tinng.connection.subscribe([{
 				subscriber: this,
 				feedName: 'posts-main',
 				feed: {
 					feed: 'posts',
-					limit: 50,
+					limit: this.currentSliceTop,
 					topic: this.selectedTopic
 				},
 				parser: function (data) {
@@ -167,13 +186,11 @@
 			this.$.postsList.showLoading();
 		},
 
-		clean: function () {
-			this.updates = [];
-			this.rights = {};
-			this.$.postsList.clean();
-
-			tinng.connection.unscribe(this, 'posts-main');
-			tinng.connection.unscribe(this, 'topic-data-main');
+		loadMore:function(){
+			tinng.connection.rescribe(this, 'posts-main', {
+				limit: this.currentSliceTop += this.postsPerSlice
+			});
+			tinng.router.note('start', this.currentSliceTop);
 		},
 
 		topicSelect: function (event, details) {
