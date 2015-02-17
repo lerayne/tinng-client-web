@@ -29,9 +29,14 @@ tinng.class.Router.prototype = {
 		location.hash = pairs.join('&');
 	},
 
+	// todo - make this func also accept a key-value object pairs
 	note:function(key, val){
 
-		this.params[key] = val;
+		if (val === '' || val === null || typeof val == 'undefined'){
+			delete this.params[key];
+		} else {
+			this.params[key] = val;
+		}
 		this.$push();
 	},
 

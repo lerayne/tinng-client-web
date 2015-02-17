@@ -142,6 +142,8 @@
 			this.initVars();
 
 			this.$.postsList.clean();
+			tinng.router.note('topic', null);
+			tinng.router.note('start', null);
 
 			tinng.connection.unscribe(this, 'posts-main');
 			tinng.connection.unscribe(this, 'topic-data-main');
