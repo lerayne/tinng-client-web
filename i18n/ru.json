@@ -13,6 +13,7 @@
 	"unit.posts.loadMore":"Загрузить еще",
 	"unit.posts.edit":"Изменить",
 	"unit.posts.delete":"Удалить",
+	"unit.posts.loading":"Загрузка...",
 
 	"dialog.login.header":"Войти",
 	"dialog.login.loginLabel":"Логин или e-mail",

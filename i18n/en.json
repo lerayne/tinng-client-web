@@ -12,6 +12,7 @@
 	"unit.posts.loadMore":"Load more",
 	"unit.posts.edit":"Edit",
 	"unit.posts.delete":"Delete",
+	"unit.posts.loading":"Loading...",
 
 	"dialog.login.header":"Sign-in",
 	"dialog.login.loginLabel":"Login or e-mail",

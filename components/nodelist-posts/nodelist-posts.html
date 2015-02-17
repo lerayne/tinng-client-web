@@ -6,23 +6,32 @@
 		<style>
 			#scroll {
 				padding: 15px 5px 1px 15px;
+				position: relative;
 			}
 
 			#loadMore {
 				margin-bottom:8px;
-				padding:2px 0;
-				cursor:pointer;
-				text-align: center;
 			}
 
-			#loadMore:hover {
+			#loadMore text-string {
+				text-align: center;
+				display: block;
+				padding:2px 0;
+			}
+
+			.loadMoreBtn {
+				cursor:pointer;
+			}
+
+			.loadMoreBtn:hover {
 				background-color: #ddd;
 			}
 		</style>
 
 		<div id="scroll">
-			<div id="loadMore" hidden?="{{ !loadMoreBtn }}" on-tap="{{ loadMore }}">
-				<text-string>unit.posts.loadMore</text-string>
+			<div id="loadMore" hidden?="{{ !loadMoreBtn }}">
+				<text-string class="loadMoreBtn" on-tap="{{ loadMore }}" hidden?="{{loading}}">unit.posts.loadMore</text-string>
+				<text-string hidden?="{{!loading}}">unit.posts.loading</text-string>
 			</div>
 
 			<template repeat="{{ node in nodes }}">
@@ -48,13 +57,21 @@
 			parseUpdates:function(old, nodes){
 
 				var firstLoad = !this.nodes.length;
+				var wasAtTop = this.isAtTop();
+
+				if (!firstLoad && wasAtTop) {
+					var topPost = $(this.$.scroll).children('card-post').eq(0);
+					var topOffset = topPost[0].offsetTop;
+
+					console.log(topPost, topOffset)
+				}
 
 				if (firstLoad) {
 					// если это первичная загрузка
 
 					this.headLoaded = false;
 
-					console.log('nodes', this.topic, _(nodes).find({id:this.topic}))
+					//console.log('nodes', this.topic, _(nodes).find({id:this.topic}))
 
 					if (typeof _(nodes).find({id:this.topic}) != 'undefined'){
 						console.log('topic head loaded');
@@ -71,6 +88,13 @@
 
 				if (firstLoad || this.isAtBottom()) {
 					this.async(this.toBottom)
+				}
+
+				if (!firstLoad && wasAtTop) {
+					this.async(function(){
+						topPost[0].scrollIntoView();
+						this.scrollTop = this.scrollTop - topOffset;
+					})
 				}
 
 				this.loaded = true;
@@ -95,6 +119,7 @@
 
 			loadMore:function(){
 				this.fire('load-more');
+				this.showLoading();
 			}
 		})
 	</script>
