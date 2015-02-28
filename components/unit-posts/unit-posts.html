@@ -189,6 +189,7 @@
 		},
 
 		loadMore:function(){
+			// todo - bug: sometimes loads wrong amount
 			tinng.connection.rescribe(this, 'posts-main', {
 				limit: this.currentSliceTop += this.postsPerSlice
 			});
