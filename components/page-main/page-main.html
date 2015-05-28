@@ -91,7 +91,7 @@
 
 			hideTopics:function(){
 				this.col1class = 'hidden';
-				this.fire('core-signal', {name:'unit-topics', data:{command:'suspend'}})
+				this.fire('iron-signal', {name:'unit-topics', data:{command:'suspend'}})
 			},
 
 			showTopics:function(){
@@ -109,7 +109,7 @@
 			},
 
 			hideOverlays:function(){
-				this.fire('core-signal', {name:'hide-overlays', data:this})
+				this.fire('iron-signal', {name:'hide-overlays', data:this})
 			}
 		});
 	</script>

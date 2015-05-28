@@ -9,7 +9,7 @@
 
 		}
 
-		core-toolbar, core-toolbar::shadow .toolbar-tools {
+		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
 			height: 56px;
 		}
 
@@ -56,15 +56,15 @@
 		}
 	</style>
 
-	<core-signals
-			on-core-signal-secondary-close="{{ meSingle }}"
-			on-core-signal-topic-select="{{ topicSelect }}"
-			on-core-signal-add-message="{{ addMessage }}"
-			on-core-signal-rescribe-all="{{ subscribe }}"
-			></core-signals>
+	<iron-signals
+			on-iron-signal-secondary-close="{{ meSingle }}"
+			on-iron-signal-topic-select="{{ topicSelect }}"
+			on-iron-signal-add-message="{{ addMessage }}"
+			on-iron-signal-rescribe-all="{{ subscribe }}"
+			></iron-signals>
 
 	<unit-posts-deco>
-		<core-toolbar class="core-narrow {{private ? 'medium-tall' : ''}}">
+		<paper-toolbar class="paper-narrow {{private ? 'medium-tall' : ''}}">
 
 			<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
 			<!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 
-		</core-toolbar>
+		</paper-toolbar>
 
 		<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content" flex></nodelist-posts>
 
@@ -95,7 +95,7 @@
 			<textarea id="messageInput" flex></textarea>
 			<paper-button self-center raised class="highlight send" on-tap="{{ addMessage }}">
 				<text-string>unit.posts.sendBtn</text-string>
-				<core-icon icon="send"></core-icon>
+				<iron-icon icon="send"></iron-icon>
 			</paper-button>
 		</div>
 
@@ -181,7 +181,7 @@
 					if (tinng.user){
 						this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
 					}
-					this.fire('core-signal', {name: 'topic-loaded', data: {id: data.id}});
+					this.fire('iron-signal', {name: 'topic-loaded', data: {id: data.id}});
 				}
 			}]);
 

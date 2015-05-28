@@ -16,7 +16,7 @@
 				padding: 0;
 			}
 
-			::content core-icon {
+			::content iron-icon {
 				color:#777;
 				margin-right:5px;
 			}
@@ -29,7 +29,7 @@
 				background-color: #eee;
 			}
 
-			paper-icon-button::shadow core-icon {
+			paper-icon-button::shadow iron-icon {
 				width:20px;
 				height:20px;
 			}
@@ -52,7 +52,7 @@
 			}
 		</style>
 
-		<core-signals on-core-signal-hide-overlays="{{ hide }}"></core-signals>
+		<iron-signals on-iron-signal-hide-overlays="{{ hide }}"></iron-signals>
 
 
 		<paper-icon-button active?="{{menuShown}}" icon="arrow-drop-down" on-tap="{{ toggle }}"></paper-icon-button>
@@ -78,7 +78,7 @@
 			toggle:function(e){
 				this.menuShown = !this.menuShown;
 
-				this.fire('core-signal', {name:'hide-overlays', data:this});
+				this.fire('iron-signal', {name:'hide-overlays', data:this});
 				e.stopPropagation();
 			},
 

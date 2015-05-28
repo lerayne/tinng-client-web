@@ -25,7 +25,7 @@
 			<paper-button on-tap="{{dialogLogin}}"><text-string>global.login</text-string></paper-button>
 		</div>
 
-		<paper-dialog transition="core-transition-top" id="dialogLogin" heading="{{text('dialog.login.header')}}">
+		<paper-dialog transition="iron-transition-top" id="dialogLogin" heading="{{text('dialog.login.header')}}">
 			<paper-input-decorator label="{{text('dialog.login.loginLabel')}}" floatingLabel>
 				<input type="text" tabindex="1" id="inputLogin">
 			</paper-input-decorator>
@@ -115,7 +115,7 @@
 							tinng.funcs.setCookie({name:'login', value:loginData.login, expires: expireDate});
 							tinng.funcs.setCookie({name:'password', value:this.$.inputPassword.value, expires: expireDate});
 
-							this.fire('core-signal', {name:'rescribe-all'});
+							this.fire('iron-signal', {name:'rescribe-all'});
 						}
 					}
 				}
@@ -143,7 +143,7 @@
 				tinng.funcs.deleteCookie('login');
 				tinng.funcs.deleteCookie('password');
 
-				this.fire('core-signal', {name:'rescribe-all'});
+				this.fire('iron-signal', {name:'rescribe-all'});
 
 				//location.reload();
 			}
