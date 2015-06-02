@@ -1,71 +1,88 @@
+<link rel="import" href="../tinng-header/tinng-header.html">
+
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
 <link rel="import" href="../header-login-panel/header-login-panel.html">
 
-<polymer-element name="page-main" class="tinng-page" vertical layout flex
-	 on-suspend="{{hideTopics}}"
-	 on-reveal="{{showTopics}}"
-	 on-dialog="{{dialog}}"
-	 on-popup="{{popup}}"
-	 on-tap="{{hideOverlays}}"
->
+
+<dom-module id="page-main">
+	<style>
+		:host {
+			background-color: #f5f5f5;
+		}
+
+		.unit::shadow .content {
+			background-color: #f1f1f1;
+			border-right:1px solid #e5e5e5;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+
+		.column {
+			transition:width 0.5s;
+			/* http://matthewlein.com/ceaser/ easeInOutCubic */
+			transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000) !important;
+			overflow-x:hidden;
+		}
+
+		.column.hidden {
+			width:0 !important;
+		}
+
+		.main-block {
+			min-width: 1000px;
+			max-width: 1260px;
+			width: 90%;
+		}
+
+		.overlay {
+			position: fixed;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+			display:none;
+		}
+
+		.layout {
+			@apply(--layout);
+		}
+
+		.vertical {
+			@apply(--layout-vertical);
+		}
+
+		.flex {
+			@apply(--layout-flex);
+		}
+
+		.horizontal {
+			@apply(--layout-horizontal);
+		}
+
+		.self-center {
+			@apply(--layout-self-center);
+		}
+	</style>
+
 	<template>
-
-		<style>
-			:host {
-				background-color: #f5f5f5;
-			}
-
-			.unit::shadow .content {
-				background-color: #f1f1f1;
-				border-right:1px solid #e5e5e5;
-				overflow-x: hidden;
-				overflow-y: scroll;
-			}
-
-			.column {
-				transition:width 0.5s;
-				/* http://matthewlein.com/ceaser/ easeInOutCubic */
-				transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000) !important;
-				overflow-x:hidden;
-			}
-
-			.column.hidden {
-				width:0 !important;
-			}
-
-			.main-block {
-				min-width: 1000px;
-				max-width: 1260px;
-				width: 90%;
-			}
-
-			.overlay {
-				position: fixed;
-				top:0;
-				left:0;
-				width:100%;
-				height:100%;
-				display:none;
-			}
-		</style>
 
 		<page-main-deco>
 
 			<tinng-header>
 				<span>Tinng's name</span>
-				<span flex></span>
+				<span class="flex"></span>
 				<header-login-panel></header-login-panel>
 			</tinng-header>
 
-			<div class="main-block" horizontal layout self-center flex>
+			<div class="main-block horizontal layout self-center flex">
 
-				<div class="column {{ col1class }}" id="col1" vertical layout style="width:40%">
-					<unit-topics class="unit" id="unit-topics" flex></unit-topics>
+				<div class="column vertical layout" style="width:40%">
+					<unit-topics class="unit flex" id="unit-topics"></unit-topics>
 				</div>
 
-				<div class="column" vertical layout flex>
-					<unit-posts class="unit" id="unit-posts" flex></unit-posts>
+				<div class="column vertical layout flex">
+					<unit-posts class="unit flex" id="unit-posts"></unit-posts>
 				</div>
 
 				<div class="column"></div>
@@ -81,36 +98,48 @@
 
 	</template>
 
-	<script>
-		Polymer({
+</dom-module>
 
-			text: text,
+<script>
+	Polymer({
 
-			//draft
-			col1class: '',
+		is:"page-main",
 
-			hideTopics:function(){
-				this.col1class = 'hidden';
-				this.fire('iron-signal', {name:'unit-topics', data:{command:'suspend'}})
-			},
+		eventDelegates:{
+			'suspend':"hideTopics",
+			'reveal':"showTopics",
+			'dialog':"dialog",
+			'popup':"popup",
+			'tap':"hideOverlays"
+		},
 
-			showTopics:function(){
-				this.col1class = '';
-			},
+		hostAttributes:{
+			class:"tinng-page vertical layout flex"
+		},
 
-			dialog:function(event, name){
-				this.$['dialog-'+name].toggle();
-			},
+		text: text,
 
-			popup:function(event, data){
-				//todo - create alerting system
-				console.error(data.code)
-				alert(data.code)
-			},
+		hideTopics:function(){
+			this.col1class = 'hidden';
+			this.fire('iron-signal', {name:'unit-topics', data:{command:'suspend'}})
+		},
 
-			hideOverlays:function(){
-				this.fire('iron-signal', {name:'hide-overlays', data:this})
-			}
-		});
-	</script>
-</polymer-element>
+		showTopics:function(){
+			this.col1class = '';
+		},
+
+		dialog:function(event, name){
+			this.$['dialog-'+name].toggle();
+		},
+
+		popup:function(event, data){
+			//todo - create alerting system
+			console.warn(data.code);
+			alert(data.code);
+		},
+
+		hideOverlays:function(){
+			this.fire('iron-signal', {name:'hide-overlays', data:this})
+		}
+	});
+</script>
