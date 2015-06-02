@@ -22,7 +22,9 @@ window.tinng = {
 
 	service:{
 		startupCalls:[]
-	}
+	},
+
+	cfg:{}
 };
 
 // get localized string or english or just key if both absent

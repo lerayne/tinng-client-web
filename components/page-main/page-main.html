@@ -1,8 +1,8 @@
-<link rel="import" href="../tinng-header/tinng-header.html">
+<!--<link rel="import" href="../tinng-header/tinng-header.html">
 
 <link rel="import" href="../unit-topics/unit-topics.html">
 <link rel="import" href="../unit-posts/unit-posts.html">
-<link rel="import" href="../header-login-panel/header-login-panel.html">
+<link rel="import" href="../header-login-panel/header-login-panel.html">-->
 
 
 <dom-module id="page-main">
@@ -67,7 +67,9 @@
 
 	<template>
 
-		<page-main-deco>
+		Test
+
+		<!--<page-main-deco>
 
 			<tinng-header>
 				<span>Tinng's name</span>
@@ -94,7 +96,7 @@
 			<paper-dialog id="dialog-register" heading="Register">
 				Register
 			</paper-dialog>
-		</page-main-deco>
+		</page-main-deco>-->
 
 	</template>
 
@@ -114,7 +116,10 @@
 		},
 
 		hostAttributes:{
-			class:"tinng-page vertical layout flex"
+		},
+
+		ready:function(){
+			Polymer.dom(this).classList.add("tinng-page", "vertical", "layout",  "flex");
 		},
 
 		text: text,
