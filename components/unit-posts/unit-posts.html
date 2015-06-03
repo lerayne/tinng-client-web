@@ -112,24 +112,38 @@
 	Polymer({
 		is:'unit-posts',
 
-		//properties
-		fullframe: false,
-		selectedTopic: 0,
-		postsPerSlice:50,
-		currentSliceTop: 0,
-
 		//polymer
 		properties:{
 			selectedTopic:{
-				observer:'subscribe'
+				type: Number,
+				value: 0,
+				observer: 'subscribe'
 			},
 
 			private:{
-				type:Boolean,
-				value:false,
-				computed:'isTopicPrivate(topic.private)'
+				type: Boolean,
+				value: false,
+				computed: 'isTopicPrivate(topic.private)'
 			}
 		},
+
+
+		ready: function () {
+			Polymer.dom(this).classList.add('vertical', 'layout');
+
+			this.fullframe = false;
+			this.postsPerSlice = 50;
+			this.currentSliceTop = 0;
+			this.renameMode = false;
+
+			this.initVars();
+
+			if (tinng.router.get('topic')) {
+				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
+			}
+		},
+
+		//other
 
 		isTopicPrivate:function(privat){
 			return typeof privat != 'undefined' && !!privat && privat != "0"
@@ -143,19 +157,6 @@
 			return haveRight && !allreadyRenaming;
 		},
 
-
-		ready: function () {
-			Polymer.dom(this).classList.add('vertical', 'layout');
-
-			this.initVars();
-
-			if (tinng.router.get('topic')) {
-				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
-			}
-		},
-
-		//other
-
 		initVars:function(){
 			this.updates = [];
 			this.topic = {};
@@ -166,7 +167,7 @@
 		clean: function () {
 			this.initVars();
 
-			this.$.postsList.clean();
+			//this.$.postsList.clean();
 			tinng.router.note('topic', null);
 			tinng.router.note('start', null);
 
@@ -210,7 +211,7 @@
 				}
 			}]);
 
-			this.$.postsList.showLoading();
+			//this.$.postsList.showLoading();
 		},
 
 		loadMore:function(){

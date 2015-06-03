@@ -25,8 +25,9 @@
 			overflow-x:hidden;
 		}
 
-		.column.hidden {
+		.column[hidden] {
 			width:0 !important;
+			display: flex !important;
 		}
 
 		.main-block {
@@ -57,7 +58,7 @@
 
 			<div class="main-block horizontal layout self-center flex">
 
-				<div class="column vertical layout" hidden$="topicsHidden" style="width:40%">
+				<div class="column vertical layout" hidden$="[[topicsHidden]]" style="width:40%">
 					<unit-topics class="unit flex" id="unit-topics"></unit-topics>
 				</div>
 
@@ -94,13 +95,16 @@
 			'tap':"hideOverlays"
 		},
 
-		ready:function(){
-			Polymer.dom(this).classList.add("tinng-page", "vertical", "layout",  "flex");
+		created:function(){
+
 		},
 
-		text: text,
+		ready:function(){
+			Polymer.dom(this).classList.add("tinng-page", "vertical", "layout",  "flex");
 
-		topicsHidden:false,
+			this.topicsHidden = false;
+			this.text = text;
+		},
 
 		hideTopics:function(){
 			this.topicsHidden = true;
@@ -109,6 +113,7 @@
 
 		showTopics:function(){
 			this.topicsHidden = false;
+			this.fire('iron-signal', {name:'unit-topics', data:{command:'restore'}})
 		},
 
 		dialog:function(event, name){
