@@ -1,84 +1,87 @@
-<link rel="import" href="../unit-base/unit-base.html">
-<link rel="import" href="../nodelist-topics/nodelist-topics.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 
-<polymer-element name="unit-topics" extends="unit-base" vertical layout>
+<link rel="import" href="../unit-base/unit-base.html">
+<!--<link rel="import" href="../nodelist-topics/nodelist-topics.html">-->
+
+<dom-module id="unit-topics">
+
+	<link rel="import" type="css" href="../unit-base/unit-base.css">
+
+	<style>
+		:host {
+			min-width: 350px;
+			overflow: hidden;
+		}
+
+		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
+			height: 56px;
+		}
+
+		paper-toolbar.medium-tall {
+			height: 112px;
+		}
+
+		#menu {
+			width: 250px;
+			min-height: 200px;
+			position: absolute;
+			top: 0;
+			left: -260px;
+			z-index: 100;
+			transition:left 0.3s;
+			transition-timing-function:ease;
+		}
+
+		.menu-show-ease {
+			/* http://matthewlein.com/ceaser/ easeOutCirc */
+			transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000) !important;
+		}
+
+		.menu-hide-ease {
+			/* http://matthewlein.com/ceaser/ easeInCirc */
+			transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
+		}
+
+		#menu.visible {
+			left:0;
+		}
+
+		#searchAnimator {
+			width: 100%;
+			transition: opacity 0.2s;
+			opacity: 1;
+		}
+
+		#searchAnimator.iron-collapse-closed {
+			opacity: 0;
+		}
+
+		.text-container[opaque] {
+			opacity: 1;
+		}
+
+		paper-toolbar .search {
+			margin-right:0;
+		}
+
+
+	</style>
+
 	<template>
-		<style>
-			:host {
-				min-width: 350px;
-				overflow: hidden;
-				position: relative;
-			}
-
-			paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-				height: 56px;
-			}
-
-			paper-toolbar.medium-tall {
-				height: 112px;
-			}
-
-			#menu {
-				width: 250px;
-				min-height: 200px;
-				position: absolute;
-				top: 0;
-				left: -260px;
-				z-index: 100;
-				transition:left 0.3s;
-				transition-timing-function:ease;
-			}
-
-			.menu-show-ease {
-				/* http://matthewlein.com/ceaser/ easeOutCirc */
-				transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000) !important;
-			}
-
-			.menu-hide-ease {
-				/* http://matthewlein.com/ceaser/ easeInCirc */
-				transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
-			}
-
-			#menu.visible {
-				left:0;
-			}
-
-			#searchAnimator {
-				width: 100%;
-				transition: opacity 0.2s;
-				opacity: 1;
-			}
-
-			#searchAnimator.iron-collapse-closed {
-				opacity: 0;
-			}
-
-			.text-container[opaque] {
-				opacity: 1;
-			}
-
-			paper-toolbar .search {
-				margin-right:0;
-			}
-
-
-		</style>
 
 		<iron-signals
-			on-iron-signal-unit-topics="{{ parseSignal }}"
-			on-iron-signal-topic-loaded="{{ onTopicLoaded }}"
-			on-iron-signal-rescribe-all="{{ subscribe }}"
+			on-iron-signal-unit-topics="parseSignal"
+			on-iron-signal-topic-loaded="onTopicLoaded"
+			on-iron-signal-rescribe-all="subscribe"
 		></iron-signals>
 
 		<unit-topics-deco>
 
-			<div id="menu" class="{{menuVisible ? 'visible' : ''}} {{ menuClass }}">
+			<div id="menu" class="[[ getMenuClass(menuVisible, menuClass) ]]">
 				<paper-shadow z="1">
 					<paper-toolbar>
-						<paper-icon-button icon="chevron-left" on-tap="{{ menuHide }}"></paper-icon-button>
-						<text-string flex>global.menu</text-string>
+						<paper-icon-button icon="chevron-left" on-tap="menuHide"></paper-icon-button>
+						<text-string class="flex">global.menu</text-string>
 					</paper-toolbar>
 					<div class="menu-body" style="min-height: 200px">
 
@@ -88,127 +91,139 @@
 
 			<paper-toolbar>
 
-				<paper-icon-button icon="menu" on-click="{{ menuShow }}"></paper-icon-button>
+				<paper-icon-button icon="menu" on-click="menuShow"></paper-icon-button>
 
-				<text-string hidden?="{{searchOn}}" id="unitHeader" flex>unit.topics.unitName</text-string>
+				<text-string hidden$="{{searchOn}}" id="unitHeader" class="flex">unit.topics.unitName</text-string>
 
-				<div hidden hidden?="{{!searchOn}}" on-transitionend="{{ searchHideEnd }}" class="search" horizontal layout flex>
-					<iron-collapse id="searchAnimator" horizontal duration="0.2" fixedSize="true">
-						<div horizontal layout style="width:100%">
-							<div class="text-container" opaque?="{{searchOn}}" horizontal layout flex>
+				<div hidden hidden$="{{!searchOn}}" on-transitionend="searchHideEnd" class="search horizontal layout flex">
+					<iron-collapse id="searchAnimator" class="horizontal" horizontal duration="0.2" fixedSize="true">
+						<div class="horizontal layout" style="width:100%">
+							<div class="text-container horizontal layout flex" opaque$="{{searchOn}}" >
 								<input type="text">
 							</div>
-							<paper-icon-button style="margin-left:5px" icon="backspace" on-tap="{{ searchClearHide }}"></paper-icon-button>
+							<paper-icon-button style="margin-left:5px" icon="backspace" on-tap="searchClearHide"></paper-icon-button>
 						</div>
 					</iron-collapse>
 				</div>
 
-				<paper-icon-button icon="search" on-tap="{{ searchShow }}" hidden?="{{searchOn}}"></paper-icon-button>
+				<paper-icon-button icon="search" on-tap="searchShow" hidden$="{{searchOn}}"></paper-icon-button>
 
 				<!-- only when used in sub-space -->
-				<span id="controlsEmbedded" horizontal layout center>
+				<span id="controlsEmbedded" class="horizontal layout center">
 					<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>
-					<paper-icon-button icon="close" on-tap="{{ suspend }}"></paper-icon-button>
+					<paper-icon-button icon="close" on-tap="suspend"></paper-icon-button>
 				</span>
 			</paper-toolbar>
 
-			<nodelist-topics id="topicsList" updates="{{updates}}" class="content" flex></nodelist-topics>
+			<nodelist-topics id="topicsList" updates="{{updates}}" class="content flex"></nodelist-topics>
 
-			<paper-fab icon="note-add" on-tap="{{}}"></paper-fab>
+			<paper-fab icon="note-add"></paper-fab>
 
 		</unit-topics-deco>
 
 	</template>
 
-	<script>
-		Polymer({
-			// properties
+</dom-module>
 
-			text: text,
-			menuVisible:false,
+<script>
+	Polymer({
+		is:'unit-topics',
 
-			// polymer
-
-
-			ready:function(){
-				this.updates = [];
-				this.subscribe();
-			},
+		getMenuClass:function(menuVisible, menuClass){
+			return (menuVisible ? 'visible ' : '') + menuClass;
+		},
 
 
-			// other
+		// properties
 
-			subscribe: function() {
-
-				this.clean();
-
-				tinng.connection.subscribe({
-					subscriber: this,
-					feedName: 'topics-main',
-					feed: {
-						feed: 'topics'
-					},
-					parser: function(data) {
-						this.updates = data;
-					}
-				});
-			},
-
-			clean:function(){
-				this.updates = [];
-				this.$.topicsList.clean();
-
-				tinng.connection.unscribe(this, 'topics-main');
-			},
+		text: text,
+		menuVisible:false,
 
 
-			// drafts
+		// polymer
 
-			onTopicLoaded:function(event, data, sender){
+		behaviors:[UnitBehavior],
 
-				this.$.topicsList.markSelected(data.id);
-			},
+		ready:function(){
+			Polymer.dom(this).classList.add("vertical", "layout");
 
-			suspend: function () {
-				this.fire('suspend', {sender: this});
-				this.fire('iron-signal', {name: 'secondary-close'})
-			},
+			this.updates = [];
+			this.subscribe();
+		},
 
-			parseSignal: function (event, data) {
-				//console.log(data);
-				if (data.command == 'suspend') {
-					console.info('SUSPEND!')
+
+		// other
+
+		subscribe: function() {
+
+			this.clean();
+
+			tinng.connection.subscribe({
+				subscriber: this,
+				feedName: 'topics-main',
+				feed: {
+					feed: 'topics'
+				},
+				parser: function(data) {
+					this.updates = data;
 				}
-			},
+			});
+		},
 
-			menuShow: function () {
-				this.menuVisible = true;
-				this.menuClass = 'menu-show-ease';
-			},
+		clean:function(){
+			this.updates = [];
+			//this.$.topicsList.clean();
 
-			menuHide: function () {
-				this.menuVisible = false;
-				this.menuClass = 'menu-hide-ease';
-			},
+			tinng.connection.unscribe(this, 'topics-main');
+		},
 
-			searchShow:function(){
-				this.searchOn = true;
-				this.searchToggle();
-			},
 
-			searchClearHide:function(){
-				this.searchToggle();
-			},
+		// drafts
 
-			searchHideEnd:function(){
-				if (!this.$.searchAnimator.opened){
-					this.searchOn = false;
-				}
-			},
+		onTopicLoaded:function(event, data, sender){
 
-			searchToggle:function(){
-				this.$.searchAnimator.toggle();
+			this.$.topicsList.markSelected(data.id);
+		},
+
+		suspend: function () {
+			this.fire('suspend', {sender: this});
+			this.fire('iron-signal', {name: 'secondary-close'})
+		},
+
+		parseSignal: function (event, data) {
+			//console.log(data);
+			if (data.command == 'suspend') {
+				console.info('SUSPEND!')
 			}
-		});
-	</script>
-</polymer-element>
+		},
+
+		menuShow: function () {
+			this.menuVisible = true;
+			this.menuClass = 'menu-show-ease';
+		},
+
+		menuHide: function () {
+			this.menuVisible = false;
+			this.menuClass = 'menu-hide-ease';
+		},
+
+		searchShow:function(){
+			this.searchOn = true;
+			this.searchToggle();
+		},
+
+		searchClearHide:function(){
+			this.searchToggle();
+		},
+
+		searchHideEnd:function(){
+			if (!this.$.searchAnimator.opened){
+				this.searchOn = false;
+			}
+		},
+
+		searchToggle:function(){
+			this.$.searchAnimator.toggle();
+		}
+	});
+</script>

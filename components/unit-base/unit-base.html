@@ -3,21 +3,10 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
-<polymer-element name="unit-base">
-	<template>
-		<style>
-			:host {
-				position: relative;
-			}
-		</style>
-
-	</template>
-
-	<script>
-		Polymer({
-			ready: function(){
-				tinng.units.push(this);
-			}
-		});
-	</script>
-</polymer-element>
+<script>
+	UnitBehavior = {
+		ready: function(){
+			tinng.units.push(this);
+		}
+	};
+</script>

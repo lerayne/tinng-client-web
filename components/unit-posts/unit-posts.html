@@ -1,9 +1,11 @@
 <link rel="import" href="../unit-base/unit-base.html">
-<link rel="import" href="../card-post/card-post.html">
-<link rel="import" href="../nodelist-posts/nodelist-posts.html">
+<!--<link rel="import" href="../card-post/card-post.html">-->
+<!--<link rel="import" href="../nodelist-posts/nodelist-posts.html">-->
 
-<polymer-element name="unit-posts" extends="unit-base" vertical layout on-load-more="{{ loadMore }}">
-<template>
+<dom-module is="unit-posts"  on-load-more="{{ loadMore }}">
+
+	<link rel="import" type="css" href="../unit-base/unit-base.css">
+
 	<style>
 		:host {
 
@@ -52,59 +54,63 @@
 
 		.allowed-users[hidden] {
 			opacity: 0;
-			display: flex !important;
+			/*display: flex !important;*/
 		}
 	</style>
 
-	<iron-signals
-			on-iron-signal-secondary-close="{{ meSingle }}"
-			on-iron-signal-topic-select="{{ topicSelect }}"
-			on-iron-signal-add-message="{{ addMessage }}"
-			on-iron-signal-rescribe-all="{{ subscribe }}"
-			></iron-signals>
+	<template>
 
-	<unit-posts-deco>
-		<paper-toolbar class="paper-narrow {{private ? 'medium-tall' : ''}}">
+		<iron-signals
+				on-iron-signal-secondary-close="meSingle"
+				on-iron-signal-topic-select="topicSelect"
+				on-iron-signal-add-message="addMessage"
+				on-iron-signal-rescribe-all="subscribe"
+				></iron-signals>
 
-			<paper-icon-button hidden?="{{ !fullframe }}" on-tap="{{ goBack }}" icon="arrow-back"></paper-icon-button>
-			<!--<paper-icon-button icon="menu"></paper-icon-button>-->
+		<unit-posts-deco>
+			<paper-toolbar class="[[getToolbarClass(private)]]">
 
-			<span flex>
-				<span id="topicName" class="name-container" contenteditable?="{{renameMode}}">{{topic.topic_name}}</span>
-			</span>
+				<paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
+				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
-			<paper-icon-button icon="create" hidden?="{{ !rights.canRename || renameMode  }}" on-tap="{{ rename }}"></paper-icon-button>
-			<paper-icon-button icon="check-circle" hidden?="{{ !renameMode }}" on-tap="{{ saveName }}"></paper-icon-button>
-			<paper-icon-button icon="cancel" hidden?="{{ !renameMode }}" on-tap="{{ cancelRename }}"></paper-icon-button>
+				<span class="flex">
+					<span id="topicName" class="name-container" contenteditable$="[[ renameMode ]]">[[topic.topic_name]]</span>
+				</span>
+
+				<paper-icon-button icon="create" hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]" on-tap="rename"></paper-icon-button>
+				<paper-icon-button icon="check-circle" hidden$="[[ !renameMode ]]" on-tap="saveName"></paper-icon-button>
+				<paper-icon-button icon="cancel" hidden$="[[ !renameMode ]]" on-tap="cancelRename"></paper-icon-button>
 
 
-			<div hidden?="{{!private}}" flex vertical layout class="bottom allowed-users">
-				<text-string hidden?="{{!private}}" class="block tinytext">unit.posts.privateDisclaimer</text-string>
-				<div flex horizontal layout center>
-					<template repeat="{{reader in topic.private}}">
-						<block-user data="{{ {name:reader.display_name, avatar:reader.avatar} }}"></block-user>
-					</template>
+				<div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
+					<text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer</text-string>
+					<div class="flex horizontal layout center">
+						<template is="dom-repeat" items="[[topic.private]]">
+							<block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+						</template>
+					</div>
 				</div>
+
+			</paper-toolbar>
+
+			<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>
+
+			<div class="editor horizontal layout">
+				<textarea id="messageInput" class="flex"></textarea>
+				<paper-button raised class="highlight send self-center" on-tap="addMessage">
+					<text-string>unit.posts.sendBtn</text-string>
+					<iron-icon icon="send"></iron-icon>
+				</paper-button>
 			</div>
 
-		</paper-toolbar>
+		</unit-posts-deco>
 
-		<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content" flex></nodelist-posts>
-
-		<div class="editor" horizontal layout>
-			<textarea id="messageInput" flex></textarea>
-			<paper-button self-center raised class="highlight send" on-tap="{{ addMessage }}">
-				<text-string>unit.posts.sendBtn</text-string>
-				<iron-icon icon="send"></iron-icon>
-			</paper-button>
-		</div>
-
-	</unit-posts-deco>
-
-</template>
+	</template>
+</dom-module>
 
 <script>
 	Polymer({
+		is:'unit-posts',
 
 		//properties
 		fullframe: false,
@@ -113,15 +119,34 @@
 		currentSliceTop: 0,
 
 		//polymer
-		observe: {
-			'selectedTopic': 'subscribe'
+		properties:{
+			selectedTopic:{
+				observer:'subscribe'
+			},
+
+			private:{
+				type:Boolean,
+				value:false,
+				computed:'isTopicPrivate(topic.private)'
+			}
 		},
 
-		computed: {
-			private: 'topic.private && topic.private != "0"'
+		isTopicPrivate:function(privat){
+			return typeof privat != 'undefined' && !!privat && privat != "0"
 		},
+
+		getToolbarClass:function(privat){
+			return 'paper-narrow' + (privat ? 'medium-tall' : '')
+		},
+
+		showRenameButton:function(haveRight, allreadyRenaming){
+			return haveRight && !allreadyRenaming;
+		},
+
 
 		ready: function () {
+			Polymer.dom(this).classList.add('vertical', 'layout');
+
 			this.initVars();
 
 			if (tinng.router.get('topic')) {
@@ -273,4 +298,3 @@
 		}
 	});
 </script>
-</polymer-element>
