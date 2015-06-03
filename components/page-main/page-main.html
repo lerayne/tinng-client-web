@@ -1,8 +1,8 @@
-<!--<link rel="import" href="../tinng-header/tinng-header.html">
+<link rel="import" href="../tinng-header/tinng-header.html">
 
-<link rel="import" href="../unit-topics/unit-topics.html">
-<link rel="import" href="../unit-posts/unit-posts.html">
-<link rel="import" href="../header-login-panel/header-login-panel.html">-->
+<!--<link rel="import" href="../unit-topics/unit-topics.html">-->
+<!--<link rel="import" href="../unit-posts/unit-posts.html">-->
+<link rel="import" href="../header-login-panel/header-login-panel.html">
 
 
 <dom-module id="page-main">
@@ -43,33 +43,11 @@
 			height:100%;
 			display:none;
 		}
-
-		.layout {
-			@apply(--layout);
-		}
-
-		.vertical {
-			@apply(--layout-vertical);
-		}
-
-		.flex {
-			@apply(--layout-flex);
-		}
-
-		.horizontal {
-			@apply(--layout-horizontal);
-		}
-
-		.self-center {
-			@apply(--layout-self-center);
-		}
 	</style>
 
 	<template>
 
-		Test
-
-		<!--<page-main-deco>
+		<page-main-deco>
 
 			<tinng-header>
 				<span>Tinng's name</span>
@@ -79,7 +57,7 @@
 
 			<div class="main-block horizontal layout self-center flex">
 
-				<div class="column vertical layout" style="width:40%">
+				<div class="column vertical layout" hidden$="topicsHidden" style="width:40%">
 					<unit-topics class="unit flex" id="unit-topics"></unit-topics>
 				</div>
 
@@ -96,7 +74,8 @@
 			<paper-dialog id="dialog-register" heading="Register">
 				Register
 			</paper-dialog>
-		</page-main-deco>-->
+
+		</page-main-deco>
 
 	</template>
 
@@ -107,15 +86,12 @@
 
 		is:"page-main",
 
-		eventDelegates:{
+		listeners:{
 			'suspend':"hideTopics",
 			'reveal':"showTopics",
 			'dialog':"dialog",
 			'popup':"popup",
 			'tap':"hideOverlays"
-		},
-
-		hostAttributes:{
 		},
 
 		ready:function(){
@@ -124,13 +100,15 @@
 
 		text: text,
 
+		topicsHidden:false,
+
 		hideTopics:function(){
-			this.col1class = 'hidden';
+			this.topicsHidden = true;
 			this.fire('iron-signal', {name:'unit-topics', data:{command:'suspend'}})
 		},
 
 		showTopics:function(){
-			this.col1class = '';
+			this.topicsHidden = false;
 		},
 
 		dialog:function(event, name){

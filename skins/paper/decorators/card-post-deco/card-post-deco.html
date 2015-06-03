@@ -1,85 +1,87 @@
-<link rel="import" href="../card-base-deco/card-base-deco.html">
+<dom-module id="card-post-deco">
 
-<polymer-element name="card-post-deco" extends="card-base-deco" noscript>
+	<link rel="import" type="css" href="../card-base-deco/card-base-deco.html">
+
+	<style>
+		:host {
+			min-height: 50px;
+		}
+
+		polyfill-next-selector {content:'block-tag'}
+		::content block-tag {
+			cursor:pointer;
+		}
+
+		polyfill-next-selector {content:'block-user'}
+		::content block-user {
+			position: relative;
+		}
+
+		polyfill-next-selector {content:'block-user img'}
+		::content block-user::shadow img {
+			position: absolute;
+			/*top:-4px;*/
+		}
+
+		polyfill-next-selector {content:'block-user .name'}
+		::content block-user::shadow .name {
+			margin-left:60px;
+		}
+
+		polyfill-next-selector {content:'#message'}
+		::content #message {
+			margin-left:56px;
+			padding:6px 4px;
+			border:1px dotted transparent;
+		}
+
+		polyfill-next-selector {content:'#message'}
+		::content #message[contenteditable="true"] {
+			border-color:#ccc;
+		}
+
+		polyfill-next-selector {content:'blockquote'}
+		::content blockquote {
+			background:#eee url(./images/quote.png) no-repeat 12px 12px;
+			margin:0 0 10px 0;
+			padding:10px 10px 10px 40px;
+		}
+
+		polyfill-next-selector {content:'blockquote p:first-child'}
+		::content blockquote p:first-child {
+			margin-top:0;
+		}
+
+		polyfill-next-selector {content:'blockquote p:last-child'}
+		::content blockquote p:last-child {
+			margin-bottom:0;
+		}
+
+		polyfill-next-selector {content:'blockquote cite'}
+		::content blockquote cite {
+			color:#777;
+			display: block;
+		}
+
+		.datetime {
+			color:#ccc;
+			float:right;
+		}
+
+		.info {
+			margin-bottom:4px;
+		}
+
+		.tags {
+			margin-top:10px;
+		}
+
+		.menu {
+			float:right;
+		}
+	</style>
+
 	<template>
-		<style>
-			:host {
-				min-height: 50px;
-			}
-
-			polyfill-next-selector {content:'block-tag'}
-			::content block-tag {
-				cursor:pointer;
-			}
-
-			polyfill-next-selector {content:'block-user'}
-			::content block-user {
-				position: relative;
-			}
-
-			polyfill-next-selector {content:'block-user img'}
-			::content block-user::shadow img {
-				position: absolute;
-				/*top:-4px;*/
-			}
-
-			polyfill-next-selector {content:'block-user .name'}
-			::content block-user::shadow .name {
-				margin-left:60px;
-			}
-
-			polyfill-next-selector {content:'#message'}
-			::content #message {
-				margin-left:56px;
-				padding:6px 4px;
-				border:1px dotted transparent;
-			}
-
-			polyfill-next-selector {content:'#message'}
-			::content #message[contenteditable="true"] {
-				border-color:#ccc;
-			}
-
-			polyfill-next-selector {content:'blockquote'}
-			::content blockquote {
-				background:#eee url(./images/quote.png) no-repeat 12px 12px;
-				margin:0 0 10px 0;
-				padding:10px 10px 10px 40px;
-			}
-
-			polyfill-next-selector {content:'blockquote p:first-child'}
-			::content blockquote p:first-child {
-				margin-top:0;
-			}
-
-			polyfill-next-selector {content:'blockquote p:last-child'}
-			::content blockquote p:last-child {
-				margin-bottom:0;
-			}
-
-			polyfill-next-selector {content:'blockquote cite'}
-			::content blockquote cite {
-				color:#777;
-				display: block;
-			}
-
-			.datetime {
-				color:#ccc;
-				float:right;
-			}
-
-			.info {
-				margin-bottom:4px;
-			}
-
-			.tags {
-				margin-top:10px;
-			}
-
-			.menu {
-				float:right;
-			}
-		</style>
 
 		<div class="info">
 			<content select="block-user"></content>
@@ -89,11 +91,11 @@
 			</span>
 
 			<span class="datetime" >
-				<span hidden?=[[!!model.modified]]>
+				<span hidden$=[[!!model.modified]]>
 					<content select=".created"></content>
 				</span>
 
-				<span hidden?=[[!model.modified]]>
+				<span hidden$=[[!model.modified]]>
 					<text-string>unit.posts.modified</text-string> <content select=".modified"></content>
 				</span>
 			</span>
@@ -102,9 +104,15 @@
 
 		<content select="#message"></content>
 
-		<div class="tags" hidden?=[[!!+data.topic_id]]>
+		<div class="tags" hidden?=[[!!data.topic_id]]>
 			<content select="block-tag"></content>
 		</div>
 
 	</template>
-</polymer-element>
+</dom-module>
+
+<script>
+	Polymer({
+		is:'card-post-deco'
+	})
+</script>

@@ -71,7 +71,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 		// (re)setting metadata
 		// todo - check if there's no problems with protocol if meta is being set on new subscription's creation
 		// note: meta[id] is being created on server side
-		if (reset && this.meta[id]) {
+		if (reset && this.meta && this.meta[id]) {
 			this.meta[id][feedName] = {};
 		}
 	},

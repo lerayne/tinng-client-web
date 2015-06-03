@@ -72,7 +72,7 @@
 
 
 	// initialization part 2: Polymer finished it's startup
-	$(window).on('polymer-ready', function(){
+	$(window).on('WebComponentsReady', function(){
 		console.info('Polymer ready');
 
 		onPolymerReady();

@@ -26,16 +26,19 @@
 
 	<script>
 		window.Polymer = window.Polymer || {};
-		//window.Polymer.dom = 'shadow';
+		window.Polymer.dom = 'shadow';
 	</script>
 	<link rel="import" href="./bower_components/polymer/polymer.html">
 
-	<!--<link rel="import" href="./bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="./bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="./bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 	<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
 	<link rel="import" href="./bower_components/iron-signals/iron-signals.html">
 	<link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
 	<link rel="import" href="./bower_components/paper-input/paper-input.html">
-	<link rel="import" href="./bower_components/paper-item/paper-item.html">-->
+	<link rel="import" href="./bower_components/paper-item/paper-item.html">
+	<link rel="import" href="./bower_components/paper-button/paper-button.html">
+	<link rel="import" href="./bower_components/neon-animation/neon-animation.html">
 
 	<!-- global functions and vars -->
 	<script src="./script/globals.js"></script>
@@ -44,7 +47,7 @@
 	<link rel="import" href="./config.html">
 
 	<!-- Tinng components -->
-	<!--<link rel="import" href="./components/text-string/text-string.html">-->
+	<link rel="import" href="./components/text-string/text-string.html">
 	<link rel="import" href="./components/page-main/page-main.html">
 
 
@@ -56,7 +59,7 @@
 	<script src="./script/main.js"></script>
 </head>
 
-<body fullbleed vertical layout unresolved>
+<body class="fullbleed vertical layout" unresolved>
 
 	<!-- old style (new appends to body directly) -->
 	<!--<div id="app-frame" flex horizontal layout></div>-->
