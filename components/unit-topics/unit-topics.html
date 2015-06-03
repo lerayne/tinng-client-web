@@ -78,7 +78,8 @@
 		<unit-topics-deco>
 
 			<!-- MENU -->
-			<div id="menu" class="[[ getMenuClass(menuVisible, menuClass) ]]">
+			<!-- todo - find out why class (or any other attr) here can be binded only with $, while in login panel src is working -->
+			<div id="menu" class$="[[ getMenuClass(menuVisible, menuClass) ]]">
 				<paper-shadow z="1">
 					<paper-toolbar>
 						<paper-icon-button icon="chevron-left" on-tap="menuHide"></paper-icon-button>
@@ -135,23 +136,14 @@
 	Polymer({
 		is:'unit-topics',
 
-		getMenuClass:function(menuVisible, menuClass){
-			return (menuVisible ? 'visible ' : '') + menuClass;
-		},
-
-
-		// properties
-
-		text: text,
-		menuVisible:false,
-
-
-		// polymer
-
 		behaviors:[UnitBehavior],
 
 		ready:function(){
 			Polymer.dom(this).classList.add("vertical", "layout");
+
+			this.text = text;
+			this.menuVisible = false;
+			this.menuClass = 'menu-hide-ease';
 
 			this.updates = [];
 			this.subscribe();
@@ -159,6 +151,10 @@
 
 
 		// other
+
+		getMenuClass:function(menuVisible, menuClass){
+			return (menuVisible ? 'visible ' : '') + menuClass;
+		},
 
 		subscribe: function() {
 
