@@ -33,5 +33,19 @@
     "paper-input": "PolymerElements/paper-input#~0.9",
     "iron-collapse": "PolymerElements/iron-collapse#~0.9",
     "paper-item": "PolymerElements/paper-item#~0.9"
+  },
+  "resolutions": {
+    "polymer": "^1.0.0",
+    "paper-ripple": "^1.0.0",
+    "paper-behaviors": "^1.0.0",
+    "paper-styles": "^1.0.0",
+    "paper-material": "^1.0.0",
+    "iron-flex-layout": "^1.0.0",
+    "iron-icon": "^1.0.0",
+    "iron-meta": "^1.0.0",
+    "iron-icons": "^1.0.0",
+    "iron-a11y-keys-behavior": "^1.0.0",
+    "iron-iconset-svg": "^1.0.0",
+    "iron-behaviors": "^1.0.0"
   }
 }
