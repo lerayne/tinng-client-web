@@ -2,21 +2,21 @@
 	<template>
 		<content></content>
 	</template>
-
-	<script>
-		Polymer({
-			is:'text-string',
-
-			ready:function(){
-
-				var key = this.innerHTML;
-
-				if (tinng.lang.textLocalized[key]) {
-					this.innerHTML = tinng.lang.textLocalized[key];
-				} else if (tinng.lang.textDefault[key]){
-					this.innerHTML = tinng.lang.textDefault[key];
-				}
-			}
-		})
-	</script>
 </dom-module>
+
+<script>
+	Polymer({
+		is:'text-string',
+
+		ready:function(){
+
+			var key = this.innerHTML;
+
+			if (tinng.lang.textLocalized[key]) {
+				this.innerHTML = tinng.lang.textLocalized[key];
+			} else if (tinng.lang.textDefault[key]){
+				this.innerHTML = tinng.lang.textDefault[key];
+			}
+		}
+	})
+</script>
