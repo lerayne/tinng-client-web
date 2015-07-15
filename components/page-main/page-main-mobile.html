@@ -1,0 +1,37 @@
+<dom-module id="page-main-mobile">
+	<style>
+		:host {
+
+		}
+
+		.unit::shadow .content {
+			background-color: #f1f1f1;
+			border-right:1px solid #e5e5e5;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+	</style>
+
+	<template>
+		<page-main-deco>
+
+			<div class="layer vertical layout flex">
+				<unit-topics class="unit flex" id="unit-topics"></unit-topics>
+			</div>
+
+		</page-main-deco>
+	</template>
+
+</dom-module>
+
+
+
+<script>
+	Polymer({
+		is: "page-main-mobile",
+
+		ready:function(){
+			Polymer.dom(this).classList.add("vertical", "layout",  "flex")
+		}
+	});
+</script>

@@ -109,3 +109,10 @@ body /deep/ .tinytext {
 		font-size: 85%;
 	}
 }
+
+@media (max-width: 800px) {
+	body /deep/ paper-fab {
+		bottom: 20px;
+		right: 20px;
+	}
+}

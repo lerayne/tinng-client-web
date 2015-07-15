@@ -38,7 +38,13 @@
 			console.log('all pre-startup async calls resolved')
 
 			// in Polymer you now can create new active elements as easy as this:
-			$('body').append($('<page-main>'));
+			if (screen.width < 800) {
+				console.log('Device is mobile');
+				$('body').append($('<page-main-mobile>'));
+			} else {
+				console.log('Device is desktop');
+				$('body').append($('<page-main>'));
+			}
 		})
 	};
 

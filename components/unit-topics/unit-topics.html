@@ -13,6 +13,16 @@
 			overflow: hidden;
 		}
 
+		@media (max-width: 350px) {
+			:host {
+				min-width: 200px;
+			}
+		}
+
+		:host-context(page-main-mobile) #close {
+			display:none;
+		}
+
 		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
 			height: 56px;
 		}
@@ -119,7 +129,7 @@
 				<!-- only when used in units grid-->
 				<span id="controlsEmbedded" class="horizontal layout center">
 					<!--<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>-->
-					<paper-icon-button icon="close" on-tap="suspend"></paper-icon-button>
+					<paper-icon-button id="close" icon="close" on-tap="suspend"></paper-icon-button>
 				</span>
 			</paper-toolbar>
 
