@@ -4,6 +4,11 @@
 		:host {
 			background: url('images/bg1.jpg') center center no-repeat;
 			background-size: cover;
+
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
+			@apply(--layout-center-justified);
 		}
 
 		::content .main-block {
@@ -25,10 +30,6 @@
 
 <script>
 	Polymer({
-		is:'page-main-deco',
-
-		ready:function(){
-			Polymer.dom(this).classList.add('vertical', 'layout', 'center-justified', 'flex')
-		}
+		is:'page-main-deco'
 	})
 </script>

@@ -1,7 +1,9 @@
 <dom-module id="page-main-mobile">
 	<style>
 		:host {
-
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
 		}
 
 		.unit::shadow .content {
@@ -28,10 +30,6 @@
 
 <script>
 	Polymer({
-		is: "page-main-mobile",
-
-		ready:function(){
-			Polymer.dom(this).classList.add("vertical", "layout",  "flex")
-		}
+		is: "page-main-mobile"
 	});
 </script>

@@ -8,7 +8,9 @@
 
 	<style>
 		:host {
-
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
 		}
 
 		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
@@ -68,7 +70,7 @@
 				></iron-signals>
 
 		<unit-posts-deco>
-			<paper-toolbar class="[[getToolbarClass(private)]]">
+			<paper-toolbar class="[[ getToolbarClass(private) ]]">
 
 				<paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
 				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -129,7 +131,6 @@
 
 
 		ready: function () {
-			Polymer.dom(this).classList.add('vertical', 'layout');
 
 			this.fullframe = false;
 			this.postsPerSlice = 50;

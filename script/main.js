@@ -43,7 +43,7 @@
 				$('body').append($('<page-main-mobile>'));
 			} else {
 				console.log('Device is desktop');
-				$('body').append($('<page-main>'));
+				$('body').append($('<page-main class="tinng-page">'));
 			}
 		})
 	};

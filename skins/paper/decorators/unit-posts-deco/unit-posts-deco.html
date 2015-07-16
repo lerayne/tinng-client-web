@@ -2,7 +2,9 @@
 
 	<style>
 		:host {
-
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
 		}
 
 		::content paper-toolbar {
@@ -35,10 +37,6 @@
 
 <script>
 	Polymer({
-		is:'unit-posts-deco',
-
-		ready:function(){
-			Polymer.dom(this).classList.add('vertical','layout','flex');
-		}
+		is:'unit-posts-deco'
 	})
 </script>
