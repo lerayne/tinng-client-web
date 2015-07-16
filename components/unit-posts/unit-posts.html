@@ -11,6 +11,11 @@
 			@apply(--layout);
 			@apply(--layout-vertical);
 			@apply(--layout-flex);
+
+			--block-user-name-display: none;
+			--block-user-avatar: {
+				height:30px;
+			};
 		}
 
 		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
@@ -30,22 +35,6 @@
 
 		.send {
 			width: 100px
-		}
-
-		polyfill-next-selector {
-			content: 'block-user .name'
-		}
-
-		block-user::shadow .name {
-			display: none;
-		}
-
-		polyfill-next-selector {
-			content: 'block-user .avatar'
-		}
-
-		block-user::shadow .avatar {
-			height: 30px;
 		}
 
 		.allowed-users {
