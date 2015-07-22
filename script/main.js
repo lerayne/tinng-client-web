@@ -41,6 +41,7 @@
 			if (screen.width < 800) {
 				console.log('Device is mobile');
 				$('body').append($('<page-main-mobile>'));
+				//window.scrollTo(0,1);
 			} else {
 				console.log('Device is desktop');
 				$('body').append($('<page-main>'));
