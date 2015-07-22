@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 
 <link rel="import" href="../unit-base/unit-base.html">
-<!--<link rel="import" href="../nodelist-topics/nodelist-topics.html">-->
+<link rel="import" href="../nodelist-topics/nodelist-topics.html">
 
 <dom-module id="unit-topics">
 
@@ -137,7 +137,8 @@
 				</span>
 			</paper-toolbar>
 
-			<nodelist-topics id="topicsList" updates="{{updates}}" class="content flex"></nodelist-topics>
+			<!-- TOPICS -->
+			<nodelist-topics id="topicsList" updates="{{updates}}" class="content vertical layout flex"></nodelist-topics>
 
 			<paper-fab icon="note-add"></paper-fab>
 
@@ -180,6 +181,8 @@
 					feed: 'topics'
 				},
 				parser: function(data) {
+					console.log('topics', data)
+
 					this.updates = data;
 				}
 			});

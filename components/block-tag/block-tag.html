@@ -1,49 +1,59 @@
-<polymer-element name="block-tag">
+<dom-module id="block-tag">
+
+	<style>
+
+		:host {
+			margin: 1px 4px 1px 0;
+			padding: 2px 4px;
+			display: inline-block;
+			position: relative;
+			background-color: #bbb;
+			color: #fff;
+		}
+
+		:host([tagType="user"]) {
+			background-color: #d0e7ff;
+			color: #3f6c9a;
+		}
+
+	</style>
+
 	<template>
-		<style>
-
-			:host {
-				margin: 1px 4px 1px 0;
-				padding: 2px 4px;
-				display: inline-block;
-				position: relative;
-				background-color: #bbb;
-				color: #fff;
-			}
-
-			:host([tagType="user"]) {
-				background-color: #d0e7ff;
-				color: #3f6c9a;
-			}
-
-		</style>
-
 		<content></content>
 	</template>
+</dom-module>
 
-	<script>
-		Polymer({
+<script>
+	Polymer({
+		is:"block-tag",
 
-			publish:{
-				data:{},
-				tagType:{ value:'', reflect:true},
-				tagID:{ value:-1, reflect:true}
+		behaviors:[tinng.polymerBehavior.Basic],
+
+		properties: {
+			data: {
+				type: Object,
+				value: function(){ return {} }
 			},
 
-			computed:{
-				tagType:'data.type',
-				tagID:'data.id'
+			tagType: {
+				type:String,
+				value: "",
+				reflectToAttribute: true,
+				computed:"computeEqual(data.type)"
 			},
 
-			created:function(){
-				this.data = {};
-			},
-
-			onTap:function(e){
-				this.fire('tag-select', this.data);
-
-				e.stopPropagation();
+			tagID: {
+				type:Number,
+				value:-1,
+				reflectToAttribute: true,
+				computed:"computeEqual(data.id)"
 			}
-		})
-	</script>
-</polymer-element>
+		},
+
+		onTap:function(e){
+			this.fire('tag-select', this.data);
+
+			e.stopPropagation();
+		}
+	})
+</script>

@@ -1,0 +1,174 @@
+<script>
+	Nodelist = {
+		//properties
+		clientId:0,
+
+		//polymer
+		properties:{
+			loading: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+
+			loaded: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+
+			sortField: {
+				type:String,
+				value: "created",
+				observer:"sortSelf"
+			},
+
+			sortOrder: {
+				type:String,
+				value: "desc",
+				observer:"sortSelf"
+			},
+
+			updates: {
+				type: Object,
+				value: function(){ return {} },
+				observer:"parseUpdates"
+			},
+
+			nodes: {
+				type: Array,
+				value: function(){ return [] }
+			},
+
+			selectedIDs: {
+				type: Array,
+				value: function(){ return [] }
+			}
+		},
+
+		created:function(){
+			tinng.funcs.bind(this, [
+				'processNode'
+			]);
+		},
+
+		//other
+		parseUpdates:function(old, nodes){
+			console.log('updates', nodes)
+		},
+
+		clean:function(){
+			this.nodes = [];
+		},
+
+		processNode:function(data){
+
+			// находим индекс нужного элемента по id
+			var existingItemIndex = _(this.nodes).findIndex({id: data.id});
+
+			// если такого элемента нет - добавляем новый элемент в коллекцию
+			if (existingItemIndex == -1) {
+
+				// установка this.sortOrder в последний параметр актуальна только для сортировки по времени
+				var sortIndex = tinng.funcs.getSortIndex(this.nodes, data, this.sortField, this.sortOrder, this.sortOrder)
+
+				// вставляем новый элемент в нужное место
+				if (sortIndex == this.nodes.length) {
+					this.nodes.push(data)
+				} else {
+					this.nodes.splice(sortIndex, 0, data);
+				}
+
+			} else {
+				if (+data.deleted) {
+					// если есть и удален - удаляем из коллекции
+					this.nodes.splice(existingItemIndex, 1)
+				} else {
+					// иначе - мягко обновляем существующий элемент (иначе пересоздается нода, обнуляя все свои свойства)
+					// впрочем, теги и другие вложенные объекты сейчас пересоздаются, так что возможно (todo) создать функцию рекурсивного мягкого обновления
+					for (var key in data) {
+						this.nodes[existingItemIndex][key] = data[key];
+					}
+				}
+			}
+		},
+
+		// сортировка по поданным параметрам (удобна для декларативного фильтра, который пока не работает)
+		sort:function(input, sortField, sortOrder){
+
+			var array = _(input).sortBy(sortField).value();
+			if (sortOrder == 'desc') array.reverse();
+
+			return array;
+		},
+
+		sortSelf:function(){
+			this.nodes = this.sort(this.nodes, this.sortField, this.sortOrder)
+		},
+
+		isAtBottom:function(){
+			return this.scrollHeight - (this.scrollTop + this.offsetHeight) == 0;
+		},
+
+		isAtTop:function(){
+			return this.scrollTop == 0;
+		},
+
+		toBottom: function(){
+			this.$.scroll.scrollIntoView(false)
+		},
+
+		toTop: function(){
+			this.$.scroll.scrollIntoView(true)
+		},
+
+		prepareNode:function(node){
+			// если у объекта нет id - присваеваем ему локальный клиентский id
+			if (!node.id) node.id = 'client'+(this.clientId++);
+
+			// making node selected on load
+			// todo - make selected node to be scrolled to on load
+			if (this.selectedIDs.indexOf(node.id) != -1) {
+				node.selected = true;
+			}
+		},
+
+		NLMarkSelected:function(id){
+
+			console.log('markSelected from behavior');
+
+			this.selectedIDs.push(id);
+
+			if (this.nodes.length){
+				var node = _(this.nodes).find({id:id});
+				if (typeof node != 'undefined'){
+					node.selected = true;
+				}
+			}
+		},
+
+		unmarkSelected:function(id){
+			var i = this.selectedIDs.indexOf(id);
+			if (i >= 0) {
+				this.selectedIDs.splice(i,1);
+			}
+
+			if (this.nodes.length){
+				var node = _(this.nodes).find({id:id});
+				if (typeof node != 'undefined' && node.selected){
+					node.selected = false;
+				}
+			}
+		},
+
+		clearSelection:function(){
+			this.selectedIDs = [];
+
+			_(this.nodes).each(function(node){
+				if (node.selected) {
+					node.selected = false;
+				}
+			})
+		}
+	}
+</script>

@@ -13,6 +13,8 @@ window.tinng = {
 		strategic: {}
 	},
 
+	polymerBehavior:{},
+
 	lang:{
 		languages:{},
 		locale:'',

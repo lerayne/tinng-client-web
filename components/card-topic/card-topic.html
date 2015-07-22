@@ -1,49 +1,79 @@
 <link rel="import" href="../block-tag/block-tag.html">
 <link rel="import" href="../block-user/block-user.html">
 
-<polymer-element name="card-topic" attributes="model" on-tap="{{ selectTopic }}">
+<dom-module id="card-topic">
+
+	<style>
+		:host {
+			display: block;
+		}
+	</style>
+
 	<template>
-		<style>
-			:host {
-				display: block;
-			}
-		</style>
 
 		<card-topic-deco model="[[model]]">
-			<h2 class="title">{{model.topic_name}}</h2>
-			<span class="message">{{model.message}}</span>
+			<h2 class="title">[[model.topic_name]]</h2>
+			<span class="message">[[model.message]]</span>
 
-			<block-user data="{{ {name: model.author, id: model.author_id, email: model.author_email} }}"></block-user>
-			<span class="created">{{model.created}}</span>
-			<span class="modified">{{model.modified}}</span>
+			<block-user data="[[ getAuthorData(model) ]]"></block-user>
+			<span class="created">[[model.created]]</span>
+			<span class="modified">[[model.modified]]</span>
 
-			<template repeat="{{tag in model.tags}}">
-				<block-tag data="{{tag}}">{{tag.name}}</block-tag>
+			<template is="dom-repeat" items="[[ model.tags ]]" as="tag">
+				<block-tag data="{{tag}}">[[tag.name]]</block-tag>
 			</template>
 		</card-topic-deco>
 
 	</template>
+</dom-module>
 
-	<script>
-		Polymer({
+<script>
+	Polymer({
+		//polymer
+		is:"card-topic",
 
-			//polymer
-			publish:{
-				private:{value:false, reflect:true},
-				selected:{value:false, reflect:true}
+		behaviors:[tinng.polymerBehavior.Basic],
+
+		listeners: {
+			"tap": "selectTopic"
+		},
+
+		properties:{
+			private: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				computed:"computeStrToBool(data.private)"
 			},
 
-			computed:{
-				ID:'+data.id',
-				unread:'!!+data.unread',
-				private:'!!+data.private',
-				selected:'model.selected'
+			selected: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				computed:"computeEqual(model.selected)"
 			},
 
-			//other
-			selectTopic:function(){
-				this.fire('iron-signal', {name:'topic-select', data: {topic:this.model, sender:this}});
+			undread: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				computed:"computeStrToBool(data.unread)"
+			},
+
+			ID: {
+				type: Number,
+				value:0,
+				computed:"computeToNumber(data.id)"
 			}
-		});
-	</script>
-</polymer-element>
+		},
+
+		getAuthorData:function(model){
+			return {name: model.author, id: model.author_id, email: model.author_email}
+		},
+
+		//other
+		selectTopic:function(){
+			this.fire('iron-signal', {name:'topic-select', data: {topic:this.model, sender:this}});
+		}
+	});
+</script>

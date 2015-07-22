@@ -1,0 +1,3 @@
+:host([loading]) {
+	background: url(../../styles/throbber_1.gif) no-repeat center center;
+}

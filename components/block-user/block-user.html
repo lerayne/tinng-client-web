@@ -1,32 +1,35 @@
-<polymer-element name="block-user" attributes="data">
+<dom-module id="block-user">
+	<style>
+		:host {
+			display: inline-block;
+		}
+
+		.name {
+			font-weight: bold;
+			display: var(--block-user-name-display);
+		}
+
+		.avatar {
+			border-radius: 100%;
+			vertical-align: top;
+			margin-right: 5px;
+
+			@apply(--block-user-avatar);
+		}
+	</style>
+
 	<template>
-		<style>
-			:host {
-				display: inline-block;
-			}
 
-			.name {
-				font-weight: bold;
-				display: var(--block-user-name-display);
-			}
-
-			.avatar {
-				border-radius: 100%;
-				vertical-align: top;
-				margin-right: 5px;
-
-				@apply(--block-user-avatar);
-			}
-		</style>
-
-		<template if="[[!!data.avatar]]">
-			<img class="avatar" _src="[[data.avatar]]">
+		<template is="dom-if" if="[[!!data.avatar]]">
+			<img class="avatar" src="[[data.avatar]]">
 		</template>
 
-		<span class="name">{{data.name}}</span>
+		<span class="name">[[data.name]]</span>
 	</template>
+</dom-module>
 
-	<script>
-		Polymer()
-	</script>
-</polymer-element>
+<script>
+	Polymer({
+		is:"block-user"
+	})
+</script>

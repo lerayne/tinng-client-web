@@ -1,0 +1,24 @@
+<script>
+	tinng.polymerBehavior.Basic = {
+
+		computeStrToBool:function(value){
+			return !!+value;
+		},
+
+		computeToBool:function(value){
+			return !!value;
+		},
+
+		computeEqual:function(selected){
+			return selected;
+		},
+
+		computeToNumber:function(value){
+			return +value;
+		},
+
+		emptyObject: function(){ return {} },
+
+		emptyArray: function(){ return [] }
+	}
+</script>
