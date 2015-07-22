@@ -1,0 +1,29 @@
+<script>
+	tinng.polymerBehavior.Card = {
+		properties:{
+			selected: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				computed:"computeEqual(model.selected)"
+			},
+
+			unread: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				computed:"computeStrToBool(data.unread)"
+			},
+
+			ID: {
+				type: Number,
+				value:0,
+				computed:"computeToNumber(data.id)"
+			}
+		},
+
+		getAuthorData:function(model){
+			return {name: model.author, id: model.author_id, email: model.author_email}
+		}
+	}
+</script>

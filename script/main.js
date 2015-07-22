@@ -35,15 +35,15 @@
 
 		// when all pre-startup async calls resolved
 		Promise.all(tinng.service.startupCalls).then(function(){
-			console.log('all pre-startup async calls resolved')
+			console.info('all pre-startup async calls resolved')
 
 			// in Polymer you now can create new active elements as easy as this:
 			if (screen.width < 800) {
-				console.log('Device is mobile');
+				console.info('Device is mobile');
 				$('body').append($('<page-main-mobile>'));
 				//window.scrollTo(0,1);
 			} else {
-				console.log('Device is desktop');
+				console.info('Device is desktop');
 				$('body').append($('<page-main class="tinng-page">'));
 			}
 		})

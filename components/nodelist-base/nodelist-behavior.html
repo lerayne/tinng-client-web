@@ -1,5 +1,5 @@
 <script>
-	Nodelist = {
+	tinng.polymerBehavior.Nodelist = {
 		//properties
 		clientId:0,
 
@@ -61,7 +61,9 @@
 			this.nodes = [];
 		},
 
-		processNode:function(data){
+		NBProcessNode:function(data){
+
+			console.log('super processNode')
 
 			// находим индекс нужного элемента по id
 			var existingItemIndex = _(this.nodes).findIndex({id: data.id});

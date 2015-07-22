@@ -1,8 +1,8 @@
-<link rel="import" href="../unit-base/unit-base.html">
-<!--<link rel="import" href="../card-post/card-post.html">-->
-<!--<link rel="import" href="../nodelist-posts/nodelist-posts.html">-->
+<link rel="import" href="../unit-base/unit-behavior.html">
+<link rel="import" href="../card-post/card-post.html">
+<link rel="import" href="../nodelist-posts/nodelist-posts.html">
 
-<dom-module is="unit-posts"  on-load-more="{{ loadMore }}">
+<dom-module is="unit-posts">
 
 	<link rel="import" type="css" href="../unit-base/unit-base.css">
 
@@ -52,11 +52,11 @@
 	<template>
 
 		<iron-signals
-				on-iron-signal-secondary-close="meSingle"
-				on-iron-signal-topic-select="topicSelect"
-				on-iron-signal-add-message="addMessage"
-				on-iron-signal-rescribe-all="subscribe"
-				></iron-signals>
+			on-iron-signal-secondary-close="meSingle"
+			on-iron-signal-topic-select="topicSelect"
+			on-iron-signal-add-message="addMessage"
+			on-iron-signal-rescribe-all="subscribe"
+		></iron-signals>
 
 		<unit-posts-deco>
 			<paper-toolbar class="[[ getToolbarClass(private) ]]">
@@ -101,9 +101,15 @@
 
 <script>
 	Polymer({
+		//polymer
+
 		is:'unit-posts',
 
-		//polymer
+		behaviors:[
+			tinng.polymerBehavior.Unit,
+			tinng.polymerBehavior.Basic
+		],
+
 		properties:{
 			selectedTopic:{
 				type: Number,
@@ -118,6 +124,10 @@
 			}
 		},
 
+		listeners:{
+			"load-more":"loadMore"
+		},
+
 
 		ready: function () {
 
@@ -130,6 +140,7 @@
 
 			if (tinng.router.get('topic')) {
 				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
+				console.log('this.selectedTopic', this.selectedTopic)
 			}
 		},
 
@@ -158,7 +169,8 @@
 			this.initVars();
 
 			//this.$.postsList.clean();
-			tinng.router.note('topic', null);
+			//todo - теперь обсервер вызывается сразу, поэтому делать сразу клин нельзя, стирается инфа из адресной строки
+			//tinng.router.note('topic', null);
 			tinng.router.note('start', null);
 
 			tinng.connection.unscribe(this, 'posts-main');
@@ -168,8 +180,12 @@
 		subscribe: function () {
 			this.clean();
 
+			console.log('subscribe posts of', this.selectedTopic)
+
 			//todo - raw way
-			tinng.router.note('topic', this.selectedTopic);
+			if (this.selectedTopic){
+				tinng.router.note('topic', this.selectedTopic);
+			}
 
 			tinng.connection.subscribe([{
 				subscriber: this,
@@ -181,7 +197,8 @@
 				},
 				parser: function (data) {
 
-					//console.log('updates', data);
+					//todo - здесь почему-то возвращается объект вместо массива
+					console.log('posts', data);
 
 					this.updates = data;
 				}

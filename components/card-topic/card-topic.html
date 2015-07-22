@@ -1,5 +1,6 @@
 <link rel="import" href="../block-tag/block-tag.html">
 <link rel="import" href="../block-user/block-user.html">
+<link rel="import" href="../card-base/card-behavior.html">
 
 <dom-module id="card-topic">
 
@@ -32,7 +33,10 @@
 		//polymer
 		is:"card-topic",
 
-		behaviors:[tinng.polymerBehavior.Basic],
+		behaviors:[
+			tinng.polymerBehavior.Card,
+			tinng.polymerBehavior.Basic
+		],
 
 		listeners: {
 			"tap": "selectTopic"
@@ -44,31 +48,7 @@
 				value: false,
 				reflectToAttribute: true,
 				computed:"computeStrToBool(data.private)"
-			},
-
-			selected: {
-				type: Boolean,
-				value: false,
-				reflectToAttribute: true,
-				computed:"computeEqual(model.selected)"
-			},
-
-			undread: {
-				type: Boolean,
-				value: false,
-				reflectToAttribute: true,
-				computed:"computeStrToBool(data.unread)"
-			},
-
-			ID: {
-				type: Number,
-				value:0,
-				computed:"computeToNumber(data.id)"
 			}
-		},
-
-		getAuthorData:function(model){
-			return {name: model.author, id: model.author_id, email: model.author_email}
 		},
 
 		//other

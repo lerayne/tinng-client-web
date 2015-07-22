@@ -26,7 +26,10 @@
 	Polymer({
 		is: "nodelist-topics",
 
-		behaviors:[Nodelist],
+		behaviors:[
+			tinng.polymerBehavior.Nodelist,
+			tinng.polymerBehavior.Basic
+		],
 
 		sortField: 'updated',
 

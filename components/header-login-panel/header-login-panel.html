@@ -65,7 +65,7 @@
 		properties:{
 			user:{
 				type: Object,
-				value:function(){ return {} },
+				value: function(){ return {} },
 				observer:'userChanged',
 				notify:true
 			}
@@ -120,8 +120,8 @@
 
 			this.user = loginData;
 
-			console.log('newUser', newUser)
-			console.log('user response', loginData)
+			//console.log('newUser', newUser)
+			//console.log('user response', loginData)
 
 			if (newUser){
 				if (loginData == 'none') {
@@ -136,7 +136,7 @@
 
 				} else {
 					// login successful
-					console.log('logged in');
+					//console.log('logged in');
 
 					this.hideDialogLogin();
 					this.status = 'logged';

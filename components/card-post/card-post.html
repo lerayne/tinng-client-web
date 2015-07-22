@@ -1,6 +1,9 @@
+<link rel="import" href="../block-tag/block-tag.html">
+<link rel="import" href="../block-user/block-user.html">
 <link rel="import" href="../tinng-dropmenu/tinng-dropmenu.html">
+<link rel="import" href="../card-base/card-behavior.html">
 
-<polymer-element name="card-post" attributes="model" touch-action="pan-y">
+<dom-module id="card-post">
 	<template>
 		<style>
 			:host {
@@ -16,21 +19,21 @@
 			}
 		</style>
 
-		<card-post-deco model="{{model}}">
-			<block-user data="{{ {name: model.author, id: model.author_id, email: model.author_email, avatar: model.avatar} }}"></block-user>
+		<card-post-deco model="[[model]]">
+			<block-user data="[[ getAuthorData(model) ]]"></block-user>
 
 			<span class="created">{{model.created}}</span>
 			<span class="modified">{{model.modified}}</span>
 
 			<tinng-dropmenu class="menu right">
-				<template if="{{rights.canEdit}}">
+				<template is="dom-if" if="[[rights.canEdit]]">
 					<paper-item>
 						<iron-icon icon="create"></iron-icon>
 						<text-string>unit.posts.edit</text-string>
 					</paper-item>
 				</template>
 
-				<template if="{{rights.canDelete}}">
+				<template is="dom-if" if="[[rights.canDelete]]">
 					<paper-item>
 						<iron-icon icon="delete"></iron-icon>
 						<text-string>unit.posts.delete</text-string>
@@ -40,41 +43,49 @@
 
 			<div id="message"></div>
 
-			<template if="{{!+model.topic_id}}" repeat="{{tag in model.tags}}">
-				<block-tag data="{{tag}}">{{tag.name}}</block-tag>
+			<template is="dom-if" if="{{!computeToNumber(model.topic_id)}}">
+				<template is="dom-repeat" items="[[model.tags]]" as="tag">
+					<block-tag data="[[tag]]">[[tag.name]]</block-tag>
+				</template>
 			</template>
 		</card-post-deco>
 
 	</template>
 
-	<script>
-		Polymer({
+</dom-module>
 
-			//properties
-			ID:0,
+<script>
+	Polymer({
+		//polymer
+		is:"card-post",
 
-			//polymer
-			publish:{
-				unread:{value:false, reflect:true},
-				selected:{value:false, reflect:true}
-			},
+		behaviors:[
+			tinng.polymerBehavior.Card,
+			tinng.polymerBehavior.Basic
+		],
 
-			ready:function(){
-				this.rights = {
-					canEdit:true,
-					canDelete:true
-				}
-			},
+		hostAttributes:{
+			"touchAction":"pan-y"
+		},
 
-			observe:{
-				'model':'prepareModel'
-			},
-
-			//other
-
-			prepareModel:function(old, model){
-				this.$.message.innerHTML = model.message;
+		properties:{
+			model:{
+				type:Object,
+				value: function(){ return {} },
+				observer: "prepareModel(model)"
 			}
-		});
-	</script>
-</polymer-element>
+		},
+
+		ready:function(){
+			this.rights = {
+				canEdit:true,
+				canDelete:true
+			}
+		},
+
+		//other
+		prepareModel:function(model){
+			this.$.message.innerHTML = model.message;
+		}
+	});
+</script>

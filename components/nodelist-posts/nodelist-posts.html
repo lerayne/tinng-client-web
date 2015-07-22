@@ -1,41 +1,45 @@
-<link rel="import" href="../nodelist-base/nodelist-base.html">
+<link rel="import" href="../nodelist-base/nodelist-behavior.html">
+<link rel="import" href="../card-post/card-post.html">
 
-<polymer-element name="nodelist-posts" extends="nodelist-base">
+<dom-module id="nodelist-posts">
+
+	<link rel="import" type="css" href="../nodelist-base/nodelist-base.css">
+
+	<style>
+		#scroll {
+			padding: 15px 5px 1px 15px;
+			position: relative;
+		}
+
+		#loadMore {
+			margin-bottom:8px;
+		}
+
+		#loadMore text-string {
+			text-align: center;
+			display: block;
+			padding:2px 0;
+		}
+
+		.loadMoreBtn {
+			cursor:pointer;
+		}
+
+		.loadMoreBtn:hover {
+			background-color: #ddd;
+		}
+	</style>
+
 	<template>
 
-		<style>
-			#scroll {
-				padding: 15px 5px 1px 15px;
-				position: relative;
-			}
-
-			#loadMore {
-				margin-bottom:8px;
-			}
-
-			#loadMore text-string {
-				text-align: center;
-				display: block;
-				padding:2px 0;
-			}
-
-			.loadMoreBtn {
-				cursor:pointer;
-			}
-
-			.loadMoreBtn:hover {
-				background-color: #ddd;
-			}
-		</style>
-
 		<div id="scroll">
-			<div id="loadMore" hidden?="{{ !loadMoreBtn }}">
-				<text-string class="loadMoreBtn" on-tap="{{ loadMore }}" hidden?="{{loading}}">unit.posts.loadMore</text-string>
-				<text-string hidden?="{{!loading}}">unit.posts.loading</text-string>
+			<div id="loadMore" hidden$="[[ showLoadMore(nodes, headLoaded) ]]">
+				<text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">unit.posts.loadMore</text-string>
+				<text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
 			</div>
 
-			<template repeat="{{ node in nodes }}">
-				<card-post model="{{ node }}"></card-post>
+			<template is="dom-repeat" items="[[ nodes ]]" as="node">
+				<card-post model="[[ node ]]"></card-post>
 			</template>
 		</div>
 
@@ -43,18 +47,24 @@
 
 	<script>
 		Polymer({
+			//polymer
+			is:"nodelist-posts",
 
-			//properties
+			behaviors:[
+				tinng.polymerBehavior.Nodelist,
+				tinng.polymerBehavior.Basic
+			],
+
+			//other
 			sortOrder:'asc',
 			headLoaded:false,
 
-			//polymer
-			computed:{
-				loadMoreBtn:'nodes.length && !headLoaded'
+			showLoadMore:function(nodes, headLoaded){
+				return nodes.length && !headLoaded
 			},
 
 			//other
-			parseUpdates:function(old, nodes){
+			parseUpdates:function(nodes){
 
 				var firstLoad = !this.nodes.length;
 				var wasAtTop = this.isAtTop();
@@ -104,12 +114,16 @@
 			processNode:function(data){
 				//console.log(data.id, this.topic);
 
+				console.log('processNode')
+
 				if (data.id == this.topic){
 					console.log('topic head loaded')
 					this.headLoaded = true;
 				}
 
-				this.super(arguments);
+				this.NBProcessNode(data)
+
+				//this.super(arguments);
 			},
 
 			showLoading:function(){
@@ -123,4 +137,4 @@
 			}
 		})
 	</script>
-</polymer-element>
+</dom-module>

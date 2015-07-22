@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 
-<link rel="import" href="../unit-base/unit-base.html">
+<link rel="import" href="../unit-base/unit-behavior.html">
 <link rel="import" href="../nodelist-topics/nodelist-topics.html">
 
 <dom-module id="unit-topics">
@@ -152,7 +152,10 @@
 	Polymer({
 		is:'unit-topics',
 
-		behaviors:[UnitBehavior],
+		behaviors:[
+			tinng.polymerBehavior.Unit,
+			tinng.polymerBehavior.Basic
+		],
 
 		ready:function(){
 			this.text = text;
@@ -181,8 +184,6 @@
 					feed: 'topics'
 				},
 				parser: function(data) {
-					console.log('topics', data)
-
 					this.updates = data;
 				}
 			});
