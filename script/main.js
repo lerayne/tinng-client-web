@@ -44,7 +44,7 @@
 				//window.scrollTo(0,1);
 			} else {
 				console.log('Device is desktop');
-				$('body').append($('<page-main>'));
+				$('body').append($('<page-main class="tinng-page">'));
 			}
 		})
 	};

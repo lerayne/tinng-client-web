@@ -8,7 +8,14 @@
 
 	<style>
 		:host {
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
 
+			--block-user-name-display: none;
+			--block-user-avatar: {
+				height:30px;
+			};
 		}
 
 		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
@@ -28,22 +35,6 @@
 
 		.send {
 			width: 100px
-		}
-
-		polyfill-next-selector {
-			content: 'block-user .name'
-		}
-
-		block-user::shadow .name {
-			display: none;
-		}
-
-		polyfill-next-selector {
-			content: 'block-user .avatar'
-		}
-
-		block-user::shadow .avatar {
-			height: 30px;
 		}
 
 		.allowed-users {
@@ -68,7 +59,7 @@
 				></iron-signals>
 
 		<unit-posts-deco>
-			<paper-toolbar class="[[getToolbarClass(private)]]">
+			<paper-toolbar class="[[ getToolbarClass(private) ]]">
 
 				<paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
 				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -129,7 +120,6 @@
 
 
 		ready: function () {
-			Polymer.dom(this).classList.add('vertical', 'layout');
 
 			this.fullframe = false;
 			this.postsPerSlice = 50;

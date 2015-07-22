@@ -11,6 +11,10 @@
 		:host {
 			min-width: 350px;
 			overflow: hidden;
+
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-flex);
 		}
 
 		@media (max-width: 350px) {
@@ -150,8 +154,6 @@
 		behaviors:[UnitBehavior],
 
 		ready:function(){
-			Polymer.dom(this).classList.add("vertical", "layout");
-
 			this.text = text;
 			this.menuVisible = false;
 			this.menuClass = 'menu-hide-ease';
