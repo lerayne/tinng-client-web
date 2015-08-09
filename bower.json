@@ -47,7 +47,7 @@
     "iron-a11y-keys-behavior": "^1.0.0",
     "iron-iconset-svg": "^1.0.0",
     "iron-behaviors": "^1.0.0",
-    "webcomponentsjs": "0.7.7",
+    "webcomponentsjs": "0.7.10",
     "web-animations-js": "^2.0.0"
   }
 }
