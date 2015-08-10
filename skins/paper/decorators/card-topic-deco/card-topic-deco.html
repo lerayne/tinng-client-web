@@ -3,17 +3,14 @@
 	<link rel="import" type="css" href="../card-base-deco/card-base-deco.css">
 
 	<style>
-		polyfill-next-selector {content:'[private] :host .private'}
 		:host-context([private]) .private {
 			display: inline-block;
 		}
 
-		polyfill-next-selector {content:'[selected] :host'}
 		:host-context([selected]) {
 			box-shadow: 0 3px 0 #9acd32;
 		}
 
-		polyfill-next-selector {content:'.title'}
 		::content .title {
 			color:#007bb7;
 			font-weight: bold;

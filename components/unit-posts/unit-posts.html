@@ -12,7 +12,7 @@
 			@apply(--layout-vertical);
 			@apply(--layout-flex);
 
-			--block-user-name-display: none;
+			--block-user-name-display: inline-block;
 			--block-user-avatar: {
 				height:30px;
 			};
@@ -76,9 +76,13 @@
 				<div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
 					<text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer</text-string>
 					<div class="flex horizontal layout center">
-						<template is="dom-repeat" items="[[topic.private]]">
-							<block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+
+						<template is="dom-if" if="[[private]]">
+							<template is="dom-repeat" items="[[topic.private]]">
+								<block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+							</template>
 						</template>
+
 					</div>
 				</div>
 
@@ -121,7 +125,7 @@
 				type: Boolean,
 				value: false,
 				computed: 'isTopicPrivate(topic.private)'
-			}
+			},
 		},
 
 		listeners:{
@@ -210,6 +214,7 @@
 					id: this.selectedTopic
 				},
 				parser: function (data) {
+
 					this.topic = data;
 					// todo - set rights for topic here
 					// right now user.id is filled after topic load, so rename is unable on startup. THIS IS FINE!

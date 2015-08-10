@@ -20,16 +20,20 @@
 
 	<template>
 
-		<template is="dom-if" if="[[!!data.avatar]]">
+		<span  hidden$="[[ !computeToBool(data.avatar) ]]">
 			<img class="avatar" src="[[data.avatar]]">
-		</template>
+		</span>
 
 		<span class="name">[[data.name]]</span>
+
 	</template>
 </dom-module>
 
 <script>
 	Polymer({
-		is:"block-user"
+		is:"block-user",
+
+
+		behaviors:[tinng.polymerBehavior.Basic]
 	})
 </script>
