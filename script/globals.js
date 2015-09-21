@@ -5,16 +5,21 @@
 // tinng global scope root var
 window.tinng = {
 
+	// current window interface blocks (widgets)
 	units:[],
 
+	// global app state vars, like "windowFocused"
 	state:{},
 
+	// prototype classes
 	class: {
 		strategic: {}
 	},
 
+	// polymer behaviors for inheritance by polymer modules
 	polymerBehavior:{},
 
+	// localization
 	lang:{
 		languages:{},
 		locale:'',
@@ -22,10 +27,12 @@ window.tinng = {
 		textLocalized:{}
 	},
 
+	// other global vars
 	service:{
-		startupCalls:[]
+		startupAsyncsQueue:[]
 	},
 
+	// configuration
 	cfg:{}
 };
 
@@ -34,13 +41,14 @@ window.text = function(key){
 	return tinng.lang.textLocalized[key] ? tinng.lang.textLocalized[key] : (tinng.lang.textDefault[key] ? tinng.lang.textDefault[key] : key);
 };
 
+// todo - rough localization engine. Review!
 (function(){
 
 	var languages = [];
 
 	var getLanguage = function(languages){
 
-		return new Promise(function(resolve){
+		return new Promise(function(resolve, reject){
 
 			var lang = languages.shift();
 
@@ -69,7 +77,7 @@ window.text = function(key){
 	var defaultLangRequest = getLanguage(['en']).then(function(lang){
 		tinng.lang.textDefault = tinng.lang.languages[lang];
 	});
-	tinng.service.startupCalls.push(defaultLangRequest);
+	tinng.service.startupAsyncsQueue.push(defaultLangRequest);
 
 	// language detection
 	if (window.navigator && navigator.languages) {
@@ -80,11 +88,8 @@ window.text = function(key){
 			tinng.lang.locale = lang;
 			tinng.lang.textLocalized = tinng.lang.languages[lang];
 		});
-		tinng.service.startupCalls.push(localLangRequest);
+		tinng.service.startupAsyncsQueue.push(localLangRequest);
 	}
-
-
-
 })();
 
 

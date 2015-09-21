@@ -1,12 +1,10 @@
 <script>
 	tinng.polymerBehavior.Basic = {
 
-		computeStrToBool:function(value){
-			return !!+value;
-		},
+		//Set of functions to use in computed properties and bindings
 
 		computeToBool:function(value){
-			return !!value;
+			return !!+value; // returns NaN as false
 		},
 
 		computeEqual:function(selected){
@@ -17,6 +15,7 @@
 			return +value;
 		},
 
+		// not sure if those work
 		emptyObject: function(){ return {} },
 
 		emptyArray: function(){ return [] }
