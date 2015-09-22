@@ -58,11 +58,11 @@
 			<content select="block-user"></content>
 
 			<span class="datetime" >
-				<span hidden$="[[ computeToBool(model.modified) ]]">
+				<span class="created" hidden$="[[ computeStrToBool(model.modified) ]]">
 					<content select=".created"></content>
 				</span>
 
-				<span hidden$=[[!model.modified]]>
+				<span class="modified" hidden$=[[!model.modified]]>
 					<text-string>unit.topics.modified</text-string> <content select=".modified"></content>
 				</span>
 			</span>

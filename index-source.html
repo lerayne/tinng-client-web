@@ -20,6 +20,14 @@
 	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/jquery/dist/jquery.min.js"></script> 		<![endif]>
 
 	<script src="./bower_components/lodash/dist/lodash.min.js"></script>
+
+	<script src="./bower_components/moment/min/moment.min.js"></script>
+	<script src="./bower_components/moment/locale/ru.js"></script>
+	<script>
+		moment.locale('ru');
+		// todo - make moment recognize locale from tinng settings
+	</script>
+
 	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/webcomponentsjs/webcomponents-lite.min.js"></script> <![endif]>
 
 	<!-- Polymer -->

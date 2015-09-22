@@ -4,7 +4,11 @@
 		//Set of functions to use in computed properties and bindings
 
 		computeToBool:function(value){
-			return !!+value; // returns NaN as false
+			return !!+value; // returns NaN string as false
+		},
+
+		computeStrToBool:function(value){
+			return !!value; // returns NaN string as true
 		},
 
 		computeEqual:function(selected){
