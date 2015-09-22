@@ -4,15 +4,13 @@
 
 <dom-module id="nodelist-topics">
 
-	<style>
+	<style include="nodelist-style">
 		#scroll {
 			padding: 15px 5px 1px 15px;
 		}
 	</style>
 
 	<template>
-
-		<style include="nodelist-style"></style>
 
 		<div id="scroll">
 			<template is="dom-repeat" items="{{ nodes }}" as="node">

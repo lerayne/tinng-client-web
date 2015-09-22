@@ -4,7 +4,7 @@
 
 <dom-module id="nodelist-posts">
 
-	<style>
+	<style include="nodelist-style">
 		#scroll {
 			padding: 15px 5px 1px 15px;
 			position: relative;
@@ -30,8 +30,6 @@
 	</style>
 
 	<template>
-
-		<style include="nodelist-style"></style>
 
 		<div id="scroll">
 			<div id="loadMore" hidden$="[[ showLoadMore(nodes, headLoaded) ]]">
