@@ -1,9 +1,8 @@
 <link rel="import" href="../card-base-deco/card-base-style.html">
-<style is="custom-style" import="card-base-style"></style>
 
 <dom-module id="card-topic-deco">
 
-	<style>
+	<style include="card-base-style">
 		:host-context([private]) .private {
 			display: inline-block;
 		}
@@ -53,8 +52,9 @@
 	</style>
 
 	<template>
+		<!--<style include="card-base-style"></style>-->
 
-		<div class="info somestyle">
+		<div class="info">
 			<content select="block-user"></content>
 
 			<span class="datetime" >

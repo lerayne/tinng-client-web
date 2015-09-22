@@ -4,7 +4,7 @@
 
 <dom-module is="unit-posts">
 
-	<style>
+	<style include="unit-style">
 		:host {
 			@apply(--layout);
 			@apply(--layout-vertical);
@@ -48,8 +48,6 @@
 	</style>
 
 	<template>
-
-		<style import="unit-style"></style>
 
 		<iron-signals
 			on-iron-signal-secondary-close="meSingle"

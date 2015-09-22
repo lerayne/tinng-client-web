@@ -2,7 +2,7 @@
 
 <dom-module id="card-post-deco">
 
-	<style>
+	<style include="card-base-style">
 		:host {
 			min-height: 50px;
 		}
@@ -72,7 +72,6 @@
 	</style>
 
 	<template>
-		<style import="card-base-style"></style>
 
 		<div class="info">
 			<content select="block-user"></content>
