@@ -1,10 +1,8 @@
 <link rel="import" href="../unit-base/unit-behavior.html">
-<link rel="import" href="../card-post/card-post.html">
+<link rel="import" href="../unit-base/unit-style.html">
 <link rel="import" href="../nodelist-posts/nodelist-posts.html">
 
 <dom-module is="unit-posts">
-
-	<link rel="import" type="css" href="../unit-base/unit-base.css">
 
 	<style>
 		:host {
@@ -50,6 +48,8 @@
 	</style>
 
 	<template>
+
+		<style import="unit-style"></style>
 
 		<iron-signals
 			on-iron-signal-secondary-close="meSingle"

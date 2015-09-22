@@ -1,11 +1,11 @@
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 
 <link rel="import" href="../unit-base/unit-behavior.html">
+<link rel="import" href="../unit-base/unit-style.html">
 <link rel="import" href="../nodelist-topics/nodelist-topics.html">
 
 <dom-module id="unit-topics">
 
-	<link rel="import" type="css" href="../unit-base/unit-base.css">
 
 	<style>
 		:host {
@@ -82,6 +82,8 @@
 	</style>
 
 	<template>
+
+		<style import="unit-style"></style>
 
 		<iron-signals
 			on-iron-signal-unit-topics="parseSignal"

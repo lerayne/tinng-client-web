@@ -1,6 +1,7 @@
-<dom-module id="card-topic-deco">
+<link rel="import" href="../card-base-deco/card-base-style.html">
+<style is="custom-style" import="card-base-style"></style>
 
-	<link rel="import" type="css" href="../card-base-deco/card-base-deco.css">
+<dom-module id="card-topic-deco">
 
 	<style>
 		:host-context([private]) .private {
@@ -33,7 +34,6 @@
 			margin-left:10px;
 		}
 
-		polyfill-next-selector {content:'block-tag'}
 		::content block-tag {
 			cursor:pointer;
 		}
@@ -53,7 +53,8 @@
 	</style>
 
 	<template>
-		<div class="info">
+
+		<div class="info somestyle">
 			<content select="block-user"></content>
 
 			<span class="datetime" >
@@ -69,7 +70,7 @@
 
 		<div class="topic-row">
 			<content select=".title"></content>
-			<text-string class="private" hidden$="[[ !computeStrToBool(model.private) ]]">unit.topics.private</text-string>
+			<text-string class="private" hidden$="[[ !computeToBool(model.private) ]]">unit.topics.private</text-string>
 		</div>
 
 		<content select=".message"></content>

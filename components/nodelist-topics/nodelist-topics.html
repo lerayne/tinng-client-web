@@ -1,9 +1,8 @@
 <link rel="import" href="../nodelist-base/nodelist-behavior.html">
 <link rel="import" href="../card-topic/card-topic.html">
+<link rel="import" href="../nodelist-base/nodelist-style.html">
 
 <dom-module id="nodelist-topics">
-
-	<link rel="import" type="css" href="../nodelist-base/nodelist-base.css">
 
 	<style>
 		#scroll {
@@ -12,6 +11,8 @@
 	</style>
 
 	<template>
+
+		<style include="nodelist-style"></style>
 
 		<div id="scroll">
 			<template is="dom-repeat" items="{{ nodes }}" as="node">
