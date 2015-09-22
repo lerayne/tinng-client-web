@@ -1,7 +1,6 @@
 <link rel="import" href="../block-tag/block-tag.html">
 <link rel="import" href="../block-user/block-user.html">
 <link rel="import" href="../card-base/card-behavior.html">
-<link rel="import" href="../block-date/block-date.html">
 
 <dom-module id="card-topic">
 
@@ -18,8 +17,8 @@
 			<span class="message">[[model.message]]</span>
 
 			<block-user data="[[ getAuthorData(model) ]]"></block-user>
-			<span class="created"><block-date data="[[model.created]]"></block-date></span>
-			<span class="modified"><block-date data="[[model.modified]]"></block-date></span>
+			<block-date class="created" data="[[model.created]]"></block-date>
+			<block-date class="modified" data="[[model.modified]]"></block-date>
 
 			<template is="dom-repeat" items="[[ model.tags ]]" as="tag">
 				<block-tag data="{{tag}}">[[tag.name]]</block-tag>
