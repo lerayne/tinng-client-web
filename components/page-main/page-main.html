@@ -1,3 +1,9 @@
+<!--
+
+This page handles main messaging interface, it's units interactions
+
+-->
+
 <link rel="import" href="./page-main-mobile.html">
 
 <link rel="import" href="../tinng-header/tinng-header.html">
@@ -92,6 +98,8 @@
 
 		is:"page-main",
 
+		// global mediator listeners
+		// todo - think it over to make system more understandable
 		listeners:{
 			'suspend':"hideTopics",
 			'reveal':"showTopics",
@@ -106,12 +114,16 @@
 		},
 
 		hideTopics:function(){
+			// hide topics container
 			this.topicsHidden = true;
+			// message topics unit itself that it should suspend
 			this.fire('iron-signal', {name:'unit-topics', data:{command:'suspend'}})
 		},
 
 		showTopics:function(){
+			// show topics container
 			this.topicsHidden = false;
+			// message topics unit itself that it should wake up
 			this.fire('iron-signal', {name:'unit-topics', data:{command:'restore'}})
 		},
 
