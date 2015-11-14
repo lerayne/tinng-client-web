@@ -5,7 +5,7 @@
 // tinng global scope root var
 window.tinng = {
 
-	// current window interface blocks (widgets)
+	// current window interface blocks, called Units (a.k.a. widgets)
 	units:[],
 
 	// global app state vars, like "windowFocused"
@@ -13,7 +13,7 @@ window.tinng = {
 
 	// prototype classes
 	class: {
-		strategic: {}
+		strategic: {} // todo - deside if it's necessary
 	},
 
 	// polymer behaviors for inheritance by polymer modules
@@ -36,9 +36,11 @@ window.tinng = {
 	cfg:{}
 };
 
+//GLOBALS (most needed functions, as an exception)
+
 // get localized string or english or just key if both absent
 window.text = function(key){
-	return tinng.lang.textLocalized[key] ? tinng.lang.textLocalized[key] : (tinng.lang.textDefault[key] ? tinng.lang.textDefault[key] : key);
+	return tinng.lang.textLocalized[key] || tinng.lang.textDefault[key] || key;
 };
 
 // todo - rough localization engine. Review!
