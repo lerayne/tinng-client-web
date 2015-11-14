@@ -10,3 +10,4 @@ How components shoud be named (and understood when named) is based on their firs
 to be deleted or renamed:
 * nodelist
 * tinng
+* header
