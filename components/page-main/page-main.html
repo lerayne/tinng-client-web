@@ -1,10 +1,9 @@
 <!--
 
-This page handles main messaging interface, it's units interactions
+This page handles main messaging interface and interactions between the units, placed in it. It also acts like a mediator
+for the event system. It also contains modal dialogs.
 
 -->
-
-<link rel="import" href="./page-main-mobile.html">
 
 <link rel="import" href="../tinng-header/tinng-header.html">
 <link rel="import" href="../header-login-panel/header-login-panel.html">
@@ -61,12 +60,14 @@ This page handles main messaging interface, it's units interactions
 
 		<page-main-deco>
 
+			<!-- Header -->
 			<tinng-header>
 				<span>Tinng's name</span>
 				<span class="flex"></span>
 				<header-login-panel></header-login-panel>
 			</tinng-header>
 
+			<!-- Main interface -->
 			<div class="main-block horizontal layout self-center flex">
 
 				<div class="column vertical layout" hidden$="[[topicsHidden]]" style="width:40%">
@@ -82,7 +83,7 @@ This page handles main messaging interface, it's units interactions
 			</div>
 
 
-
+			<!-- Dialog windows -->
 			<paper-dialog id="dialog-register" heading="Register">
 				Register
 			</paper-dialog>
