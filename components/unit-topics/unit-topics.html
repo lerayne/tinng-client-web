@@ -114,7 +114,7 @@
 				<!-- UNIT HEADING -->
 				<text-string hidden$="{{searchOn}}" id="unitHeader" class="flex">unit.topics.unitName</text-string>
 
-				<!-- SEARCH -->
+				<!-- SEARCH todo - maybe export to another component-->
 				<div hidden hidden$="{{!searchOn}}" on-transitionend="searchHideEnd" class="search horizontal layout flex">
 					<iron-collapse id="searchAnimator" class="horizontal" horizontal duration="0.2" fixedSize="true">
 						<!-- todo - написать свой коллапсер -->
@@ -153,8 +153,9 @@
 		is:'unit-topics',
 
 		behaviors:[
+			tinng.polymerBehavior.Nodelist,
 			tinng.polymerBehavior.Unit,
-			tinng.polymerBehavior.Basic
+			tinng.polymerBehavior.Basic,
 		],
 
 		ready:function(){
