@@ -1,0 +1,54 @@
+<dom-module id="block-topics-search">
+    <style>
+        #searchAnimator {
+            width: 100%;
+            transition: opacity 0.2s;
+            opacity: 1;
+        }
+
+        #searchAnimator.iron-collapse-closed {
+            opacity: 0;
+        }
+    </style>
+
+    <template>
+        <div hidden hidden$="{{!searchOn}}" on-transitionend="searchHideEnd" class="search horizontal layout flex">
+            <iron-collapse id="searchAnimator" class="horizontal" horizontal duration="0.2" fixedSize="true">
+                <!-- todo - написать свой коллапсер -->
+                <div class="horizontal layout" style="width:100%">
+                    <div class="text-container horizontal layout flex" opaque$="{{searchOn}}" >
+                        <input type="text">
+                    </div>
+                    <paper-icon-button style="margin-left:5px" icon="backspace" on-tap="searchClearHide"></paper-icon-button>
+                </div>
+            </iron-collapse>
+        </div>
+
+        <paper-icon-button icon="search" on-tap="searchShow" hidden$="{{searchOn}}"></paper-icon-button>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "block-topics-search",
+
+        searchShow:function(){
+            this.searchOn = true;
+            this.searchToggle();
+        },
+
+        searchClearHide:function(){
+            this.searchToggle();
+        },
+
+        searchHideEnd:function(){
+            if (!this.$.searchAnimator.opened){
+                this.searchOn = false;
+            }
+        },
+
+        searchToggle:function(){
+            this.$.searchAnimator.toggle();
+        }
+    })
+</script>
