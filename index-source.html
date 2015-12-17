@@ -8,62 +8,62 @@
 	<meta http-equiv="cache-control" content="no-cache">
 
 	<!-- GLOBAL STYLING -->
-	<link rel="stylesheet" href="./styles/main.css">
+	<link rel="stylesheet" href="app/styles/main.css">
 
 
 	<!-- SHIMS -->
-	<script src="./bower_components/es6-promise-polyfill/promise.min.js"></script>
+	<script src="bower_components/es6-promise-polyfill/promise.min.js"></script>
 
 	<!-- LIBRARIES -->
 
-	<!--[if lte IE 9]>			<script src="./bower_components/jquery-compat/dist/jquery.min.js"></script>	<![endif]-->
-	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/jquery/dist/jquery.min.js"></script> 		<![endif]>
+	<!--[if lte IE 9]>			<script src="bower_components/jquery-compat/dist/jquery.min.js"></script>	<![endif]-->
+	<![if (gt IE 9) | (!IE) ]>	<script src="bower_components/jquery/dist/jquery.min.js"></script> 		<![endif]>
 
-	<script src="./bower_components/lodash/dist/lodash.min.js"></script>
+	<script src="bower_components/lodash/dist/lodash.min.js"></script>
 
-	<script src="./bower_components/moment/min/moment.min.js"></script>
-	<script src="./bower_components/moment/locale/ru.js"></script>
+	<script src="bower_components/moment/min/moment.min.js"></script>
+	<script src="bower_components/moment/locale/ru.js"></script>
 	<script>
 		moment.locale('ru');
 		// todo - make moment recognize locale from tinng settings
 	</script>
 
-	<![if (gt IE 9) | (!IE) ]>	<script src="./bower_components/webcomponentsjs/webcomponents-lite.min.js"></script> <![endif]>
+	<![if (gt IE 9) | (!IE) ]>	<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script> <![endif]>
 
 	<!-- Polymer -->
 	<script>
 		window.Polymer = window.Polymer || {};
 		window.Polymer.dom = 'shadow';
 	</script>
-	<link rel="import" href="./bower_components/polymer/polymer.html">
+	<link rel="import" href="bower_components/polymer/polymer.html">
 
 	<!-- Polymer components -->
-	<link rel="import" href="./bower_components/iron-flex-layout/iron-flex-layout.html">
-	<link rel="import" href="./bower_components/iron-flex-layout/classes/iron-flex-layout.html">
-	<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
-	<link rel="import" href="./bower_components/iron-signals/iron-signals.html">
-	<link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
-	<link rel="import" href="./bower_components/paper-input/paper-input.html">
-	<link rel="import" href="./bower_components/paper-item/paper-item.html">
-	<link rel="import" href="./bower_components/paper-button/paper-button.html">
-	<link rel="import" href="./bower_components/neon-animation/neon-animation.html">
+	<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+	<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+	<link rel="import" href="bower_components/iron-signals/iron-signals.html">
+	<link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+	<link rel="import" href="bower_components/paper-input/paper-input.html">
+	<link rel="import" href="bower_components/paper-item/paper-item.html">
+	<link rel="import" href="bower_components/paper-button/paper-button.html">
+	<link rel="import" href="bower_components/neon-animation/neon-animation.html">
 
 	<!-- TINNG SCRIPTS -->
 
 	<!-- global functions and vars -->
-	<script src="./script/globals.js"></script>
+	<script src="app/script/globals.js"></script>
 
 	<!-- basic behavior -->
-	<link rel="import" href="./behaviors/basic-behavior.html">
+	<link rel="import" href="app/components/basic/basic-behavior.html">
 
 	<!-- configuration section (including decorators) -->
 	<link rel="import" href="./config.html">
 
 	<!-- Tinng components -->
-	<link rel="import" href="./components/block-date/block-date.html">
-	<link rel="import" href="./components/text-string/text-string.html">
-	<link rel="import" href="./components/page-main/page-main.html">
-	<link rel="import" href="./components/page-main/page-main-mobile.html">
+	<link rel="import" href="app/components/block-date/block-date.html">
+	<link rel="import" href="app/components/text-string/text-string.html">
+	<link rel="import" href="app/components/page-main/page-main.html">
+	<link rel="import" href="app/components/page-main/page-main-mobile.html">
 
 	<!-- todo - how to avoid making this permanent? -->
 	<meta name="viewport" content="user-scalable=0, initial-scale=1.0">
@@ -71,11 +71,11 @@
 
 
 	<!-- Scripts -->
-	<script src="./script/class/Funcs.js"></script>
-	<script src="./script/class/Router.js"></script>
-	<script src="./script/class/Connection/XHRShortPoll.js"></script>
-	<script src="./script/class/Connection/Connection.js"></script>
-	<script src="./script/main.js"></script>
+	<script src="app/script/class/Funcs.js"></script>
+	<script src="app/script/class/Router.js"></script>
+	<script src="app/script/class/Connection/XHRShortPoll.js"></script>
+	<script src="app/script/class/Connection/Connection.js"></script>
+	<script src="app/script/main.js"></script>
 </head>
 
 <body class="fullbleed vertical layout" unresolved>

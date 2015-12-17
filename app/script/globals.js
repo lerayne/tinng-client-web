@@ -57,7 +57,7 @@ window.text = function(key){
 			if (tinng.lang.languages[lang]) {
 				resolve(lang)
 			} else {
-				Promise.resolve($.getJSON('./i18n/'+lang+'.json')).then(function(json){
+				Promise.resolve($.getJSON('./app/i18n/'+lang+'.json')).then(function(json){
 
 					tinng.lang.languages[lang] = json;
 					resolve(lang)
