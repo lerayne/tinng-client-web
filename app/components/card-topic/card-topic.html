@@ -17,8 +17,8 @@
 			<span class="message">[[model.message]]</span>
 
 			<block-user data="[[ getAuthorData(model) ]]"></block-user>
-			<block-date class="created" data="[[model.created]]"></block-date>
-			<block-date class="modified" data="[[model.modified]]"></block-date>
+			<text-date class="created" data="[[model.created]]"></text-date>
+			<text-date class="modified" data="[[model.modified]]"></text-date>
 
 			<template is="dom-repeat" items="[[ model.tags ]]" as="tag">
 				<block-tag data="{{tag}}">[[tag.name]]</block-tag>
