@@ -1,3 +1,5 @@
+# Components naming
+
 How components shoud be named (and understood when named) is based on their first name part before dash:
 
 **basic** - non-UI modules, or other entities, such as behaviors
@@ -15,3 +17,16 @@ How components shoud be named (and understood when named) is based on their firs
 to be deleted or renamed:
 * tinng
 * header
+
+# Functions naming
+
+Previously, parent (behavior) functions had prefixes. This is completely wrong!
+Descendant's functions that are wrappers for behavior's function should have prefix.
+
+So now: `parseUpdates` is behavior's method name and `topics_parseUpdates` is it's wrapper in unit-topics node.
+
+This way, descendant can use a method of parent and it's own method. Parent can't use a descendant's method, since it doesn't 
+know, how the descendant's method will be called, which is completely right - use of descendant's methods in parents can
+cause confusion and affects hierarchy of code. Instead of it, descendant should use simple wrapper of parent's method.
+
+**Underscore** is used to separate descendants from usual methods

@@ -1,16 +1,21 @@
 <script>
 	tinng.polymerBehavior.Nodelist = {
+
 		//properties
 		clientId:0,
 
-		//polymer
+		/**
+		 * Polymer-specific fields
+		 */
 		properties:{
+			// Whether or not this unit is in loading state
 			loading: {
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
 			},
 
+			// Whether or not the contents of this unit had been loaded
 			loaded: {
 				type: Boolean,
 				value: false,
@@ -25,10 +30,11 @@
 
 			sortOrder: {
 				type:String,
-				value: "desc",
+				value: "asc",
 				observer:"sortSelf"
 			},
 
+			// main data list
 			nodes: {
 				type: Array,
 				value: function(){ return [] }
@@ -48,46 +54,74 @@
 
 		//other
 		parseUpdates:function(old, nodes){
-			console.log('updates', nodes)
+			//console.log('updates', nodes)
 		},
 
 		clean:function(){
 			this.nodes = [];
 		},
 
-		NBProcessNode:function(data){
+		/**
+		 * Common node processing
+		 *
+		 * @param data - node model from server
+		 */
+		processNode:function(data){
 
-			//console.log('super processNode')
-
-			// находим индекс нужного элемента по id
+			// находим индекс существующего элемента по id
 			var existingItemIndex = _(this.nodes).findIndex({id: data.id});
 
 			// если такого элемента нет - добавляем новый элемент в коллекцию
 			if (existingItemIndex == -1) {
 
 				// установка this.sortOrder в последний параметр актуальна только для сортировки по времени
-				var sortIndex = tinng.funcs.getSortIndex(this.nodes, data, this.sortField, this.sortOrder, this.sortOrder)
+				var sortIndex = tinng.funcs.getSortIndex(this.nodes, data, this.sortField, this.sortOrder, this.sortOrder);
 
 				// вставляем новый элемент в нужное место
 				if (sortIndex == this.nodes.length) {
-					this.nodes.push(data)
+					this.push('nodes', data)
 				} else {
-					this.nodes.splice(sortIndex, 0, data);
+					this.splice('nodes', sortIndex, 0, data);
 				}
 
 			} else {
 				if (+data.deleted) {
 					// если есть и удален - удаляем из коллекции
-					this.nodes.splice(existingItemIndex, 1)
+					this.splice('nodes',  existingItemIndex, 1)
 				} else {
 					// иначе - мягко обновляем существующий элемент (иначе пересоздается нода, обнуляя все свои свойства)
-					// впрочем, теги и другие вложенные объекты сейчас пересоздаются, так что возможно (todo) создать функцию рекурсивного мягкого обновления
+					// впрочем, теги и другие вложенные объекты сейчас пересоздаются, так что возможно
+					// (todo) создать функцию рекурсивного мягкого обновления ИЛИ проверить, что в реальности обновляется
+					// (возможно, мягкое обновление уже делает сам полимер)
 					for (var key in data) {
-						this.nodes[existingItemIndex][key] = data[key];
+						this.set('nodes.'+ existingItemIndex + '.' + key, data[key]);
 					}
 				}
 			}
 		},
+
+
+		/**
+		 * Prepare a node to being parsed
+		 *
+		 * @param node - node model from server
+		 */
+		prepareNode:function(node){
+			// если у объекта нет id - присваеваем ему локальный клиентский id
+			if (!node.id) node.id = 'client'+(this.clientId++);
+
+			// making node selected on load
+			// todo - make selected node to be scrolled to on load
+			if (this.selectedIDs.indexOf(node.id) != -1) {
+				node.selected = true;
+			}
+		},
+
+
+
+		//
+		// Sorting | todo - modify these to use native sorting of dom-repeat
+		//
 
 		// сортировка по поданным параметрам (удобна для декларативного фильтра, который пока не работает)
 		sort:function(input, sortField, sortOrder){
@@ -102,12 +136,18 @@
 			this.nodes = this.sort(this.nodes, this.sortField, this.sortOrder)
 		},
 
+
+
+		//
+		//Scroll
+		//
+
 		isAtBottom:function(){
-			return this.scrollHeight - (this.scrollTop + this.offsetHeight) == 0;
+			return this.$.nodelist.scrollHeight - (this.$.nodelist.scrollTop + this.$.nodelist.offsetHeight) == 0;
 		},
 
 		isAtTop:function(){
-			return this.scrollTop == 0;
+			return this.$.nodelist.scrollTop == 0;
 		},
 
 		toBottom: function(){
@@ -118,51 +158,48 @@
 			this.$.scroll.scrollIntoView(true)
 		},
 
-		prepareNode:function(node){
-			// если у объекта нет id - присваеваем ему локальный клиентский id
-			if (!node.id) node.id = 'client'+(this.clientId++);
 
-			// making node selected on load
-			// todo - make selected node to be scrolled to on load
-			if (this.selectedIDs.indexOf(node.id) != -1) {
-				node.selected = true;
-			}
-		},
 
-		NLMarkSelected:function(id){
+		//
+		// Selection
+		//
+
+		markSelected:function(id){
 
 			//console.log('markSelected from behavior');
 
 			this.selectedIDs.push(id);
 
 			if (this.nodes.length){
-				var node = _(this.nodes).find({id:id});
-				if (typeof node != 'undefined'){
-					node.selected = true;
+				var nodeIndex = _(this.nodes).findIndex({id:id});
+				if (nodeIndex > -1){
+					this.set('nodes.' + nodeIndex + '.selected', true);
 				}
 			}
 		},
 
 		unmarkSelected:function(id){
-			var i = this.selectedIDs.indexOf(id);
-			if (i >= 0) {
-				this.selectedIDs.splice(i,1);
+			var idIndex = this.selectedIDs.indexOf(id);
+			if (idIndex >= 0) {
+				this.selectedIDs.splice(idIndex,1);
 			}
 
 			if (this.nodes.length){
-				var node = _(this.nodes).find({id:id});
-				if (typeof node != 'undefined' && node.selected){
-					node.selected = false;
+				var nodeIndex = _(this.nodes).findIndex({id:id});
+				var node = this.nodes[nodeIndex];
+				if (nodeIndex != -1 && node.selected){
+					this.set('nodes.' + nodeIndex + '.selected', false)
 				}
 			}
 		},
 
 		clearSelection:function(){
+			var that = this;
 			this.selectedIDs = [];
 
-			_(this.nodes).each(function(node){
+			_(this.nodes).each(function(node, index){
 				if (node.selected) {
-					node.selected = false;
+					that.set('nodes.' + index + '.selected', false)
 				}
 			})
 		}

@@ -77,7 +77,7 @@
 			</paper-toolbar>
 
 			<!-- TOPICS LIST -->
-			<div id="topicsList" class="nodes-container content vertical layout flex">
+			<div id="nodelist" class="nodes-container content vertical layout flex">
 				<div id="scroll">
 					<template is="dom-repeat" items="{{ nodes }}" as="node">
 						<card-topic model="{{ node }}"></card-topic>
@@ -90,10 +90,15 @@
 		</unit-topics-deco>
 
 	</template>
-
+</dom-module>
 
 <script>
 	Polymer({
+
+		//
+		//Polymer-specific fields
+		//
+
 		is:'unit-topics',
 
 		behaviors:[
@@ -103,11 +108,18 @@
 		],
 
 		ready:function(){
+			// set default sorting
+			this.sortField = 'updated';
+			this.sortOrder = 'desc';
+
 			this.subscribe();
 		},
 
 
-		// other
+
+		/**
+		 * Subscribes this unit to topic updates
+		 */
 		subscribe: function() {
 
 			this.clean();
@@ -124,9 +136,56 @@
 			});
 		},
 
-		clean:function(){
+
+		/**
+		 * Transfer unit to initial state
+		 */
+		clean: function(){
 			this.nodes = [];
 			tinng.connection.unscribe(this, 'topics-main');
+		},
+
+
+		/**
+		 * Main parsing function that transforms list of updates from server to the new model
+		 */
+		parseUpdates: function(nodes){
+
+			// prepare all nodes
+			_(nodes).each(this.prepareNode.bind(this));
+
+			if (!this.nodes.length) {
+				// если это первичная загрузка
+
+				// если мы заполняем массив первый раз - просто присваеваем, отсортировав
+				this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
+
+			} else {
+				// если в массиве уже есть ноды - обработать каждую
+				_(nodes).each(this.topics_processNode);
+
+				// todo - нужно либо отключить соблюдение сортировки в processNode, либо сделать условие на выполнение sortSelf
+				// (было ли обновление) иначе - двойная работа. А еще лучше - сначала, если есть обновления, А ТАКЖЕ если от
+				// обновлений может зависеть порядок - обновить и отсортировать, а затем добавить/удалить с само-сортировкой.
+				// Чтобы понять, нужна ли сортировка - можно проверять, изменилось ли поле, по которому сортируем ;)
+				this.sortSelf();
+			}
+		},
+
+
+		/**
+		 * Process separate node
+		 */
+		topics_processNode: function(data){
+			this.processNode(data);
+		},
+
+
+		/**
+		 * Show unit's slide-in menu
+		 */
+		menuShow: function(){
+			this.$.slideMenu.menuShow();
 		},
 
 
@@ -134,19 +193,9 @@
 
 		onTopicLoaded:function(event, data, sender){
 
-			if (this.markSelected) this.markSelected(data.id);
+			this.topics_markSelected(data.id);
 		},
 
-		suspend: function () {
-			/*
-			* todo - Эта функция работает нестандартно: она посылает 2 сигнала, один - наверх (где он засекается элементом
-			* разметки) и один широковещательно. Разметка закрывает колонку и посылает другой широковещ. сигнал, который
-			* засекается текущим элементом. Некая часть этого сценария является полезной идеей, но в целом ее нужно
-			* продумать лучше
-			* */
-			this.fire('suspend', {sender: this});
-			this.fire('iron-signal', {name: 'secondary-close'});
-		},
 
 		parseSignal: function (event, data) {
 			//console.log(data);
@@ -159,40 +208,10 @@
 			}
 		},
 
-		menuShow:function(){
-			this.$.slideMenu.menuShow();
-		},
 
-
-		// From nodelist
-		sortField: 'updated',
-
-		parseUpdates: function(nodes){
-
-			_(nodes).each(this.prepareNode.bind(this));
-
-			if (!this.nodes.length) {
-				// если это первичная загрузка
-				//console.log('initial load', this.sort(nodes, this.sortField, this.sortOrder))
-
-				// если мы заполняем массив первый раз - нужно его отсортировать
-				this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
-
-			} else {
-				// если в массиве уже есть ноды
-				_(nodes).each(this.processNode);
-
-				// todo - нужно либо отключить соблюдение сортировки в processItem, либо сделать условие на выполнение sortSelf
-				// (было обновление) иначе - двойная работа. А еще лучше - сначала, если есть обновления, А ТАКЖЕ если от
-				// обновлений может зависеть порядок - обновить и отсортировать, а затем добавить/удалить с само-сортировкой.
-				// Чтобы понять, нужна ли сортировка - можно проверять, изменилось ли поле, по которому сортируем ;)
-				this.sortSelf();
-			}
-		},
-
-		markSelected:function(id){
+		topics_markSelected:function(id){
 			this.clearSelection();
-			this.NLMarkSelected(id)
+			this.markSelected(id)
 		}
 	});
 </script>

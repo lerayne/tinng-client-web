@@ -176,7 +176,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 			crossDomain: true,
 			success: function(response){
 
-				console.log('response', response)
+				//console.log('response', response)
 
 				if (typeof response != 'undefined' && response){
 					if (response.debug) {

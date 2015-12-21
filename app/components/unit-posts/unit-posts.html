@@ -7,421 +7,425 @@
 
 <dom-module is="unit-posts">
 
-	<style include="unit-style">
-		:host {
+    <style include="unit-style">
+        :host {
 
-			--block-user-name-display: inline-block;
-			--block-user-avatar: {
-				height:30px;
-			};
-		}
+            --block-user-name-display: inline-block;
+            --block-user-avatar: {
+                height: 30px;
+            };
+        }
 
-		.editor {
-			background-color: #fff;
-			padding: 20px;
-		}
+        .editor {
+            background-color: #fff;
+            padding: 20px;
+        }
 
-		textarea {
-			margin-right: 20px;
-			font-size: 150%;
-			padding: 5px;
-		}
+        textarea {
+            margin-right: 20px;
+            font-size: 150%;
+            padding: 5px;
+        }
 
-		.send {
-			width: 100px
-		}
+        .send {
+            width: 100px
+        }
 
-		.allowed-users {
-			opacity: 1;
-			transition: opacity 0.18s ease-in;
-			height: 56px;
-		}
+        .allowed-users {
+            opacity: 1;
+            transition: opacity 0.18s ease-in;
+            height: 56px;
+        }
 
-		.allowed-users[hidden] {
-			opacity: 0;
-			/*display: flex !important;*/
-		}
+        .allowed-users[hidden] {
+            opacity: 0;
+            /*display: flex !important;*/
+        }
 
-		/* from nodelist */
+        /* from nodelist */
 
-		#loadMore {
-			margin-bottom:8px;
-		}
+        #loadMore {
+            margin-bottom: 8px;
+        }
 
-		#loadMore text-string {
-			text-align: center;
-			display: block;
-			padding:2px 0;
-		}
+        #loadMore text-string {
+            text-align: center;
+            display: block;
+            padding: 2px 0;
+        }
 
-		.loadMoreBtn {
-			cursor:pointer;
-		}
+        .loadMoreBtn {
+            cursor: pointer;
+        }
 
-		.loadMoreBtn:hover {
-			background-color: #ddd;
-		}
+        .loadMoreBtn:hover {
+            background-color: #ddd;
+        }
 
 
-	</style>
+    </style>
 
-	<template>
+    <template>
 
-		<iron-signals
-			on-iron-signal-secondary-close="meSingle"
-			on-iron-signal-topic-select="topicSelect"
-			on-iron-signal-add-message="addMessage"
-			on-iron-signal-rescribe-all="subscribe"
-		></iron-signals>
+        <iron-signals
+                on-iron-signal-secondary-close="meSingle"
+                on-iron-signal-topic-select="topicSelect"
+                on-iron-signal-add-message="addMessage"
+                on-iron-signal-rescribe-all="subscribe"
+        ></iron-signals>
 
-		<unit-posts-deco>
-			<paper-toolbar class="[[ getToolbarClass(private) ]]">
+        <unit-posts-deco>
+            <paper-toolbar class="[[ getToolbarClass(private) ]]">
 
-				<paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
-				<!--<paper-icon-button icon="menu"></paper-icon-button>-->
+                <paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
+                <!--<paper-icon-button icon="menu"></paper-icon-button>-->
 
 				<span class="flex">
-					<span id="topicName" class="name-container" contenteditable$="[[ renameMode ]]">[[topic.topic_name]]</span>
+					<span id="topicName" class="name-container"
+                          contenteditable$="[[ renameMode ]]">[[topic.topic_name]]</span>
 				</span>
 
-				<paper-icon-button icon="create" hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]" on-tap="rename"></paper-icon-button>
-				<paper-icon-button icon="check-circle" hidden$="[[ !renameMode ]]" on-tap="saveName"></paper-icon-button>
-				<paper-icon-button icon="cancel" hidden$="[[ !renameMode ]]" on-tap="cancelRename"></paper-icon-button>
+                <paper-icon-button icon="create" hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]"
+                                   on-tap="rename"></paper-icon-button>
+                <paper-icon-button icon="check-circle" hidden$="[[ !renameMode ]]"
+                                   on-tap="saveName"></paper-icon-button>
+                <paper-icon-button icon="cancel" hidden$="[[ !renameMode ]]" on-tap="cancelRename"></paper-icon-button>
 
 
-				<div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
-					<text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer</text-string>
-					<div class="flex horizontal layout center">
+                <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
+                    <text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer</text-string>
+                    <div class="flex horizontal layout center">
 
-						<template is="dom-if" if="[[private]]">
-							<template is="dom-repeat" items="[[topic.private]]">
-								<block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
-							</template>
-						</template>
+                        <template is="dom-repeat" items="[[topic.private]]" as="reader">
+                            <block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+                        </template>
 
-					</div>
-				</div>
+                    </div>
+                </div>
 
-			</paper-toolbar>
+            </paper-toolbar>
 
-			<!--<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>-->
+            <!--<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>-->
 
-			<div id="postsList" class="content flex">
-				<div id="scroll">
-					<div id="loadMore" hidden$="[[ showLoadMore(nodes, headLoaded) ]]">
-						<text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">unit.posts.loadMore</text-string>
-						<text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
-					</div>
+            <div id="nodelist" class="content flex">
+                <div id="scroll">
+                    <div id="loadMore" hidden$="[[ showLoadMore(nodes, headLoaded) ]]">
+                        <text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">unit.posts.loadMore</text-string>
+                        <text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
+                    </div>
 
-					<template is="dom-repeat" items="[[ nodes ]]" as="node">
-						<card-post model="[[ node ]]"></card-post>
-					</template>
-				</div>
-			</div>
+                    <template is="dom-repeat" items="[[ nodes ]]" as="node">
+                        <card-post model="[[ node ]]"></card-post>
+                    </template>
+                </div>
+            </div>
 
-			<div class="editor horizontal layout">
-				<textarea id="messageInput" class="flex"></textarea>
-				<paper-button raised class="highlight send self-center" on-tap="addMessage">
-					<text-string>unit.posts.sendBtn</text-string>
-					<iron-icon icon="send"></iron-icon>
-				</paper-button>
-			</div>
+            <div class="editor horizontal layout">
+                <textarea id="messageInput" class="flex"></textarea>
+                <paper-button raised class="highlight send self-center" on-tap="addMessage">
+                    <text-string>unit.posts.sendBtn</text-string>
+                    <iron-icon icon="send"></iron-icon>
+                </paper-button>
+            </div>
 
-		</unit-posts-deco>
+        </unit-posts-deco>
 
-	</template>
+    </template>
 </dom-module>
 
 <script>
-	Polymer({
-		//polymer
-
-		is:'unit-posts',
-
-		behaviors:[
-			tinng.polymerBehavior.Nodelist,
-			tinng.polymerBehavior.Unit,
-			tinng.polymerBehavior.Basic
-		],
-
-		properties:{
-			selectedTopic:{
-				type: Number,
-				value: 0,
-				observer: 'subscribe'
-			},
-
-			private:{
-				type: Boolean,
-				value: false,
-				computed: 'isTopicPrivate(topic.private)'
-			}
-		},
-
-		listeners:{
-			"load-more":"loadMore"
-		},
-
-
-		ready: function () {
-
-			this.fullframe = false;
-			this.postsPerSlice = 50;
-			this.currentSliceTop = 0;
-			this.renameMode = false;
-
-			this.initVars();
-
-			if (tinng.router.get('topic')) {
-				this.selectedTopic = _.parseInt(tinng.router.get('topic'));
-				console.log('this.selectedTopic', this.selectedTopic)
-			}
-		},
-
-		//other
-
-		isTopicPrivate:function(privat){
-			return typeof privat != 'undefined' && !!privat && privat != "0"
-		},
-
-		getToolbarClass:function(privat){
-			return 'paper-narrow' + (privat ? 'medium-tall' : '')
-		},
-
-		showRenameButton:function(haveRight, allreadyRenaming){
-			return haveRight && !allreadyRenaming;
-		},
-
-		initVars:function(){
-			this.nodes = [];
-			this.topic = {};
-			this.rights = {canRename: false};
-			this.currentSliceTop = this.postsPerSlice;
-		},
-
-		clean: function () {
-			this.initVars();
-
-			//this.$.postsList.clean();
-			//todo - теперь обсервер вызывается сразу, поэтому делать сразу клин нельзя, стирается инфа из адресной строки
-			//tinng.router.note('topic', null);
-			tinng.router.note('start', null);
-
-			tinng.connection.unscribe(this, 'posts-main');
-			tinng.connection.unscribe(this, 'topic-data-main');
-		},
-
-		subscribe: function () {
-			this.clean();
-
-			console.log('subscribe posts of', this.selectedTopic)
-
-			//todo - raw way
-			if (this.selectedTopic){
-				tinng.router.note('topic', this.selectedTopic);
-			}
-
-			tinng.connection.subscribe([{
-				subscriber: this,
-				feedName: 'posts-main',
-				feed: {
-					feed: 'posts',
-					limit: this.currentSliceTop,
-					topic: this.selectedTopic
-				},
-				parser: function (data) {
-
-					//todo - здесь почему-то возвращается объект вместо массива
-					console.log('posts', data);
-
-					this.parseUpdates(data);
-				}
-			}, {
-				subscriber: this,
-				feedName: 'topic-data-main',
-				feed: {
-					feed: 'topic',
-					id: this.selectedTopic
-				},
-				parser: function (data) {
-
-					this.topic = data;
-					// todo - set rights for topic here
-					// right now user.id is filled after topic load, so rename is unable on startup. THIS IS FINE!
-					// 'cause rigts should come from server, not be computed from existing data math
-					if (tinng.user){
-						this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
-					}
-					this.fire('iron-signal', {name: 'topic-loaded', data: {id: data.id}});
-				}
-			}]);
-
-			//this.$.postsList.showLoading();
-		},
-
-		loadMore:function(){
-			// todo - bug: sometimes loads wrong amount
-			tinng.connection.rescribe(this, 'posts-main', {
-				limit: this.currentSliceTop += this.postsPerSlice
-			});
-			tinng.router.note('start', this.currentSliceTop);
-		},
-
-		topicSelect: function (event, details) {
-
-			this.loading = true;
-
-			this.selectedTopic = details.topic.id;
-		},
-
-		addMessage: function (event, message) {
-			var message = this.$.messageInput.value;
-
-			if (!!this.selectedTopic && !message.match(/^\s*$/)) {
-
-				tinng.connection.write({
-					action: 'add_post',
-					topic: this.selectedTopic,
-					message: message
-				});
-
-				this.$.messageInput.value = '';
-			}
-		},
-
-		//draft
-		meSingle: function () {
-			this.fullframe = true;
-		},
-
-		goBack: function () {
-
-			this.async(function () {
-				this.fullframe = false;
-			}, null, 250);
-
-			this.fire('reveal', {sender: this})
-		},
-
-		unlock:function(){
-			tinng.connection.query('service', null, {
-				action:'unlock_message',
-				id: this.selectedTopic
-			})
-		},
-
-
-		checkAndLock:function(callback){
-			tinng.connection.query('service', callback.bind(this), {
-				action: 'check_n_lock',
-				id: this.selectedTopic
-			});
-		},
-
-		rename: function () {
-			this.checkAndLock(function(){
-				this.oldName = this.topic.topic_name;
-				this.renameMode = true;
-			});
-		},
-
-		cancelRename: function () {
-			this.unlock();
-			// todo - lurk mutation observer or wait for polymer to implement contenteditable feature
-			this.$.topicName.innerText = this.oldName;
-			this.renameMode = false;
-		},
-
-		saveName: function () {
-			this.unlock();
-			this.renameMode = false;
-
-			tinng.connection.write({
-				action: 'update_message',
-				topic_name: this.$.topicName.innerText,
-				id: this.selectedTopic
-			});
-		},
-
-		//other
-		sortOrder:'asc',
-		headLoaded:false,
-
-		showLoadMore:function(nodes, headLoaded){
-			return nodes.length && !headLoaded
-		},
-
-		//other
-		parseUpdates:function(nodes){
-
-			var firstLoad = !this.nodes.length;
-			var wasAtTop = this.isAtTop();
-
-			// memorizing scroll position
-			if (!firstLoad && wasAtTop) {
-				var topPost = $(this.$.scroll).children('card-post').eq(0);
-				var topOffset = topPost[0].offsetTop;
-			}
-
-			if (firstLoad) {
-				// если это первичная загрузка
-
-				this.headLoaded = false;
-
-				//console.log('nodes', this.topic, _(nodes).find({id:this.topic}))
-
-				if (typeof _(nodes).find({id:this.topic}) != 'undefined'){
-					console.log('topic head loaded');
-					this.headLoaded = true;
-				}
-
-				// если мы заполняем массив первый раз - нужно его отсортировать
-				this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
-
-			} else {
-				// если в массиве уже есть ноды
-				_(nodes).each(this.processNode);
-			}
-
-			if (firstLoad || this.isAtBottom()) {
-				this.async(this.toBottom)
-			}
-
-			// using memorized scroll position
-			if (!firstLoad && wasAtTop) {
-				this.async(function(){
-					topPost[0].scrollIntoView();
-					this.scrollTop = this.scrollTop - topOffset;
-				})
-			}
-
-			this.loaded = true;
-			this.loading = false;
-		},
-
-		processNode:function(data){
-			//console.log(data.id, this.topic);
-
-			//console.log('processNode')
-
-			if (data.id == this.topic){
-				console.log('topic head loaded')
-				this.headLoaded = true;
-			}
-
-			this.NBProcessNode(data)
-
-			//this.super(arguments);
-		},
-
-		showLoading:function(){
-			this.loaded = false;
-			this.loading = true;
-		},
-
-		loadMore:function(){
-			this.fire('load-more');
-			this.showLoading();
-		}
-	});
+    Polymer({
+        //polymer
+
+        is: 'unit-posts',
+
+        behaviors: [
+            tinng.polymerBehavior.Nodelist,
+            tinng.polymerBehavior.Unit,
+            tinng.polymerBehavior.Basic
+        ],
+
+        properties: {
+            selectedTopic: {
+                type: Number,
+                value: 0,
+                observer: 'subscribe'
+            },
+
+            private: {
+                type: Boolean,
+                value: false,
+                computed: 'isTopicPrivate(topic.private)'
+            }
+        },
+
+        listeners: {
+            "load-more": "loadMore"
+        },
+
+
+        ready: function () {
+
+            this.fullframe = false;
+            this.postsPerSlice = 50;
+            this.currentSliceTop = 0;
+            this.renameMode = false;
+
+            this.initVars();
+
+            if (tinng.router.get('topic')) {
+                this.selectedTopic = _.parseInt(tinng.router.get('topic'));
+                console.log('this.selectedTopic', this.selectedTopic)
+            }
+        },
+
+        //other
+
+        isTopicPrivate: function (privat) {
+            return typeof privat != 'undefined' && !!privat && privat != "0"
+        },
+
+        getToolbarClass: function (privat) {
+            return 'paper-narrow' + (privat ? 'medium-tall' : '')
+        },
+
+        showRenameButton: function (haveRight, allreadyRenaming) {
+            return haveRight && !allreadyRenaming;
+        },
+
+        initVars: function () {
+            this.nodes = [];
+            this.topic = {};
+            this.rights = {canRename: false};
+            this.currentSliceTop = this.postsPerSlice;
+        },
+
+        clean: function () {
+            this.initVars();
+
+            //this.$.postsList.clean();
+            //todo - теперь обзёрвер вызывается сразу, поэтому делать сразу клин нельзя, стирается инфа из адресной строки
+            //tinng.router.note('topic', null);
+            tinng.router.note('start', null);
+
+            tinng.connection.unscribe(this, 'posts-main');
+            tinng.connection.unscribe(this, 'topic-data-main');
+        },
+
+
+        /**
+         * Subscribe to the posts and properties of a selected topic
+         * (attention! this func is being called by observer of this.selectedTopic)
+         */
+        subscribe: function () {
+            this.clean();
+
+            console.log('subscribe posts of', this.selectedTopic)
+
+            //todo - raw way
+            if (this.selectedTopic) {
+                tinng.router.note('topic', this.selectedTopic);
+
+                tinng.connection.subscribe([
+                    {
+                        subscriber: this,
+                        feedName: 'posts-main',
+                        feed: {
+                            feed: 'posts',
+                            limit: this.currentSliceTop,
+                            topic: this.selectedTopic
+                        },
+                        parser: function (data) {
+
+                            //todo - здесь почему-то возвращается объект вместо массива
+                            console.log('posts', data);
+
+                            this.parseUpdates(data);
+                        }
+                    }, {
+                        subscriber: this,
+                        feedName: 'topic-data-main',
+                        feed: {
+                            feed: 'topic',
+                            id: this.selectedTopic
+                        },
+                        parser: function (data) {
+
+                            if (data.private == '0') {data.private = []} // todo - maybe fix server response here
+
+                            this.topic = data;
+
+                            // todo - set rights for topic here
+                            // right now user.id is filled after topic load, so rename is unable on startup. THIS IS FINE!
+                            // 'cause rigts announcements should come from server, not be computed from existing data math
+                            if (tinng.user) {
+                                this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
+                            }
+                            this.fire('iron-signal', {name: 'topic-loaded', data: {id: data.id}});
+                        }
+                    }
+                ]);
+            }
+        },
+
+
+        parseUpdates: function (nodes) {
+
+            var firstLoad = !this.nodes.length;
+            var wasAtTop = this.isAtTop();
+
+            // memorizing scroll position
+            if (!firstLoad && wasAtTop) {
+                var topPost = $(this.$.scroll).children('card-post').eq(0);
+                var topOffset = topPost[0].offsetTop;
+            }
+
+            if (firstLoad) {
+                // если это первичная загрузка
+
+                this.headLoaded = false;
+
+                if (typeof _(nodes).find({id: this.topic}) != 'undefined') {
+                    console.log('topic head loaded');
+                    this.headLoaded = true;
+                }
+
+                // если мы заполняем массив первый раз - нужно его отсортировать
+                this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
+
+            } else {
+                // если в массиве уже есть ноды
+                _(nodes).each(this.posts_processNode);
+            }
+
+            if (firstLoad || this.isAtBottom()) {
+                this.async(this.toBottom)
+            }
+
+            // using memorized scroll position
+            if (!firstLoad && wasAtTop) {
+                this.async(function () {
+                    topPost[0].scrollIntoView();
+                    this.scrollTop = this.scrollTop - topOffset;
+                })
+            }
+
+            this.loaded = true;
+            this.loading = false;
+        },
+
+        posts_processNode: function (data) {
+            //console.log(data.id, this.topic);
+            //console.log('processNode')
+
+            if (data.id == this.topic) {
+                console.log('topic head loaded')
+                this.headLoaded = true;
+            }
+
+            this.processNode(data);
+        },
+
+
+        loadMore: function () {
+            // todo - bug: sometimes loads wrong amount
+            tinng.connection.rescribe(this, 'posts-main', {
+                limit: this.currentSliceTop += this.postsPerSlice
+            });
+            tinng.router.note('start', this.currentSliceTop);
+        },
+
+        topicSelect: function (event, details) {
+
+            this.loading = true;
+
+            this.selectedTopic = details.topic.id;
+        },
+
+        addMessage: function (event, message) {
+            var message = this.$.messageInput.value;
+
+            if (!!this.selectedTopic && !message.match(/^\s*$/)) {
+
+                tinng.connection.write({
+                    action: 'add_post',
+                    topic: this.selectedTopic,
+                    message: message
+                });
+
+                this.$.messageInput.value = '';
+            }
+        },
+
+        //draft
+        meSingle: function () {
+            this.fullframe = true;
+        },
+
+        goBack: function () {
+
+            this.async(function () {
+                this.fullframe = false;
+            }, null, 250);
+
+            this.fire('reveal', {sender: this})
+        },
+
+        unlock: function () {
+            tinng.connection.query('service', null, {
+                action: 'unlock_message',
+                id: this.selectedTopic
+            })
+        },
+
+
+        checkAndLock: function (callback) {
+            tinng.connection.query('service', callback.bind(this), {
+                action: 'check_n_lock',
+                id: this.selectedTopic
+            });
+        },
+
+        rename: function () {
+            this.checkAndLock(function () {
+                this.oldName = this.topic.topic_name;
+                this.renameMode = true;
+            });
+        },
+
+        cancelRename: function () {
+            this.unlock();
+            // todo - lurk mutation observer or wait for polymer to implement contenteditable feature
+            this.$.topicName.innerText = this.oldName;
+            this.renameMode = false;
+        },
+
+        saveName: function () {
+            this.unlock();
+            this.renameMode = false;
+
+            tinng.connection.write({
+                action: 'update_message',
+                topic_name: this.$.topicName.innerText,
+                id: this.selectedTopic
+            });
+        },
+
+        headLoaded: false,
+
+        showLoadMore: function (nodes, headLoaded) {
+            return nodes.length && !headLoaded
+        },
+
+
+        showLoading: function () {
+            this.loaded = false;
+            this.loading = true;
+        },
+
+        loadMore: function () {
+            this.fire('load-more');
+            this.showLoading();
+        }
+    });
 </script>
