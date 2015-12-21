@@ -4,7 +4,6 @@
 <link rel="import" href="../nodelist/nodelist-behavior.html">
 
 <link rel="import" href="../unit/unit-style.html">
-<link rel="import" href="../nodelist-topics/nodelist-topics.html">
 <link rel="import" href="../card-topic/card-topic.html">
 <link rel="import" href="../block-slide-menu/block-slide-menu.html">
 <link rel="import" href="../block-topics-search/block-topics-search.html">
@@ -18,9 +17,7 @@
 			min-width: 350px;
 			overflow: hidden;
 
-			@apply(--layout);
-			@apply(--layout-vertical);
-			@apply(--layout-flex);
+
 		}
 
 		@media (max-width: 350px) {
@@ -34,13 +31,7 @@
 			display:none;
 		}
 
-		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-			height: 56px;
-		}
 
-		paper-toolbar.medium-tall {
-			height: 112px;
-		}
 
 		.text-container[opaque] {
 			opacity: 1;
@@ -48,14 +39,6 @@
 
 		paper-toolbar .search {
 			margin-right:0;
-		}
-
-		#scroll {
-			padding: 15px 5px 1px 15px;
-		}
-
-		[loading] {
-			background: url(../../styles/throbber_1.gif) no-repeat center center;
 		}
 	</style>
 

@@ -1,23 +1,19 @@
 <link rel="import" href="../unit/unit-behavior.html">
+<link rel="import" href="../nodelist/nodelist-behavior.html">
+
 <link rel="import" href="../unit/unit-style.html">
-<link rel="import" href="../nodelist-posts/nodelist-posts.html">
+<link rel="import" href="../card-post/card-post.html">
+
 
 <dom-module is="unit-posts">
 
 	<style include="unit-style">
 		:host {
-			@apply(--layout);
-			@apply(--layout-vertical);
-			@apply(--layout-flex);
 
 			--block-user-name-display: inline-block;
 			--block-user-avatar: {
 				height:30px;
 			};
-		}
-
-		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-			height: 56px;
 		}
 
 		.editor {
@@ -45,6 +41,28 @@
 			opacity: 0;
 			/*display: flex !important;*/
 		}
+
+		/* from nodelist */
+
+		#loadMore {
+			margin-bottom:8px;
+		}
+
+		#loadMore text-string {
+			text-align: center;
+			display: block;
+			padding:2px 0;
+		}
+
+		.loadMoreBtn {
+			cursor:pointer;
+		}
+
+		.loadMoreBtn:hover {
+			background-color: #ddd;
+		}
+
+
 	</style>
 
 	<template>
@@ -86,7 +104,20 @@
 
 			</paper-toolbar>
 
-			<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>
+			<!--<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>-->
+
+			<div id="postsList" class="content flex">
+				<div id="scroll">
+					<div id="loadMore" hidden$="[[ showLoadMore(nodes, headLoaded) ]]">
+						<text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">unit.posts.loadMore</text-string>
+						<text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
+					</div>
+
+					<template is="dom-repeat" items="[[ nodes ]]" as="node">
+						<card-post model="[[ node ]]"></card-post>
+					</template>
+				</div>
+			</div>
 
 			<div class="editor horizontal layout">
 				<textarea id="messageInput" class="flex"></textarea>
@@ -108,6 +139,7 @@
 		is:'unit-posts',
 
 		behaviors:[
+			tinng.polymerBehavior.Nodelist,
 			tinng.polymerBehavior.Unit,
 			tinng.polymerBehavior.Basic
 		],
@@ -123,7 +155,7 @@
 				type: Boolean,
 				value: false,
 				computed: 'isTopicPrivate(topic.private)'
-			},
+			}
 		},
 
 		listeners:{
@@ -161,7 +193,7 @@
 		},
 
 		initVars:function(){
-			this.updates = [];
+			this.nodes = [];
 			this.topic = {};
 			this.rights = {canRename: false};
 			this.currentSliceTop = this.postsPerSlice;
@@ -202,7 +234,7 @@
 					//todo - здесь почему-то возвращается объект вместо массива
 					console.log('posts', data);
 
-					this.updates = data;
+					this.parseUpdates(data);
 				}
 			}, {
 				subscriber: this,
@@ -309,6 +341,87 @@
 				topic_name: this.$.topicName.innerText,
 				id: this.selectedTopic
 			});
+		},
+
+		//other
+		sortOrder:'asc',
+		headLoaded:false,
+
+		showLoadMore:function(nodes, headLoaded){
+			return nodes.length && !headLoaded
+		},
+
+		//other
+		parseUpdates:function(nodes){
+
+			var firstLoad = !this.nodes.length;
+			var wasAtTop = this.isAtTop();
+
+			// memorizing scroll position
+			if (!firstLoad && wasAtTop) {
+				var topPost = $(this.$.scroll).children('card-post').eq(0);
+				var topOffset = topPost[0].offsetTop;
+			}
+
+			if (firstLoad) {
+				// если это первичная загрузка
+
+				this.headLoaded = false;
+
+				//console.log('nodes', this.topic, _(nodes).find({id:this.topic}))
+
+				if (typeof _(nodes).find({id:this.topic}) != 'undefined'){
+					console.log('topic head loaded');
+					this.headLoaded = true;
+				}
+
+				// если мы заполняем массив первый раз - нужно его отсортировать
+				this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
+
+			} else {
+				// если в массиве уже есть ноды
+				_(nodes).each(this.processNode);
+			}
+
+			if (firstLoad || this.isAtBottom()) {
+				this.async(this.toBottom)
+			}
+
+			// using memorized scroll position
+			if (!firstLoad && wasAtTop) {
+				this.async(function(){
+					topPost[0].scrollIntoView();
+					this.scrollTop = this.scrollTop - topOffset;
+				})
+			}
+
+			this.loaded = true;
+			this.loading = false;
+		},
+
+		processNode:function(data){
+			//console.log(data.id, this.topic);
+
+			//console.log('processNode')
+
+			if (data.id == this.topic){
+				console.log('topic head loaded')
+				this.headLoaded = true;
+			}
+
+			this.NBProcessNode(data)
+
+			//this.super(arguments);
+		},
+
+		showLoading:function(){
+			this.loaded = false;
+			this.loading = true;
+		},
+
+		loadMore:function(){
+			this.fire('load-more');
+			this.showLoading();
 		}
 	});
 </script>

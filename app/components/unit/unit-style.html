@@ -3,6 +3,27 @@
 		<style>
 			:host {
 				position: relative;
+
+				@apply(--layout);
+				@apply(--layout-vertical);
+				@apply(--layout-flex);
+			}
+
+			paper-toolbar, paper-toolbar::shadow .toolbar-tools {
+				height: 56px;
+			}
+
+			paper-toolbar.medium-tall {
+				height: 112px;
+			}
+
+			#scroll {
+				padding: 15px 10px 1px 10px;
+				position: relative;
+			}
+
+			[loading] {
+				background: url(../../styles/throbber_1.gif) no-repeat center center;
 			}
 		</style>
 	</template>
