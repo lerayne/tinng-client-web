@@ -10,7 +10,9 @@
 
 		ready:function(){
 
-			var key = this.innerHTML;
+			var key = this.innerHTML.trim();
+
+			//console.info('key', this.innerHTML, '|'+key+'|', tinng.lang.textDefault[key]);
 
 			if (tinng.lang.textLocalized[key]) {
 				this.innerHTML = tinng.lang.textLocalized[key];

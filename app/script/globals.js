@@ -50,6 +50,8 @@ window.text = function(key){
 
 	var getLanguage = function(languages){
 
+		//console.log('langs', languages)
+
 		return new Promise(function(resolve, reject){
 
 			var lang = languages.shift();
@@ -77,7 +79,9 @@ window.text = function(key){
 
 	// default language
 	var defaultLangRequest = getLanguage(['en']).then(function(lang){
+
 		tinng.lang.textDefault = tinng.lang.languages[lang];
+		//console.log('default returned', lang, tinng.lang.textDefault)
 	});
 	tinng.service.startupAsyncsQueue.push(defaultLangRequest);
 
