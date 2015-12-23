@@ -7,48 +7,48 @@
 			min-height: 50px;
 		}
 
-		::content block-tag {
+		:host ::content block-tag {
 			cursor:pointer;
 		}
 
-		::content block-user {
+		:host ::content block-user {
 			position: relative;
 		}
 
-		::content block-user::shadow img {
+		:host ::content block-user::shadow img {
 			position: absolute;
 			/*top:-4px;*/
 		}
 
-		::content block-user::shadow .name {
+		:host ::content block-user::shadow .name {
 			margin-left:60px;
 		}
 
-		::content #message {
+		:host ::content #message {
 			margin-left:56px;
 			padding:6px 4px;
 			border:1px dotted transparent;
 		}
 
-		::content #message[contenteditable="true"] {
+		:host ::content #message[contenteditable="true"] {
 			border-color:#ccc;
 		}
 
-		::content blockquote {
+		:host ::content blockquote {
 			background:#eee url(images/quote.png) no-repeat 12px 12px;
 			margin:0 0 10px 0;
 			padding:10px 10px 10px 40px;
 		}
 
-		::content blockquote p:first-child {
+		:host ::content blockquote p:first-child {
 			margin-top:0;
 		}
 
-		::content blockquote p:last-child {
+		:host ::content blockquote p:last-child {
 			margin-bottom:0;
 		}
 
-		::content blockquote cite {
+		:host ::content blockquote cite {
 			color:#777;
 			display: block;
 		}

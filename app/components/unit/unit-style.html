@@ -7,14 +7,8 @@
 				@apply(--layout);
 				@apply(--layout-vertical);
 				@apply(--layout-flex);
-			}
 
-			paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-				height: 56px;
-			}
-
-			paper-toolbar.medium-tall {
-				height: 112px;
+				--paper-toolbar-height: 56px;
 			}
 
 			#scroll {
@@ -25,6 +19,8 @@
 			[loading] {
 				background: url(../../styles/throbber_1.gif) no-repeat center center;
 			}
+
+
 		</style>
 	</template>
 </dom-module>

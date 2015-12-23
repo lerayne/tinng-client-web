@@ -5,6 +5,7 @@
 	<style>
 		:host {
 			display: block;
+			--paper-toolbar-height: 42px;
 		}
 
 		paper-toolbar {
@@ -12,11 +13,7 @@
 			color: #81d4fa; /* google light blue 200*/
 		}
 
-		paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-			height:42px;
-		}
-
-		::content ::shadow paper-button {
+		:host ::content ::shadow paper-button {
 			font-size: 85%;
 		}
 	</style>

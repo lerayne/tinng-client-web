@@ -4,6 +4,7 @@
 <link rel="import" href="../nodelist/nodelist-behavior.html">
 
 <link rel="import" href="../unit/unit-style.html">
+
 <link rel="import" href="../card-topic/card-topic.html">
 <link rel="import" href="../block-slide-menu/block-slide-menu.html">
 <link rel="import" href="../block-topics-search/block-topics-search.html">
@@ -11,12 +12,12 @@
 
 <dom-module id="unit-topics">
 
-	<style include="unit-style">
+	<style include="unit-style"></style>
+	<style include="unit-topics-style"></style>
+	<style>
 		:host {
 			min-width: 350px;
 			overflow: hidden;
-
-
 		}
 
 		@media (max-width: 350px) {
@@ -29,8 +30,6 @@
 		:host-context(page-main-mobile) #close {
 			display:none;
 		}
-
-
 
 		.text-container[opaque] {
 			opacity: 1;
@@ -72,7 +71,7 @@
 				<!-- only when used in units grid-->
 				<span id="controlsEmbedded" class="horizontal layout center">
 					<!--<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>-->
-					<paper-icon-button id="close" icon="close" on-tap="suspend"></paper-icon-button>
+					<paper-icon-button id="close" icon="close" on-tap="suspend" style="color: #039BE5"></paper-icon-button>
 				</span>
 			</paper-toolbar>
 
