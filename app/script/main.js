@@ -10,7 +10,6 @@
 		// routing
 		tinng.router = new tinng.class.Router();
 
-
 		// connection
 		tinng.connection = new tinng.class.Connection({
 			server: tinng.cfg.server_url,
