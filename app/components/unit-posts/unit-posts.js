@@ -24,7 +24,9 @@ Polymer({
         private: {
             type: Boolean,
             value: false,
-            computed: 'isTopicPrivate(topic.private)'
+            computed: 'isTopicPrivate(topic.private)',
+            observer: 'onPrivateChanged',
+            reflectToAttribute: true
         }
     },
 
@@ -163,7 +165,6 @@ Polymer({
             //this.headLoaded = false; // possibly duplicate
 
             if (typeof _(nodes).find({id: this.selectedTopic+''}) != 'undefined') {
-                console.log('topic head loaded 1');
                 this.headLoaded = true;
             }
 
@@ -182,9 +183,8 @@ Polymer({
         // using memorized scroll position to maintain scroll position
         if (!firstLoad && wasAtTop) {
             this.async(function () {
-                console.log('loadMore H', this.$.loadMore.offsetHeight)
                 topPost[0].scrollIntoView();
-                this.$.nodelist.scrollTop = this.$.nodelist.scrollTop - topOffset;
+                this.$.scrollContainer.scrollTop = this.$.scrollContainer.scrollTop - topOffset;
             })
         }
 
@@ -201,7 +201,6 @@ Polymer({
     posts_processNode: function (data) {
 
         if (data.id == this.selectedTopic) {
-            console.log('topic head loaded 2')
             this.headLoaded = true;
         }
 
@@ -260,11 +259,16 @@ Polymer({
     //draft
 
     isTopicPrivate: function (privat) {
-        return typeof privat != 'undefined' && !!privat && privat != "0"
+        console.log('is-private', privat)
+        return typeof privat != 'undefined' && !!privat && privat.length > 0
     },
 
-    getToolbarClass: function (privat) {
-        return 'paper-narrow' + (privat ? 'medium-tall' : '')
+    onPrivateChanged:function(privat){
+        if (privat){
+            this.$.toolbar.classList.add('medium-tall')
+        } else {
+            this.$.toolbar.classList.remove('medium-tall')
+        }
     },
 
     showRenameButton: function (haveRight, allreadyRenaming) {

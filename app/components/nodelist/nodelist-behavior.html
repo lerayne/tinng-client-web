@@ -143,11 +143,11 @@
 		//
 
 		isAtBottom:function(){
-			return this.$.nodelist.scrollHeight - (this.$.nodelist.scrollTop + this.$.nodelist.offsetHeight) == 0;
+			return this.$.scrollContainer.scrollHeight - (this.$.scrollContainer.scrollTop + this.$.scrollContainer.offsetHeight) == 0;
 		},
 
 		isAtTop:function(){
-			return this.$.nodelist.scrollTop == 0;
+			return this.$.scrollContainer.scrollTop == 0;
 		},
 
 		toBottom: function(){

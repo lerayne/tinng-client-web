@@ -20,17 +20,18 @@
         }
 
         .allowed-users {
-            opacity: 1;
-            transition: opacity 0.18s ease-in;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
             height: 56px;
         }
 
-        .allowed-users[hidden] {
-            opacity: 0;
-            /*display: flex !important;*/
+        :host([private]) .allowed-users {
+            opacity: 1;
         }
 
-        /* from nodelist */
+        [invisible] {
+            visibility: hidden;
+        }
 
         #loadMore {
             margin-bottom: 8px;
@@ -62,7 +63,7 @@
         ></iron-signals>
 
         <unit-posts-deco>
-            <paper-toolbar class="[[ getToolbarClass(private) ]]">
+            <paper-toolbar id="toolbar" class="medium-tall">
 
                 <paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
                 <!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -72,19 +73,29 @@
                           contenteditable$="[[ renameMode ]]">[[topic.topic_name]]</span>
 				</span>
 
-                <paper-icon-button icon="create" hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]"
-                                   on-tap="rename"></paper-icon-button>
-                <paper-icon-button icon="check-circle" hidden$="[[ !renameMode ]]"
-                                   on-tap="saveName"></paper-icon-button>
+                <paper-icon-button icon="create"
+                                   hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]"
+                                   on-tap="rename">
+                </paper-icon-button>
+
+
+                <paper-icon-button icon="check-circle"
+                                   hidden$="[[ !renameMode ]]"
+                                   on-tap="saveName">
+                </paper-icon-button>
+
+
                 <paper-icon-button icon="cancel" hidden$="[[ !renameMode ]]" on-tap="cancelRename"></paper-icon-button>
 
 
                 <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
-                    <text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer</text-string>
+                    <text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer
+                    </text-string>
                     <div class="flex horizontal layout center">
 
                         <template is="dom-repeat" items="[[topic.private]]" as="reader">
-                            <block-user data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+                            <block-user
+                                    data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
                         </template>
 
                     </div>
@@ -95,19 +106,23 @@
 
             <!-- Nodelist section -->
             <div id="nodelist" class="content flex">
-                <div id="scroll">
+                <div id="scrollContainer">
+                    <div id="scroll">
 
-                    <!-- Load more button -->
-                    <div id="loadMore" hidden$="[[ !showLoadMore(nodes, headLoaded) ]]">
-                        <text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">unit.posts.loadMore</text-string>
-                        <text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
+                        <!-- Load more button -->
+                        <div id="loadMore" hidden$="[[ !showLoadMore(nodes, headLoaded) ]]">
+                            <text-string class="loadMoreBtn" on-tap="loadMore" hidden$="[[ loading ]]">
+                                unit.posts.loadMore
+                            </text-string>
+                            <text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
+                        </div>
+
+                        <!-- Main nodes repeater -->
+                        <template is="dom-repeat" items="[[ nodes ]]" as="node">
+                            <card-post model="[[ node ]]"></card-post>
+                        </template>
+
                     </div>
-
-                    <!-- Main nodes repeater -->
-                    <template is="dom-repeat" items="[[ nodes ]]" as="node">
-                        <card-post model="[[ node ]]"></card-post>
-                    </template>
-
                 </div>
             </div>
 

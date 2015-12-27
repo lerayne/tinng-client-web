@@ -11,9 +11,23 @@
 				--paper-toolbar-height: 52px;
 			}
 
+			#nodelist {
+				background-color: #f1f1f1;
+				border-right:1px solid #e5e5e5;
+				position: relative;
+			}
+
 			#scroll {
 				padding: 15px 15px 1px 15px;
 				position: relative;
+			}
+
+			#scrollContainer {
+				position: absolute;
+				height: 100%;
+				box-sizing: border-box;
+				overflow-x: hidden;
+				overflow-y: scroll;
 			}
 
 			:host([loading]) #nodelist {
