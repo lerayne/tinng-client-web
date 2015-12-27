@@ -11,6 +11,8 @@
             transition-timing-function: ease;
             background-color: #fff;
             box-shadow: 0 0 30px rgba(0,0,0,.5);
+
+            --paper-toolbar-height: 52px;
         }
 
         :host(.visible) {
@@ -25,10 +27,6 @@
         :host(.menu-hide-ease) {
             /* http://matthewlein.com/ceaser/ easeInCirc */
             transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
-        }
-
-        paper-toolbar, paper-toolbar::shadow .toolbar-tools {
-            height: 56px;
         }
     </style>
 

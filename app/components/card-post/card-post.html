@@ -53,6 +53,7 @@
 
 			<div id="message"></div>
 
+			<!-- todo - here the tags block causes scroll height calculation to go wrong. Deal with it-->
 			<template is="dom-if" if="{{!computeToNumber(model.topic_id)}}">
 				<template is="dom-repeat" items="[[model.tags]]" as="tag">
 					<block-tag data="[[tag]]">[[tag.name]]</block-tag>

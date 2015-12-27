@@ -8,7 +8,7 @@
 				@apply(--layout-vertical);
 				@apply(--layout-flex);
 
-				--paper-toolbar-height: 56px;
+				--paper-toolbar-height: 52px;
 			}
 
 			#scroll {
@@ -16,8 +16,10 @@
 				position: relative;
 			}
 
-			[loading] {
-				background: url(../../styles/throbber_1.gif) no-repeat center center;
+			:host([loading]) #nodelist {
+				background-image: url(../../styles/throbber_1.gif);
+				background-position: center center;
+				background-repeat: no-repeat;
 			}
 
 
