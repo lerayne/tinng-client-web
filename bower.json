@@ -21,7 +21,6 @@
     "jquery-compat": "jquery#^1.11",
     "lodash": "^2.4.1",
     "es6-promise-polyfill": "^1.0.0",
-
     "polymer": "Polymer/polymer#^0.5.4",
     "core-iconset": "Polymer/core-iconset#^0.5.4",
     "core-toolbar": "Polymer/core-toolbar#^0.5.4",
@@ -34,5 +33,10 @@
     "paper-input": "Polymer/paper-input#~0.5.4",
     "core-collapse": "Polymer/core-collapse#~0.5.4",
     "paper-item": "Polymer/paper-item#~0.5.4"
+  },
+  "resolutions": {
+    "polymer": "^0.5.4",
+    "font-roboto": "^0.5",
+    "webcomponentsjs": "^0.6.0"
   }
 }
