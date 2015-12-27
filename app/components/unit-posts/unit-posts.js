@@ -129,7 +129,7 @@ Polymer({
                         // right now user.id is filled after topic load, so rename is unable on startup. THIS IS FINE!
                         // 'cause rigts announcements should come from server, not be computed from existing data math
                         if (tinng.user) {
-                            this.rights.canRename = (tinng.user.id == this.topic.author_id || tinng.user.id == 1);
+                            this.set('rights.canRename', (tinng.user.id == this.topic.author_id || tinng.user.id == 1))
                         }
                         this.fire('iron-signal', {name: 'topic-loaded', data: {id: data.id}});
                     }
@@ -209,6 +209,27 @@ Polymer({
     },
 
 
+    topicSelect: function (event, details) {
+
+        this.loading = true;
+
+        this.selectedTopic = details.topic.id;
+    },
+
+    sendMessage: function (event, message) {
+
+        if (!!this.selectedTopic && !message.body.match(/^\s*$/)) {
+
+            tinng.connection.write({
+                action: 'add_post',
+                topic: this.selectedTopic,
+                message: message.body
+            });
+
+            this.$.editor.clean();
+        }
+    },
+
 
     // Load more and related
 
@@ -233,66 +254,7 @@ Polymer({
     },
 
 
-
-
-    topicSelect: function (event, details) {
-
-        this.loading = true;
-
-        this.selectedTopic = details.topic.id;
-    },
-
-    sendMessage: function (event, message) {
-
-        if (!!this.selectedTopic && !message.body.match(/^\s*$/)) {
-
-            tinng.connection.write({
-                action: 'add_post',
-                topic: this.selectedTopic,
-                message: message.body
-            });
-
-            this.$.editor.clean();
-        }
-    },
-
-    //draft
-
-    isTopicPrivate: function (privat) {
-        console.log('is-private', privat)
-        return typeof privat != 'undefined' && !!privat && privat.length > 0
-    },
-
-    onPrivateChanged:function(privat){
-        if (privat){
-            this.$.toolbar.classList.add('medium-tall')
-        } else {
-            this.$.toolbar.classList.remove('medium-tall')
-        }
-    },
-
-    getUserData: function(reader){
-        return {
-            avatar: reader.avatar
-        }
-    },
-
-    showRenameButton: function (haveRight, allreadyRenaming) {
-        return haveRight && !allreadyRenaming;
-    },
-
-    meSingle: function () {
-        this.fullframe = true;
-    },
-
-    goBack: function () {
-
-        this.async(function () {
-            this.fullframe = false;
-        }, null, 250);
-
-        this.fire('reveal', {sender: this})
-    },
+    // Renaming
 
     unlock: function () {
         tinng.connection.query('service', null, {
@@ -332,5 +294,42 @@ Polymer({
             topic_name: this.$.topicName.innerText,
             id: this.selectedTopic
         });
+    },
+
+    //draft
+
+    isTopicPrivate: function (privat) {
+        return typeof privat == 'object' && privat.length > 0
+    },
+
+    onPrivateChanged:function(privat){
+        if (privat){
+            this.$.toolbar.classList.add('medium-tall')
+        } else {
+            this.$.toolbar.classList.remove('medium-tall')
+        }
+    },
+
+    getUserData: function(reader){
+        return {
+            avatar: reader.avatar
+        }
+    },
+
+    showRenameButton: function (haveRight, allreadyRenaming) {
+        return haveRight && !allreadyRenaming;
+    },
+
+    meSingle: function () {
+        this.fullframe = true;
+    },
+
+    goBack: function () {
+
+        this.async(function () {
+            this.fullframe = false;
+        }, null, 250);
+
+        this.fire('reveal', {sender: this})
     }
 });

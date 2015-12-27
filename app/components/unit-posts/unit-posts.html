@@ -89,7 +89,10 @@
                 </paper-icon-button>
 
 
-                <paper-icon-button icon="cancel" hidden$="[[ !renameMode ]]" on-tap="cancelRename"></paper-icon-button>
+                <paper-icon-button icon="cancel"
+                                   hidden$="[[ !renameMode ]]"
+                                   on-tap="cancelRename">
+                </paper-icon-button>
 
 
                 <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
