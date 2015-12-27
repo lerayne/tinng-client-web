@@ -15,7 +15,9 @@ How components shoud be named (and understood when named) is based on their firs
 **unit** - self-succicient content module, i.e. topic, messages, tags or users
 
 to be deleted or renamed:
+
 * tinng
+
 * header
 
 # Functions naming

@@ -12,10 +12,10 @@ body /deep/ paper-icon-button::shadow core-icon {
 	display: block;
 }
 
-body /deep/ .highlight {
-	background-color: #ffab00; /* google amber A700 */
+/*body /deep/ .highlight {
+	background-color: #ffab00; !* google amber A700 *!
 	color:#fff;
-}
+}*/
 
 .highlight {
 	background-color: #ffab00; /* google amber A700 */

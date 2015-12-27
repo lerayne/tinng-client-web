@@ -3,6 +3,7 @@
 
 <link rel="import" href="../unit/unit-style.html">
 <link rel="import" href="../card-post/card-post.html">
+<link rel="import" href="../block-editor/block-editor.html">
 
 
 <dom-module is="unit-posts">
@@ -16,21 +17,6 @@
             --block-user-avatar: {
                 height: 30px;
             };
-        }
-
-        .editor {
-            background-color: #fff;
-            padding: 20px;
-        }
-
-        textarea {
-            margin-right: 20px;
-            font-size: 150%;
-            padding: 5px;
-        }
-
-        .send {
-            width: 100px
         }
 
         .allowed-users {
@@ -72,7 +58,6 @@
         <iron-signals
                 on-iron-signal-secondary-close="meSingle"
                 on-iron-signal-topic-select="topicSelect"
-                on-iron-signal-add-message="addMessage"
                 on-iron-signal-rescribe-all="subscribe"
         ></iron-signals>
 
@@ -107,7 +92,6 @@
 
             </paper-toolbar>
 
-            <!--<nodelist-posts id="postsList" updates="{{updates}}" topic="{{selectedTopic}}" class="content flex"></nodelist-posts>-->
 
             <div id="nodelist" class="content flex">
                 <div id="scroll">
@@ -122,13 +106,8 @@
                 </div>
             </div>
 
-            <div class="editor horizontal layout">
-                <textarea id="messageInput" class="flex"></textarea>
-                <paper-button raised class="highlight send self-center" on-tap="addMessage">
-                    <text-string>unit.posts.sendBtn</text-string>
-                    <iron-icon icon="send"></iron-icon>
-                </paper-button>
-            </div>
+
+            <block-editor id="editor" hidden$="[[ !selectedTopic ]]"></block-editor>
 
         </unit-posts-deco>
 
@@ -162,7 +141,8 @@
         },
 
         listeners: {
-            "load-more": "loadMore"
+            "load-more": "loadMore",
+            "send-message": "sendMessage"
         },
 
 
@@ -297,7 +277,7 @@
 
             } else {
                 // если в массиве уже есть ноды
-                _(nodes).each(this.posts_processNode);
+                _(nodes).each(this.posts_processNode.bind(this));
             }
 
             if (firstLoad || this.isAtBottom()) {
@@ -344,18 +324,18 @@
             this.selectedTopic = details.topic.id;
         },
 
-        addMessage: function (event, message) {
-            var message = this.$.messageInput.value;
+        sendMessage: function (event, message) {
+            console.log('send2', message)
 
-            if (!!this.selectedTopic && !message.match(/^\s*$/)) {
+            if (!!this.selectedTopic && !message.body.match(/^\s*$/)) {
 
                 tinng.connection.write({
                     action: 'add_post',
                     topic: this.selectedTopic,
-                    message: message
+                    message: message.body
                 });
 
-                this.$.messageInput.value = '';
+                this.$.editor.clean();
             }
         },
 
