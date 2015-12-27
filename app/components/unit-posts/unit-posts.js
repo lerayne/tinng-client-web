@@ -271,6 +271,12 @@ Polymer({
         }
     },
 
+    getUserData: function(reader){
+        return {
+            avatar: reader.avatar
+        }
+    },
+
     showRenameButton: function (haveRight, allreadyRenaming) {
         return haveRight && !allreadyRenaming;
     },

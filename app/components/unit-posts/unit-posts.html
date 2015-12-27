@@ -51,6 +51,10 @@
             background-color: #ddd;
         }
 
+        #topicName {
+            font-size: 120%;
+        }
+
 
     </style>
 
@@ -89,13 +93,12 @@
 
 
                 <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
-                    <text-string hidden$="[[!private]]" class="block tinytext">unit.posts.privateDisclaimer
-                    </text-string>
+                    <text-string hidden$="[[!private]]"
+                                 class="block tinytext">unit.posts.privateDisclaimer</text-string>
                     <div class="flex horizontal layout center">
 
                         <template is="dom-repeat" items="[[topic.private]]" as="reader">
-                            <block-user
-                                    data='[[ {"name":"reader.display_name", "avatar":"reader.avatar"} ]]'></block-user>
+                            <block-user data='[[ getUserData(reader) ]]'></block-user>
                         </template>
 
                     </div>
