@@ -156,6 +156,8 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 			meta:  this.meta
 		});
 
+		this.actions = {}; // actions have to be passed just once in any case!
+
 		// если соединение длится 20 секунд - признаем его оборвавшимся
 		this.connectionLossTO = setTimeout(this.retry, 20000);
 
@@ -230,6 +232,10 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	onResponse:function (response) {
 		var data = response.data;
 
+		if (!_(this.actions).isEmpty()){
+			console.log('actions', this.actions)
+		}
+
 		clearTimeout(this.connectionLossTO);
 
 		// todo - иногда от сервера приходит meta в виде массива, а иногда - в виде объекта. разобраться
@@ -246,7 +252,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 		// разбираем пришедший пакет и выполняем обновления
 		this.parseCallback(data, this.actions);
 
-		this.actions = {};
+		this.actions = {}; // this may not be needed 'cause actions are being cleaned in $_subscriptionSend
 
 		this.stopIndication(); // индикация ожидания откл
 		this.request = false;
