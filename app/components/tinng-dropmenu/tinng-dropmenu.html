@@ -36,6 +36,7 @@
 				min-height: 32px;
 				padding: 0 10px;
 				cursor: pointer;
+				font-size: 1em;
 			}
 
 			:host ::content paper-item:hover {
@@ -78,10 +79,6 @@
 
 		ready:function(){
 			this.menuShown = false;
-		},
-
-		attached:function(){
-			//console.log($(this).find('paper-item'))
 		},
 
 		toggle:function(e){
