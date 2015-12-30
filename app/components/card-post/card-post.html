@@ -33,23 +33,23 @@
 			<text-date class="created" data="[[model.created]]"></text-date>
 			<text-date class="modified" data="[[model.modified]]"></text-date>
 
-			<!--<tinng-dropmenu class="menu right">-->
+			<tinng-dropmenu class="menu right">
 
-				<!--<template is="dom-if" if="[[rights.canEdit]]">-->
-					<!--<paper-item>-->
-						<!--<iron-icon icon="create"></iron-icon>-->
-						<!--<text-string>unit.posts.edit</text-string>-->
-					<!--</paper-item>-->
-				<!--</template>-->
+				<template is="dom-if" if="[[rights.canEdit]]">
+					<paper-item>
+						<iron-icon icon="create"></iron-icon>
+						<text-string>unit.posts.edit</text-string>
+					</paper-item>
+				</template>
 
-				<!--<template is="dom-if" if="[[rights.canDelete]]">-->
-					<!--<paper-item>-->
-						<!--<iron-icon icon="delete"></iron-icon>-->
-						<!--<text-string>unit.posts.delete</text-string>-->
-					<!--</paper-item>-->
-				<!--</template>-->
+				<template is="dom-if" if="[[rights.canDelete]]">
+					<paper-item>
+						<iron-icon icon="delete"></iron-icon>
+						<text-string>unit.posts.delete</text-string>
+					</paper-item>
+				</template>
 
-			<!--</tinng-dropmenu>-->
+			</tinng-dropmenu>
 
 			<div id="message"></div>
 
