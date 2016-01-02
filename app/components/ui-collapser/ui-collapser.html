@@ -1,0 +1,44 @@
+<dom-module id="ui-collapser">
+    <template>
+        <style>
+            :host-context(.layout) #collapser {
+                @apply(--layout);
+            }
+
+            :host-context(.horizontal) #collapser {
+                @apply(--layout-horizontal);
+            }
+
+            :host-context(.vertical) #collapser {
+                @apply(--layout-vertical);
+            }
+
+            :host-context(.flex) #collapser {
+                @apply(--layout-flex);
+            }
+        </style>
+
+        <content></content>
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "ui-collapser",
+
+        open: function(callback){
+            this.hidden = false;
+            if (typeof callback == "function"){
+                callback();
+            }
+        },
+
+        close: function(doAfter){
+            this.hidden = true;
+            if (typeof doAfter == "function"){
+                doAfter();
+            }
+        }
+    })
+</script>

@@ -50,6 +50,10 @@
 			}
 		},
 
+		listeners:{
+			tap: "onTap"
+		},
+
 		onTap:function(e){
 			this.fire('tag-select', this.data);
 

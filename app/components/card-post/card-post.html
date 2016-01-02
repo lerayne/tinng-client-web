@@ -1,6 +1,6 @@
 <link rel="import" href="../block-tag/block-tag.html">
 <link rel="import" href="../block-user/block-user.html">
-<link rel="import" href="../tinng-dropmenu/tinng-dropmenu.html">
+<link rel="import" href="../ui-dropmenu/ui-dropmenu.html">
 <link rel="import" href="../card/card-behavior.html">
 
 <dom-module id="card-post">
@@ -21,6 +21,10 @@
 		tinng-dropmenu {
 			margin-top:-3px;
 		}
+
+		#message img {
+			max-width: 100%;
+		}
 	</style>
 
 	<template>
@@ -33,23 +37,25 @@
 			<text-date class="created" data="[[model.created]]"></text-date>
 			<text-date class="modified" data="[[model.modified]]"></text-date>
 
-			<tinng-dropmenu class="menu right">
+			<ui-dropmenu class="menu right">
 
 				<template is="dom-if" if="[[rights.canEdit]]">
 					<paper-item>
 						<iron-icon icon="create"></iron-icon>
-						<text-string>unit.posts.edit</text-string>
+						<span>[[ i18n("unit.posts.edit") ]]</span>
+						<!--<text-string key="unit.posts.edit" />-->
 					</paper-item>
 				</template>
 
 				<template is="dom-if" if="[[rights.canDelete]]">
 					<paper-item>
 						<iron-icon icon="delete"></iron-icon>
-						<text-string>unit.posts.delete</text-string>
+						<!--<text-string key="unit.posts.delete" />-->
+						<span>[[ i18n("unit.posts.delete") ]]</span>
 					</paper-item>
 				</template>
 
-			</tinng-dropmenu>
+			</ui-dropmenu>
 
 			<div id="message"></div>
 

@@ -1,4 +1,7 @@
-<dom-module id="tinng-dropmenu">
+<link rel="import" href="../../../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="ui-dropmenu">
 
 
 	<template>
@@ -60,13 +63,10 @@
 
 		<iron-signals on-iron-signal-hide-overlays="hide"></iron-signals>
 
-
 		<paper-icon-button active$="[[ menuShown ]]" icon="arrow-drop-down" on-tap="toggle"></paper-icon-button>
 
 		<div class="dropdown" hidden$="[[ !menuShown ]]">
-			<paper-shadow>
-				<content id="content"></content>
-			</paper-shadow>
+			<content id="content"></content>
 		</div>
 
 
@@ -75,7 +75,7 @@
 
 <script>
 	Polymer({
-		is:"tinng-dropmenu",
+		is:"ui-dropmenu",
 
 		ready:function(){
 			this.menuShown = false;

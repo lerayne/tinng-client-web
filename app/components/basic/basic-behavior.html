@@ -22,6 +22,10 @@
 		// not sure if those work
 		emptyObject: function(){ return {} },
 
-		emptyArray: function(){ return [] }
+		emptyArray: function(){ return [] },
+
+		i18n:function(key){
+			return tinng.lang.textLocalized[key] || tinng.lang.textDefault[key] || key;
+		}
 	}
 </script>

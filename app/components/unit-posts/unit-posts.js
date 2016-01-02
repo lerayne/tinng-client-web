@@ -243,6 +243,22 @@ Polymer({
         tinng.router.note('start', this.currentSliceTop);
     },
 
+    loadAll:function(){
+        this.showLoading();
+
+        // todo - bug: sometimes loads wrong amount
+        tinng.connection.rescribe(this, 'posts-main', {
+            limit: 0
+        });
+        tinng.router.note('start', 0);
+    },
+
+    getRemainingCount: function(topic){
+        if (this.topic && this.topic.post_count) {
+            return (this.topic.post_count || 0) - this.currentSliceTop;
+        }
+    },
+
     showLoadMore: function (nodes, headLoaded) {
         console.log('showLoadMore', nodes.length && !headLoaded)
         return nodes.length && !headLoaded

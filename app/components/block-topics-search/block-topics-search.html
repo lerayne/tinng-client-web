@@ -1,30 +1,53 @@
 <dom-module id="block-topics-search">
-    <style>
-        #searchAnimator {
-            width: 100%;
-            transition: opacity 0.2s;
-            opacity: 1;
-        }
-
-        #searchAnimator.iron-collapse-closed {
-            opacity: 0;
-        }
-    </style>
 
     <template>
-        <div hidden hidden$="{{!searchOn}}" on-transitionend="searchHideEnd" class="search horizontal layout flex">
+        <style>
+            :host {
+                @apply(--layout);
+                @apply(--layout-horizontal);
+            }
+
+            #searchAnimator {
+                width: 100%;
+                transition: opacity 0.2s;
+                opacity: 1;
+            }
+
+            #searchAnimator.iron-collapse-closed {
+                opacity: 0;
+            }
+
+            #inputDisplay {
+                margin: 5px 0;
+                background: #FFF;
+                padding: 4px;
+                border-radius: 4px;
+            }
+
+            #inputDisplay input[type="text"] {
+                border:0;
+                font-size: 1.3em;
+            }
+        </style>
+
+        <div id="inputDisplay" class="horizontsl layout flex">
+            <input id="input" type="text">
+        </div>
+
+        <paper-icon-button style="margin-left:5px" icon="backspace" on-tap="searchClear"></paper-icon-button>
+
+        <!--<div on-transitionend="searchHideEnd" class="search horizontal layout flex">
             <iron-collapse id="searchAnimator" class="horizontal" horizontal duration="0.2" fixedSize="true">
-                <!-- todo - написать свой коллапсер -->
+                &lt;!&ndash; todo - написать свой коллапсер &ndash;&gt;
                 <div class="horizontal layout" style="width:100%">
                     <div class="text-container horizontal layout flex" opaque$="{{searchOn}}" >
                         <input type="text">
                     </div>
-                    <paper-icon-button style="margin-left:5px" icon="backspace" on-tap="searchClearHide"></paper-icon-button>
+
                 </div>
             </iron-collapse>
-        </div>
+        </div>-->
 
-        <paper-icon-button icon="search" on-tap="searchShow" hidden$="{{searchOn}}"></paper-icon-button>
     </template>
 </dom-module>
 
@@ -32,13 +55,17 @@
     Polymer({
         is: "block-topics-search",
 
+        ready:function(){
+        },
+
         searchShow:function(){
-            this.searchOn = true;
             this.searchToggle();
         },
 
-        searchClearHide:function(){
-            this.searchToggle();
+        searchClear:function(){
+            //todo - if there is content - remove content, otherwise - fire hide
+            //this.searchToggle();
+            this.fire('search-cleared');
         },
 
         searchHideEnd:function(){
@@ -49,6 +76,11 @@
 
         searchToggle:function(){
             this.$.searchAnimator.toggle();
+        },
+
+        focus:function(){
+            console.log('focus')
+            this.$.input.focus()
         }
     })
 </script>

@@ -6,6 +6,7 @@
 <link rel="import" href="../unit/unit-style.html">
 
 <link rel="import" href="../card-topic/card-topic.html">
+<link rel="import" href="../ui-collapser/ui-collapser.html">
 <link rel="import" href="../block-slide-menu/block-slide-menu.html">
 <link rel="import" href="../block-topics-search/block-topics-search.html">
 
@@ -56,17 +57,21 @@
                 <paper-item>Test menu item</paper-item>
             </block-slide-menu>
 
-            <!-- TOOLBAR-->
+            <!-- TOOLBAR -->
             <paper-toolbar>
 
-                <!-- MENU BUTTON -->
+                <!-- Menu button -->
                 <paper-icon-button icon="menu" on-click="menuShow"></paper-icon-button>
 
-                <!-- UNIT HEADING -->
-                <text-string hidden$="{{searchOn}}" id="unitHeader" class="flex">unit.topics.unitName</text-string>
+                <!-- Unit heading -->
+                <text-string hidden$="[[ searchOn ]]" id="title" class="flex">unit.topics.unitName</text-string>
 
-                <!-- SEARCH -->
-                <!--<block-topics-search></block-topics-search>-->
+                <!-- Search -->
+                <ui-collapser hidden id="searchCollapser" class="horizontal layout flex">
+                    <block-topics-search id="search" class="flex"></block-topics-search>
+                </ui-collapser>
+                <paper-icon-button icon="search" on-tap="searchShow" hidden$="[[ searchOn ]]"></paper-icon-button>
+
 
                 <!-- only when used in units grid-->
 				<span id="controlsEmbedded" class="horizontal layout center">
@@ -81,8 +86,8 @@
 
                 <div id="scrollContainer">
                     <div id="scroll">
-                        <template is="dom-repeat" items="{{ nodes }}" as="node">
-                            <card-topic model="{{ node }}"></card-topic>
+                        <template is="dom-repeat" items="[[ nodes ]]" as="node">
+                            <card-topic model="[[ node ]]"></card-topic>
                         </template>
                     </div>
                 </div>
@@ -96,125 +101,4 @@
     </template>
 </dom-module>
 
-<script>
-    Polymer({
-
-        //
-        //Polymer-specific fields
-        //
-
-        is: 'unit-topics',
-
-        behaviors: [
-            tinng.polymerBehavior.Nodelist,
-            tinng.polymerBehavior.Unit,
-            tinng.polymerBehavior.Basic
-        ],
-
-        ready: function () {
-            // set default sorting
-            this.sortField = 'updated';
-            this.sortOrder = 'desc';
-
-            this.subscribe();
-        },
-
-
-        /**
-         * Subscribes this unit to topic updates
-         */
-        subscribe: function () {
-
-            this.clean();
-
-            tinng.connection.subscribe({
-                subscriber: this,
-                feedName: 'topics-main',
-                feed: {
-                    feed: 'topics'
-                },
-                parser: function (data) {
-                    this.parseUpdates(data);
-                }
-            });
-        },
-
-
-        /**
-         * Transfer unit to initial state
-         */
-        clean: function () {
-            this.nodes = [];
-            tinng.connection.unscribe(this, 'topics-main');
-        },
-
-
-        /**
-         * Main parsing function that transforms list of updates from server to the new model
-         */
-        parseUpdates: function (nodes) {
-
-            // prepare all nodes
-            _(nodes).each(this.prepareNode.bind(this));
-
-            if (!this.nodes.length) {
-                // если это первичная загрузка
-
-                // если мы заполняем массив первый раз - просто присваеваем, отсортировав
-                this.nodes = this.sort(nodes, this.sortField, this.sortOrder);
-
-            } else {
-                // если в массиве уже есть ноды - обработать каждую
-                _(nodes).each(this.topics_processNode.bind(this));
-
-                // todo - нужно либо отключить соблюдение сортировки в processNode, либо сделать условие на выполнение sortSelf
-                // (было ли обновление) иначе - двойная работа. А еще лучше - сначала, если есть обновления, А ТАКЖЕ если от
-                // обновлений может зависеть порядок - обновить и отсортировать, а затем добавить/удалить с само-сортировкой.
-                // Чтобы понять, нужна ли сортировка - можно проверять, изменилось ли поле, по которому сортируем ;)
-                this.sortSelf();
-            }
-        },
-
-
-        /**
-         * Process separate node
-         */
-        topics_processNode: function (data) {
-            this.processNode(data);
-        },
-
-
-        /**
-         * Show unit's slide-in menu
-         */
-        menuShow: function () {
-            this.$.slideMenu.menuShow();
-        },
-
-
-        // drafts
-
-        onTopicLoaded: function (event, data, sender) {
-
-            this.topics_markSelected(data.id);
-        },
-
-
-        parseSignal: function (event, data) {
-            //console.log(data);
-            if (data.command == 'suspend') {
-                console.info('SUSPEND topics unit activity')
-            }
-
-            if (data.command == 'restore') {
-                console.info('RESTORE topics unit activity')
-            }
-        },
-
-
-        topics_markSelected: function (id) {
-            this.clearSelection();
-            this.markSelected(id)
-        }
-    });
-</script>
+<script src="unit-topics.js"></script>
