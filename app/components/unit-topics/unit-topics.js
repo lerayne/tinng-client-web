@@ -161,7 +161,6 @@ Polymer({
         this.$.search.focus()
     },
 
-    Se
     /**
      * For future suspend/restore commands
      *
