@@ -1,22 +1,18 @@
 <dom-module id="header-login-panel">
-	<style>
-		:host {
-
-		}
-
-		img {
-			vertical-align: middle;
-			height: 36px;
-			border-radius: 100%;
-			margin-right: 5px;
-		}
-	</style>
 
 	<template>
+		<style>
+			img {
+				vertical-align: middle;
+				height: 36px;
+				border-radius: 100%;
+				margin-right: 5px;
+			}
+		</style>
 
 		<div hidden$="[[ !isLogged(status) ]]" style="height:100%">
-			<img hidden$="[[!hasAvatar(user)]]" src="[[ user.avatar ]]">
-			<span>[[user.login]]</span>
+			<img hidden$="[[ !hasAvatar(user) ]]" src$="[[ user.avatar ]]">
+			<span>[[ user.login ]]</span>
 			<paper-button on-tap="logOut"><text-string>dialog.login.logoutButton</text-string></paper-button>
 		</div>
 
@@ -71,12 +67,12 @@
 			}
 		},
 
-		status:'',
-
 		text:text,
 
 		//polymer
 		ready: function(){
+
+			this.status = '';
 
 			var login = tinng.funcs.getCookie('login');
 			var password = tinng.funcs.getCookie('password');

@@ -21,7 +21,7 @@
 	<template>
 
 		<span  hidden$="[[ !computeStrToBool(data.avatar) ]]">
-			<img class="avatar" src="[[data.avatar]]">
+			<img class="avatar" src$="[[ data.avatar ]]">
 		</span>
 
 		<span hidden$="[[ !data.name ]]" class="name">[[data.name]]</span>
