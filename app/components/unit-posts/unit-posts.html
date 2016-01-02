@@ -83,7 +83,7 @@
         ></iron-signals>
 
         <unit-posts-deco>
-            <paper-toolbar id="toolbar" class="medium-tall">
+            <paper-toolbar id="toolbar">
 
                 <paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
                 <!--<paper-icon-button icon="menu"></paper-icon-button>-->
@@ -112,21 +112,23 @@
 
 
                 <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
-                    <text-string hidden$="[[!private]]"
-                                 class="block tinytext">unit.posts.privateDisclaimer</text-string>
-                    <div class="flex horizontal layout center">
 
+                    <text-string hidden$="[[!private]]" class="block tinytext">
+                        unit.posts.privateDisclaimer
+                    </text-string>
+
+                    <div class="flex horizontal layout center">
                         <template is="dom-repeat" items="[[topic.private]]" as="reader">
                             <block-user data='[[ getUserData(reader) ]]'></block-user>
                         </template>
-
                     </div>
+
                 </div>
 
             </paper-toolbar>
 
 
-            <!-- Nodelist section -->
+            <!-- NODELIST SECTION -->
             <div id="nodelist" class="content flex">
                 <div id="scrollContainer">
                     <div id="scroll">

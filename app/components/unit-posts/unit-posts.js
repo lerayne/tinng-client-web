@@ -5,6 +5,7 @@
 Polymer({
 
     // Polymer related
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     is: 'unit-posts',
 
@@ -50,7 +51,9 @@ Polymer({
         }
     },
 
-    //other
+    // Main data workflow
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * This vars should be set to initial values on both component start and clean
@@ -232,6 +235,8 @@ Polymer({
 
 
     // Load more and related
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     loadMore: function () {
         this.showLoading();
@@ -260,7 +265,6 @@ Polymer({
     },
 
     showLoadMore: function (nodes, headLoaded) {
-        console.log('showLoadMore', nodes.length && !headLoaded)
         return nodes.length && !headLoaded
     },
 
@@ -271,6 +275,8 @@ Polymer({
 
 
     // Renaming
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     unlock: function () {
         tinng.connection.query('service', null, {
@@ -312,7 +318,13 @@ Polymer({
         });
     },
 
-    //draft
+    showRenameButton: function (haveRight, allreadyRenaming) {
+        return haveRight && !allreadyRenaming;
+    },
+
+
+    // Additional data functions
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     isTopicPrivate: function (privat) {
         return typeof privat == 'object' && privat.length > 0
@@ -330,10 +342,6 @@ Polymer({
         return {
             avatar: reader.avatar
         }
-    },
-
-    showRenameButton: function (haveRight, allreadyRenaming) {
-        return haveRight && !allreadyRenaming;
     },
 
     meSingle: function () {
