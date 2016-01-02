@@ -132,10 +132,7 @@ Polymer({
      */
     searchShow: function(){
         this.searchOn = true;
-        this.$.searchCollapser.open();
-        this.async(function(){
-            this.$.search.focus()
-        })
+        this.$.searchCollapser.open(this.searchFocus.bind(this));
     },
 
 
@@ -149,11 +146,22 @@ Polymer({
 
     /**
      * Finish search fiels's hiding process (runs on animation's end)
+     *
+     * @private
      */
     _searchFinishHiding: function(){
         this.searchOn = false;
     },
 
+
+    /**
+     * Give focus to searche's input box
+     */
+    searchFocus: function(){
+        this.$.search.focus()
+    },
+
+    Se
     /**
      * For future suspend/restore commands
      *

@@ -55,12 +55,23 @@
     Polymer({
         is: "block-topics-search",
 
-        ready:function(){
+        /*ready:function(){
         },
 
         searchShow:function(){
             this.searchToggle();
         },
+
+         searchHideEnd:function(){
+         if (!this.$.searchAnimator.opened){
+         this.searchOn = false;
+         }
+         },
+
+         searchToggle:function(){
+         this.$.searchAnimator.toggle();
+         },
+         */
 
         searchClear:function(){
             //todo - if there is content - remove content, otherwise - fire hide
@@ -68,18 +79,7 @@
             this.fire('search-cleared');
         },
 
-        searchHideEnd:function(){
-            if (!this.$.searchAnimator.opened){
-                this.searchOn = false;
-            }
-        },
-
-        searchToggle:function(){
-            this.$.searchAnimator.toggle();
-        },
-
         focus:function(){
-            console.log('focus')
             this.$.input.focus()
         }
     })
