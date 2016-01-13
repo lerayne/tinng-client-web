@@ -8,73 +8,72 @@
 
 <dom-module is="unit-posts">
 
-    <style include="unit-style"></style>
-    <style include="unit-posts-style"></style>
-    <style>
-        :host {
-
-            --block-user-name-display: inline-block;
-            --block-user-avatar: {
-                height: 30px;
-            };
-        }
-
-        .allowed-users {
-            opacity: 0;
-            transition: opacity 0.3s ease-in;
-            height: 56px;
-        }
-
-        :host([private]) .allowed-users {
-            opacity: 1;
-        }
-
-        [invisible] {
-            visibility: hidden;
-        }
-
-        #loadMore {
-            margin-bottom: 8px;
-            position: relative;
-        }
-
-        #loadMore text-string {
-            text-align: center;
-            display: block;
-            padding: 2px 0;
-        }
-
-        #loadMore .button {
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        #loadMore .loadAllBtn {
-            position: absolute;
-            top:0;
-            right:0;
-            box-sizing: border-box;
-            padding: 2px 6px;
-            color:#999;
-        }
-
-
-        #loadMore .loadAllBtn text-string {
-            display: inline-block;
-        }
-
-        #loadMore .button:hover {
-            background-color: #ddd;
-        }
-
-        #topicName {
-            font-size: 120%;
-        }
-
-
-    </style>
-
     <template>
+        <style include="unit-style"></style>
+        <style include="unit-posts-style"></style>
+        <style>
+            :host {
+
+                --block-user-name-display: inline-block;
+                --block-user-avatar: {
+                    height: 30px;
+                };
+            }
+
+            .allowed-users {
+                opacity: 0;
+                transition: opacity 0.3s ease-in;
+                height: 56px;
+            }
+
+            :host([private]) .allowed-users {
+                opacity: 1;
+            }
+
+            [invisible] {
+                visibility: hidden;
+            }
+
+            #loadMore {
+                margin-bottom: 8px;
+                position: relative;
+            }
+
+            #loadMore text-string {
+                text-align: center;
+                display: block;
+                padding: 2px 0;
+            }
+
+            #loadMore .button {
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            #loadMore .loadAllBtn {
+                position: absolute;
+                top:0;
+                right:0;
+                box-sizing: border-box;
+                padding: 2px 6px;
+                color:#999;
+            }
+
+
+            #loadMore .loadAllBtn text-string {
+                display: inline-block;
+            }
+
+            #loadMore .button:hover {
+                background-color: #ddd;
+            }
+
+            #topicName {
+                font-size: 120%;
+            }
+
+
+        </style>
 
         <iron-signals
                 on-iron-signal-secondary-close="meSingle"

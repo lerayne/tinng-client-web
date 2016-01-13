@@ -5,29 +5,28 @@
 
 <dom-module id="card-post">
 
-	<style>
-		:host {
-			display: block;
-
-			--block-user-avatar: {
-				 height:48px;
-			};
-		}
-
-		blockquote footer {
-			display:none;
-		}
-
-		tinng-dropmenu {
-			margin-top:-3px;
-		}
-
-		#message img {
-			max-width: 100%;
-		}
-	</style>
-
 	<template>
+		<style>
+			:host {
+				display: block;
+
+				--block-user-avatar: {
+					height:48px;
+				};
+			}
+
+			blockquote footer {
+				display:none;
+			}
+
+			ui-dropmenu {
+				margin-top:-3px;
+			}
+
+			#message img {
+				max-width: 100%;
+			}
+		</style>
 
 		<card-post-deco model="[[model]]">
 

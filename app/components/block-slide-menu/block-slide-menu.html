@@ -1,36 +1,37 @@
 <dom-module id="block-slide-menu">
-    <style>
-        :host {
-            width: 250px;
-            min-height: 200px;
-            position: absolute;
-            top: 0;
-            left: -260px;
-            z-index: 100;
-            transition: left 0.3s;
-            transition-timing-function: ease;
-            background-color: #fff;
-            box-shadow: 0 0 30px rgba(0,0,0,.5);
-
-            --paper-toolbar-height: 52px;
-        }
-
-        :host(.visible) {
-            left: 0;
-        }
-
-        :host(.menu-show-ease) {
-            /* http://matthewlein.com/ceaser/ easeOutCirc */
-            transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000) !important;
-        }
-
-        :host(.menu-hide-ease) {
-            /* http://matthewlein.com/ceaser/ easeInCirc */
-            transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
-        }
-    </style>
 
     <template>
+        <style>
+            :host {
+                width: 250px;
+                min-height: 200px;
+                position: absolute;
+                top: 0;
+                left: -260px;
+                z-index: 100;
+                transition: left 0.3s;
+                transition-timing-function: ease;
+                background-color: #fff;
+                box-shadow: 0 0 30px rgba(0,0,0,.5);
+
+                --paper-toolbar-height: 52px;
+            }
+
+            :host(.visible) {
+                left: 0;
+            }
+
+            :host(.menu-show-ease) {
+                /* http://matthewlein.com/ceaser/ easeOutCirc */
+                transition-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000) !important;
+            }
+
+            :host(.menu-hide-ease) {
+                /* http://matthewlein.com/ceaser/ easeInCirc */
+                transition-timing-function: cubic-bezier(0.600, 0.040, 0.980, 0.335) !important;
+            }
+        </style>
+
         <paper-toolbar>
             <paper-icon-button icon="chevron-left" on-tap="menuHide"></paper-icon-button>
             <text-string class="flex">global.menu</text-string>

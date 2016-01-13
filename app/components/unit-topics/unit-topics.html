@@ -12,36 +12,35 @@
 
 
 <dom-module id="unit-topics">
-
-    <style include="unit-style"></style>
-    <style include="unit-topics-style"></style>
-    <style>
-        :host {
-            min-width: 350px;
-            overflow: hidden;
-        }
-
-        @media (max-width: 350px) {
-            :host {
-                min-width: 200px;
-            }
-        }
-
-        /* dont show close button in mobile view */
-        :host-context(page-main-mobile) #close {
-            display: none;
-        }
-
-        .text-container[opaque] {
-            opacity: 1;
-        }
-
-        paper-toolbar .search {
-            margin-right: 0;
-        }
-    </style>
-
     <template>
+        <style include="unit-style"></style>
+        <style include="unit-topics-style"></style>
+        <style>
+            :host {
+                min-width: 350px;
+                overflow: hidden;
+            }
+
+            @media (max-width: 350px) {
+                :host {
+                    min-width: 200px;
+                }
+            }
+
+            /* dont show close button in mobile view */
+            :host-context(page-main-mobile) #close {
+                display: none;
+            }
+
+            .text-container[opaque] {
+                opacity: 1;
+            }
+
+            paper-toolbar .search {
+                margin-right: 0;
+            }
+        </style>
+
 
         <iron-signals
                 on-iron-signal-unit-topics="parseSignal"

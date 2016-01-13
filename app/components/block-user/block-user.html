@@ -1,24 +1,23 @@
 <dom-module id="block-user">
-	<style>
-		:host {
-			display: inline-block;
-		}
-
-		.name {
-			font-weight: bold;
-			display: var(--block-user-name-display);
-		}
-
-		.avatar {
-			border-radius: 100%;
-			vertical-align: top;
-			margin-right: 5px;
-
-			@apply(--block-user-avatar);
-		}
-	</style>
-
 	<template>
+		<style>
+			:host {
+				display: inline-block;
+			}
+
+			.name {
+				font-weight: bold;
+				display: var(--block-user-name-display);
+			}
+
+			.avatar {
+				border-radius: 100%;
+				vertical-align: top;
+				margin-right: 5px;
+
+				@apply(--block-user-avatar);
+			}
+		</style>
 
 		<span  hidden$="[[ !computeStrToBool(data.avatar) ]]">
 			<img class="avatar" src$="[[ data.avatar ]]">

@@ -1,24 +1,24 @@
 <dom-module id="block-tag">
 
-	<style>
-
-		:host {
-			margin: 1px 4px 1px 0;
-			padding: 2px 4px;
-			display: inline-block;
-			position: relative;
-			background-color: #bbb;
-			color: #fff;
-		}
-
-		:host([tag-type="user"]) {
-			background-color: #d0e7ff;
-			color: #3f6c9a;
-		}
-
-	</style>
-
 	<template>
+		<style>
+
+			:host {
+				margin: 1px 4px 1px 0;
+				padding: 2px 4px;
+				display: inline-block;
+				position: relative;
+				background-color: #bbb;
+				color: #fff;
+			}
+
+			:host([tag-type="user"]) {
+				background-color: #d0e7ff;
+				color: #3f6c9a;
+			}
+
+		</style>
+
 		<content></content>
 	</template>
 </dom-module>
