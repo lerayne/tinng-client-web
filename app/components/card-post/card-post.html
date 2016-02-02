@@ -6,6 +6,7 @@
 <dom-module id="card-post">
 
 	<template>
+
 		<style>
 			:host {
 				display: block;
@@ -23,8 +24,9 @@
 				margin-top:-3px;
 			}
 
-			#message img {
+			.message ::content img {
 				max-width: 100%;
+				height: auto !important;
 			}
 		</style>
 
@@ -56,7 +58,7 @@
 
 			</ui-dropmenu>
 
-			<div id="message"></div>
+			<div id="message" class="message"></div>
 
 			<!-- todo - here the tags block causes scroll height calculation to go wrong. Deal with it-->
 			<template is="dom-if" if="{{!computeToNumber(model.topic_id)}}">
