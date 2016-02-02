@@ -1,0 +1,31 @@
+<script>
+	tinng.polymerBehavior.Basic = {
+
+		//Set of functions to use in computed properties and bindings
+
+		computeToBool:function(value){
+			return !!+value; // returns NaN string as false
+		},
+
+		computeStrToBool:function(value){
+			return !!value; // returns NaN string as true
+		},
+
+		computeEqual:function(selected){
+			return selected;
+		},
+
+		computeToNumber:function(value){
+			return +value;
+		},
+
+		// not sure if those work
+		emptyObject: function(){ return {} },
+
+		emptyArray: function(){ return [] },
+
+		i18n:function(key){
+			return tinng.lang.textLocalized[key] || tinng.lang.textDefault[key] || key;
+		}
+	}
+</script>

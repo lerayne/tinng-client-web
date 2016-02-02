@@ -1,0 +1,103 @@
+<link rel="import" href="../../../bower_components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="../unit/unit-behavior.html">
+<link rel="import" href="../nodelist/nodelist-behavior.html">
+
+<link rel="import" href="../unit/unit-style.html">
+
+<link rel="import" href="../card-topic/card-topic.html">
+<link rel="import" href="../ui-collapser/ui-collapser.html">
+<link rel="import" href="../block-slide-menu/block-slide-menu.html">
+<link rel="import" href="../block-topics-search/block-topics-search.html">
+
+
+<dom-module id="unit-topics">
+    <template>
+        <style include="unit-style"></style>
+        <style include="unit-topics-style"></style>
+        <style>
+            :host {
+                min-width: 350px;
+                overflow: hidden;
+            }
+
+            @media (max-width: 350px) {
+                :host {
+                    min-width: 200px;
+                }
+            }
+
+            /* dont show close button in mobile view */
+            :host-context(page-main-mobile) #close {
+                display: none;
+            }
+
+            .text-container[opaque] {
+                opacity: 1;
+            }
+
+            paper-toolbar .search {
+                margin-right: 0;
+            }
+        </style>
+
+
+        <iron-signals
+                on-iron-signal-unit-topics="parseSignal"
+                on-iron-signal-topic-loaded="onTopicLoaded"
+                on-iron-signal-rescribe-all="subscribe"
+        ></iron-signals>
+
+        <unit-topics-deco>
+
+            <!-- MENU -->
+            <!-- todo - find out why class (or any other attr) here can be binded only with $, while in login panel src is working -->
+            <block-slide-menu id="slideMenu">
+                <paper-item>Test menu item</paper-item>
+            </block-slide-menu>
+
+            <!-- TOOLBAR -->
+            <paper-toolbar>
+
+                <!-- Menu button -->
+                <paper-icon-button icon="menu" on-click="menuShow"></paper-icon-button>
+
+                <!-- Unit heading -->
+                <text-string hidden$="[[ searchOn ]]" id="title" class="flex">unit.topics.unitName</text-string>
+
+                <!-- Search -->
+                <ui-collapser hidden id="searchCollapser" class="horizontal layout flex">
+                    <block-topics-search id="search" class="flex"></block-topics-search>
+                </ui-collapser>
+                <paper-icon-button icon="search" on-tap="searchShow" hidden$="[[ searchOn ]]"></paper-icon-button>
+
+
+                <!-- only when used in units grid-->
+				<span id="controlsEmbedded" class="horizontal layout center">
+					<!--<paper-icon-button icon="chevron-left" id="hide"></paper-icon-button>-->
+					<paper-icon-button id="close" icon="close" on-tap="suspend"
+                                       style="color: #039BE5"></paper-icon-button>
+				</span>
+            </paper-toolbar>
+
+            <!-- TOPICS LIST -->
+            <div id="nodelist" class="nodes-container content vertical layout flex">
+
+                <div id="scrollContainer">
+                    <div id="scroll">
+                        <template is="dom-repeat" items="[[ nodes ]]" as="node">
+                            <card-topic model="[[ node ]]"></card-topic>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+
+            <paper-fab icon="note-add"></paper-fab>
+
+        </unit-topics-deco>
+
+    </template>
+</dom-module>
+
+<script src="unit-topics.js"></script>

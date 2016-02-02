@@ -1,0 +1,63 @@
+<dom-module id="block-tag">
+
+	<template>
+		<style>
+
+			:host {
+				margin: 1px 4px 1px 0;
+				padding: 2px 4px;
+				display: inline-block;
+				position: relative;
+				background-color: #bbb;
+				color: #fff;
+			}
+
+			:host([tag-type="user"]) {
+				background-color: #d0e7ff;
+				color: #3f6c9a;
+			}
+
+		</style>
+
+		<content></content>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:"block-tag",
+
+		behaviors:[tinng.polymerBehavior.Basic],
+
+		properties: {
+			data: {
+				type: Object,
+				value: function(){ return {} }
+			},
+
+			tagType: {
+				type:String,
+				value: "",
+				reflectToAttribute: true,
+				computed:"computeEqual(data.type)"
+			},
+
+			tagID: {
+				type:Number,
+				value:-1,
+				reflectToAttribute: true,
+				computed:"computeEqual(data.id)"
+			}
+		},
+
+		listeners:{
+			tap: "onTap"
+		},
+
+		onTap:function(e){
+			this.fire('tag-select', this.data);
+
+			e.stopPropagation();
+		}
+	})
+</script>

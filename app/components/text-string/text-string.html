@@ -1,0 +1,32 @@
+<dom-module id="text-string">
+	<template>
+		<content></content>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:'text-string',
+
+		properties:{
+			key: String
+		},
+
+		ready:function(){
+
+			if (!this.key){
+				this.key = this.innerHTML.trim();
+			}
+
+			//console.info('key', this.innerHTML, '|'+key+'|', tinng.lang.textDefault[key]);
+
+			if (tinng.lang.textLocalized[this.key]) {
+				this.innerHTML = tinng.lang.textLocalized[this.key];
+			} else if (tinng.lang.textDefault[this.key]){
+				this.innerHTML = tinng.lang.textDefault[this.key];
+			} else if (!this.innerHTML) {
+				this.innerHTML = this.key;
+			}
+		}
+	})
+</script>

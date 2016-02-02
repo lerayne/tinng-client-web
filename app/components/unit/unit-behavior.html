@@ -1,0 +1,23 @@
+<link rel="import" href="../../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
+
+<script>
+	tinng.polymerBehavior.Unit = {
+		ready: function(){
+			tinng.units.push(this);
+		},
+
+		suspend: function () {
+			/*
+			 * todo - Эта функция работает нестандартно: она посылает 2 сигнала, один - наверх (где он засекается элементом
+			 * разметки) и один широковещательно. Разметка закрывает колонку и посылает другой широковещ. сигнал, который
+			 * засекается текущим элементом. Некая часть этого сценария является полезной идеей, но в целом ее нужно
+			 * продумать лучше
+			 * */
+			this.fire('suspend', {sender: this});
+			this.fire('iron-signal', {name: 'secondary-close'});
+		}
+	};
+</script>

@@ -1,0 +1,23 @@
+<dom-module id="text-date">
+	<template>
+		<style>
+			abbr {
+				cursor:help;
+				text-decoration: underline;
+			}
+		</style>
+
+		<abbr title="[[data]]">[[relativeTime]]</abbr>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is: "text-date",
+
+		ready:function(){
+			this.moment = moment(this.data, 'YYYY-MM-DD HH:mm:ss');
+			this.relativeTime = this.moment.fromNow()
+		}
+	});
+</script>

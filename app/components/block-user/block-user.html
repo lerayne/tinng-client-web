@@ -1,0 +1,38 @@
+<dom-module id="block-user">
+	<template>
+		<style>
+			:host {
+				display: inline-block;
+			}
+
+			.name {
+				font-weight: bold;
+				display: var(--block-user-name-display);
+			}
+
+			.avatar {
+				border-radius: 100%;
+				vertical-align: top;
+				margin-right: 5px;
+
+				@apply(--block-user-avatar);
+			}
+		</style>
+
+		<span  hidden$="[[ !computeStrToBool(data.avatar) ]]">
+			<img class="avatar" src$="[[ data.avatar ]]">
+		</span>
+
+		<span hidden$="[[ !data.name ]]" class="name">[[data.name]]</span>
+
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:"block-user",
+
+
+		behaviors:[tinng.polymerBehavior.Basic]
+	})
+</script>

@@ -1,0 +1,207 @@
+<script>
+	tinng.polymerBehavior.Nodelist = {
+
+		//properties
+		clientId:0,
+
+		/**
+		 * Polymer-specific fields
+		 */
+		properties:{
+			// Whether or not this unit is in loading state
+			loading: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+
+			// Whether or not the contents of this unit had been loaded
+			loaded: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+
+			sortField: {
+				type:String,
+				value: "created",
+				observer:"sortSelf"
+			},
+
+			sortOrder: {
+				type:String,
+				value: "asc",
+				observer:"sortSelf"
+			},
+
+			// main data list
+			nodes: {
+				type: Array,
+				value: function(){ return [] }
+			},
+
+			selectedIDs: {
+				type: Array,
+				value: function(){ return [] }
+			}
+		},
+
+		created:function(){
+			tinng.funcs.bind(this, [
+				'processNode'
+			]);
+		},
+
+		//other
+		parseUpdates:function(old, nodes){
+			//console.log('updates', nodes)
+		},
+
+		clean:function(){
+			this.nodes = [];
+		},
+
+		/**
+		 * Common node processing
+		 *
+		 * @param data - node model from server
+		 */
+		processNode:function(data){
+
+			// находим индекс существующего элемента по id
+			var existingItemIndex = _(this.nodes).findIndex({id: data.id});
+
+			// если такого элемента нет - добавляем новый элемент в коллекцию
+			if (existingItemIndex == -1) {
+
+				// установка this.sortOrder в последний параметр актуальна только для сортировки по времени
+				var sortIndex = tinng.funcs.getSortIndex(this.nodes, data, this.sortField, this.sortOrder, this.sortOrder);
+
+				// вставляем новый элемент в нужное место
+				if (sortIndex == this.nodes.length) {
+					this.push('nodes', data)
+				} else {
+					this.splice('nodes', sortIndex, 0, data);
+				}
+
+			} else {
+				if (+data.deleted) {
+					// если есть и удален - удаляем из коллекции
+					this.splice('nodes',  existingItemIndex, 1)
+				} else {
+					// иначе - мягко обновляем существующий элемент (иначе пересоздается нода, обнуляя все свои свойства)
+					// впрочем, теги и другие вложенные объекты сейчас пересоздаются, так что возможно
+					// (todo) создать функцию рекурсивного мягкого обновления ИЛИ проверить, что в реальности обновляется
+					// (возможно, мягкое обновление уже делает сам полимер)
+					for (var key in data) {
+						this.set('nodes.'+ existingItemIndex + '.' + key, data[key]);
+					}
+				}
+			}
+		},
+
+
+		/**
+		 * Prepare a node to being parsed
+		 *
+		 * @param node - node model from server
+		 */
+		prepareNode:function(node){
+			// если у объекта нет id - присваеваем ему локальный клиентский id
+			if (!node.id) node.id = 'client'+(this.clientId++);
+
+			// making node selected on load
+			// todo - make selected node to be scrolled to on load
+			if (this.selectedIDs.indexOf(node.id) != -1) {
+				node.selected = true;
+			}
+		},
+
+
+
+		//
+		// Sorting | todo - modify these to use native sorting of dom-repeat
+		//
+
+		// сортировка по поданным параметрам (удобна для декларативного фильтра, который пока не работает)
+		sort:function(input, sortField, sortOrder){
+
+			var array = _(input).sortBy(sortField).value();
+			if (sortOrder == 'desc') array.reverse();
+
+			return array;
+		},
+
+		sortSelf:function(){
+			this.nodes = this.sort(this.nodes, this.sortField, this.sortOrder)
+		},
+
+
+
+		//
+		//Scroll
+		//
+
+		isAtBottom:function(){
+			return this.$.scrollContainer.scrollHeight - (this.$.scrollContainer.scrollTop + this.$.scrollContainer.offsetHeight) == 0;
+		},
+
+		isAtTop:function(){
+			return this.$.scrollContainer.scrollTop == 0;
+		},
+
+		toBottom: function(){
+			this.$.scroll.scrollIntoView(false)
+		},
+
+		toTop: function(){
+			this.$.scroll.scrollIntoView(true)
+		},
+
+
+
+		//
+		// Selection
+		//
+
+		markSelected:function(id){
+
+			//console.log('markSelected from behavior');
+
+			this.selectedIDs.push(id);
+
+			if (this.nodes.length){
+				var nodeIndex = _(this.nodes).findIndex({id:id});
+				if (nodeIndex > -1){
+					this.set('nodes.' + nodeIndex + '.selected', true);
+				}
+			}
+		},
+
+		unmarkSelected:function(id){
+			var idIndex = this.selectedIDs.indexOf(id);
+			if (idIndex >= 0) {
+				this.selectedIDs.splice(idIndex,1);
+			}
+
+			if (this.nodes.length){
+				var nodeIndex = _(this.nodes).findIndex({id:id});
+				var node = this.nodes[nodeIndex];
+				if (nodeIndex != -1 && node.selected){
+					this.set('nodes.' + nodeIndex + '.selected', false)
+				}
+			}
+		},
+
+		clearSelection:function(){
+			var that = this;
+			this.selectedIDs = [];
+
+			_(this.nodes).each(function(node, index){
+				if (node.selected) {
+					that.set('nodes.' + index + '.selected', false)
+				}
+			})
+		}
+	}
+</script>

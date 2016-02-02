@@ -1,0 +1,86 @@
+<dom-module id="block-topics-search">
+
+    <template>
+        <style>
+            :host {
+                @apply(--layout);
+                @apply(--layout-horizontal);
+            }
+
+            #searchAnimator {
+                width: 100%;
+                transition: opacity 0.2s;
+                opacity: 1;
+            }
+
+            #searchAnimator.iron-collapse-closed {
+                opacity: 0;
+            }
+
+            #inputDisplay {
+                margin: 5px 0;
+                background: #FFF;
+                padding: 4px;
+                border-radius: 4px;
+            }
+
+            #inputDisplay input[type="text"] {
+                border:0;
+                font-size: 1.3em;
+            }
+        </style>
+
+        <div id="inputDisplay" class="horizontsl layout flex">
+            <input id="input" type="text">
+        </div>
+
+        <paper-icon-button style="margin-left:5px" icon="backspace" on-tap="searchClear"></paper-icon-button>
+
+        <!--<div on-transitionend="searchHideEnd" class="search horizontal layout flex">
+            <iron-collapse id="searchAnimator" class="horizontal" horizontal duration="0.2" fixedSize="true">
+                &lt;!&ndash; todo - написать свой коллапсер &ndash;&gt;
+                <div class="horizontal layout" style="width:100%">
+                    <div class="text-container horizontal layout flex" opaque$="{{searchOn}}" >
+                        <input type="text">
+                    </div>
+
+                </div>
+            </iron-collapse>
+        </div>-->
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "block-topics-search",
+
+        /*ready:function(){
+        },
+
+        searchShow:function(){
+            this.searchToggle();
+        },
+
+         searchHideEnd:function(){
+         if (!this.$.searchAnimator.opened){
+         this.searchOn = false;
+         }
+         },
+
+         searchToggle:function(){
+         this.$.searchAnimator.toggle();
+         },
+         */
+
+        searchClear:function(){
+            //todo - if there is content - remove content, otherwise - fire hide
+            //this.searchToggle();
+            this.fire('search-cleared');
+        },
+
+        focus:function(){
+            this.$.input.focus()
+        }
+    })
+</script>

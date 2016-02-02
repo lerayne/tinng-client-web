@@ -1,0 +1,97 @@
+<link rel="import" href="../../../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="ui-dropmenu">
+
+
+	<template>
+
+		<style>
+			:host {
+				display:block;
+				position: relative;
+
+				--paper-icon-button:{
+					width:20px;
+					height:20px;
+					color:#777;
+					padding: 0;
+					border-radius: 100% 100% 0 0;
+				};
+			}
+
+			.dropdown {
+				position: absolute;
+				background-color: #ffffff;
+				box-shadow: 0 0 20px rgba(0,0,0,0.2);
+				z-index: 10;
+			}
+
+
+			:host ::content iron-icon {
+				color:#777;
+				margin-right:5px;
+				height: 18px;
+			}
+
+			:host ::content paper-item {
+				color:#555;
+				min-height: 32px;
+				padding: 0 10px;
+				cursor: pointer;
+				font-size: 1em;
+			}
+
+			:host ::content paper-item:hover {
+				background-color: #eee;
+			}
+
+			paper-icon-button[active] {
+				background-color: #eee;
+			}
+
+			:host(.right) paper-icon-button {
+				margin-left:5px;
+			}
+
+			:host(.right) .dropdown {
+				top:20px;
+				right:0;
+			}
+		</style>
+
+
+		<iron-signals on-iron-signal-hide-overlays="hide"></iron-signals>
+
+		<paper-icon-button active$="[[ menuShown ]]" icon="arrow-drop-down" on-tap="toggle"></paper-icon-button>
+
+		<div class="dropdown" hidden$="[[ !menuShown ]]">
+			<content id="content"></content>
+		</div>
+
+
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:"ui-dropmenu",
+
+		ready:function(){
+			this.menuShown = false;
+		},
+
+		toggle:function(e){
+			this.menuShown = !this.menuShown;
+
+			this.fire('iron-signal', {name:'hide-overlays', data:this});
+			e.stopPropagation();
+		},
+
+		hide:function(e, sender){
+			if (sender != this){
+				this.menuShown = false;
+			}
+		}
+	});
+</script>

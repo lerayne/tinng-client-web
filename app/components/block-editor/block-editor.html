@@ -1,0 +1,73 @@
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../text-string/text-string.html">
+
+<dom-module id="block-editor">
+    <template>
+        <style>
+            :host {
+                background-color: #fff;
+                padding: 16px;
+
+                @apply(--layout);
+                @apply(--layout-horizontal);
+            }
+
+            textarea {
+                margin-right: 20px;
+                font-size: 150%;
+                padding: 5px;
+            }
+
+            .send {
+                white-space: nowrap;
+                background-color: #ffab00; /* google amber A700 */
+                color:#fff;
+                padding: 0.7em 1em;
+            }
+
+            .send[disabled] {
+                background-color: #ccc;
+                color:#888;
+            }
+        </style>
+
+        <textarea id="messageInput" class="flex" value="{{ messageBody::keyup }}"></textarea>
+
+        <paper-button raised class="highlight send self-center" on-tap="sendMessage" disabled$="[[ !validateMessage(messageBody) ]]">
+            <text-string>unit.posts.sendBtn</text-string>
+            <iron-icon icon="send"></iron-icon>
+        </paper-button>
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "block-editor",
+
+        properties:{
+            messageBody:{
+                type: String,
+                value:''
+            }
+        },
+
+        validateMessage:function(value){
+            return !value.match(/^\s*$/);
+        },
+
+        sendMessage:function(){
+            console.log('send1')
+
+            if (!this.messageBody.match(/^\s*$/)){
+                this.fire('send-message', {body: this.messageBody})
+            }
+        },
+
+        clean:function(){
+            this.messageBody = '';
+        }
+    })
+</script>

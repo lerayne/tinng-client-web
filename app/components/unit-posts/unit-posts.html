@@ -1,0 +1,166 @@
+<link rel="import" href="../unit/unit-behavior.html">
+<link rel="import" href="../nodelist/nodelist-behavior.html">
+
+<link rel="import" href="../unit/unit-style.html">
+<link rel="import" href="../card-post/card-post.html">
+<link rel="import" href="../block-editor/block-editor.html">
+
+
+<dom-module is="unit-posts">
+
+    <template>
+        <style include="unit-style"></style>
+        <style include="unit-posts-style"></style>
+        <style>
+            :host {
+
+                --block-user-name-display: inline-block;
+                --block-user-avatar: {
+                    height: 30px;
+                };
+            }
+
+            .allowed-users {
+                opacity: 0;
+                transition: opacity 0.3s ease-in;
+                height: 56px;
+            }
+
+            :host([private]) .allowed-users {
+                opacity: 1;
+            }
+
+            [invisible] {
+                visibility: hidden;
+            }
+
+            #loadMore {
+                margin-bottom: 8px;
+                position: relative;
+            }
+
+            #loadMore text-string {
+                text-align: center;
+                display: block;
+                padding: 2px 0;
+            }
+
+            #loadMore .button {
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            #loadMore .loadAllBtn {
+                position: absolute;
+                top:0;
+                right:0;
+                box-sizing: border-box;
+                padding: 2px 6px;
+                color:#999;
+            }
+
+
+            #loadMore .loadAllBtn text-string {
+                display: inline-block;
+            }
+
+            #loadMore .button:hover {
+                background-color: #ddd;
+            }
+
+            #topicName {
+                font-size: 120%;
+            }
+
+
+        </style>
+
+        <iron-signals
+                on-iron-signal-secondary-close="meSingle"
+                on-iron-signal-topic-select="topicSelect"
+                on-iron-signal-rescribe-all="subscribe"
+        ></iron-signals>
+
+        <unit-posts-deco>
+            <paper-toolbar id="toolbar">
+
+                <paper-icon-button hidden$="[[ !fullframe ]]" on-tap="goBack" icon="arrow-back"></paper-icon-button>
+                <!--<paper-icon-button icon="menu"></paper-icon-button>-->
+
+				<span class="flex">
+					<span id="topicName" class="name-container"
+                          contenteditable$="[[ renameMode ]]">[[topic.topic_name]]</span>
+				</span>
+
+                <paper-icon-button icon="create"
+                                   hidden$="[[ !showRenameButton(rights.canRename, renameMode) ]]"
+                                   on-tap="rename">
+                </paper-icon-button>
+
+
+                <paper-icon-button icon="check-circle"
+                                   hidden$="[[ !renameMode ]]"
+                                   on-tap="saveName">
+                </paper-icon-button>
+
+
+                <paper-icon-button icon="cancel"
+                                   hidden$="[[ !renameMode ]]"
+                                   on-tap="cancelRename">
+                </paper-icon-button>
+
+
+                <div hidden$="[[!private]]" class="bottom allowed-users flex vertical layout">
+
+                    <text-string hidden$="[[!private]]" class="block tinytext">
+                        unit.posts.privateDisclaimer
+                    </text-string>
+
+                    <div class="flex horizontal layout center">
+                        <template is="dom-repeat" items="[[topic.private]]" as="reader">
+                            <block-user data='[[ getUserData(reader) ]]'></block-user>
+                        </template>
+                    </div>
+
+                </div>
+
+            </paper-toolbar>
+
+
+            <!-- NODELIST SECTION -->
+            <div id="nodelist" class="content flex">
+                <div id="scrollContainer">
+                    <div id="scroll">
+
+                        <!-- Load more button -->
+                        <div id="loadMore" hidden$="[[ !showLoadMore(nodes, headLoaded) ]]">
+                            <text-string class="loadMoreBtn button" on-tap="loadMore" hidden$="[[ loading ]]">
+                                unit.posts.loadMore
+                            </text-string>
+
+                            <div class="loadAllBtn button" on-tap="loadAll"  hidden$="[[ loading ]]">
+                                <text-string>unit.posts.loadAll</text-string>
+                                ([[ getRemainingCount(topic) ]])
+                            </div>
+
+                            <text-string hidden$="[[ !loading ]]">unit.posts.loading</text-string>
+                        </div>
+
+                        <!-- Main nodes repeater -->
+                        <template is="dom-repeat" items="[[ nodes ]]" as="node">
+                            <card-post model="[[ node ]]"></card-post>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor -->
+            <block-editor id="editor" hidden$="[[ !selectedTopic ]]"></block-editor>
+
+        </unit-posts-deco>
+
+    </template>
+</dom-module>
+
+<script src="unit-posts.js"></script>

@@ -1,0 +1,28 @@
+<link rel="import" href="../../../bower_components/paper-toolbar/paper-toolbar.html">
+
+<dom-module id="tinng-header">
+
+	<template>
+		<style>
+			:host {
+				display: block;
+				--paper-toolbar-height: 42px;
+			}
+
+			paper-toolbar {
+				background-color: #0277bd; /* google light blue 800 */
+				color: #81d4fa; /* google light blue 200*/
+			}
+
+			:host ::content ::shadow paper-button {
+				font-size: 85%;
+			}
+		</style>
+
+		<paper-toolbar>
+			<content></content>
+		</paper-toolbar>
+	</template>
+</dom-module>
+
+<script>Polymer({is:'tinng-header'})</script>

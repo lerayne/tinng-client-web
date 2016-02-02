@@ -1,0 +1,91 @@
+<link rel="import" href="../card-base-deco/card-base-style.html">
+
+<dom-module id="card-topic-deco">
+
+	<style include="card-base-style">
+		:host-context([private]) .private {
+			display: inline-block;
+		}
+
+		:host-context([selected]) {
+			box-shadow: 0 3px 0 #9acd32;
+		}
+
+		:host ::content .title {
+			color:#007bb7;
+			font-weight: bold;
+			font-size: 120%;
+		}
+
+		.topic-row {
+			margin-bottom:10px;
+		}
+
+		.topic-row ::content h2 {
+			display: inline-block;
+		}
+
+		.private {
+			font-size: 90%;
+			color:#fff;
+			padding:1px 5px 2px;
+			background-color: #bbb;
+			margin-left:10px;
+		}
+
+		:host ::content block-tag {
+			cursor:pointer;
+		}
+
+		.datetime {
+			color:#ccc;
+			float:right;
+		}
+
+		.info {
+			margin-bottom:10px;
+		}
+
+		.tags {
+			margin-top:15px;
+		}
+	</style>
+
+	<template>
+		<!--<style include="card-base-style"></style>-->
+
+		<div class="info">
+			<content select="block-user"></content>
+
+			<span class="datetime" >
+				<span class="created" hidden$="[[ computeStrToBool(model.modified) ]]">
+					<content select=".created"></content>
+				</span>
+
+				<span class="modified" hidden$=[[!model.modified]]>
+					<text-string>unit.topics.modified</text-string> <content select=".modified"></content>
+				</span>
+			</span>
+		</div>
+
+		<div class="topic-row">
+			<content select=".title"></content>
+			<text-string class="private" hidden$="[[ !computeToBool(model.private) ]]">unit.topics.private</text-string>
+		</div>
+
+		<content select=".message"></content>
+
+		<div class="tags" hidden$=[[!model.tags]]>
+			<content select="block-tag"></content>
+		</div>
+
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:"card-topic-deco",
+
+		behaviors:[tinng.polymerBehavior.Basic]
+	})
+</script>
