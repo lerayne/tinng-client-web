@@ -21,6 +21,10 @@ import topicsReducer from './reducers/topics';
 
 import IndexPage from './containers/IndexPage';
 
+const connectionOptions = {
+    serverURL: 'http://localhost:8888/tinng-server-php'
+};
+
 const store = createStore(
     
     combineReducers({
@@ -30,7 +34,7 @@ const store = createStore(
     
     applyMiddleware(
         routerMiddleware(hashHistory),
-        connectionMiddleware,
+        connectionMiddleware(connectionOptions),
         thunkMiddleware,
     )
 );
