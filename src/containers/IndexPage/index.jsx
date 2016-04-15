@@ -9,17 +9,21 @@ import css from './IndexPage.css';
 
 class IndexPage extends Component {
     constructor(props){
-        super(props)
-
-        console.log('main props', props)
+        super(props);
+        
+        
     }
 
     render() {
         return <div className={css.main}>
             <div className="main-toolbar"></div>
-            <div className="main-viewport"></div>
+            <div className="main-viewport">
+                {this.props.isFetching && 'fetching'}
+            </div>
         </div>
     }
 }
 
-export default connect()(IndexPage);
+export default connect(state => ({
+    isFetching: state.topics.isFetching
+}))(IndexPage);

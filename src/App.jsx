@@ -11,24 +11,34 @@ import { Router, Route, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 
+import connectionMiddleware from './middleware/connectionMiddleware';
+
 import './global.css';
 
-import reducers from './reducers';
+import { startConnection } from './actions/global';
+
+import topicsReducer from './reducers/topics';
 
 import IndexPage from './containers/IndexPage';
 
 const store = createStore(
+    
     combineReducers({
-        ...reducers,
+        topics: topicsReducer,
         routing: routerReducer
     }),
+    
     applyMiddleware(
         routerMiddleware(hashHistory),
-        thunkMiddleware
+        connectionMiddleware,
+        thunkMiddleware,
     )
 );
 
 const history = syncHistoryWithStore(hashHistory, store);
+
+
+store.dispatch(startConnection());
 
 export default class App extends Component {
     render (){
