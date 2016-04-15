@@ -60,7 +60,3 @@ module.exports = {
 
     devtool: 'source-map'
 };
-
-if (DEV) {
-    module.exports.devtool = 'source-map'
-}

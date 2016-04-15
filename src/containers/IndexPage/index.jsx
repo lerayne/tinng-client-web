@@ -2,20 +2,24 @@
  * Created by lerayne on 31.03.16.
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import css from './IndexPage.css';
 
 class IndexPage extends Component {
-    constructor() {
-        super();
+    constructor(props){
+        super(props)
+
+        console.log('main props', props)
     }
 
     render() {
-        return <div>
-            {this.props.children === null && <div>
-                Test 2
-            </div>}
+        return <div className={css.main}>
+            <div className="main-toolbar"></div>
+            <div className="main-viewport"></div>
         </div>
     }
 }
 
-export default IndexPage;
+export default connect()(IndexPage);

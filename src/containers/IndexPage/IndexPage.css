@@ -1,0 +1,17 @@
+:local(.main) {
+    background-color: #eee;
+    height:100%;
+}
+
+:local(.main) .main-toolbar {
+    height: 30px;
+    overflow: hidden;
+    background-color: #333;
+}
+
+:local(.main) .main-viewport {
+    height: calc(100% - 30px);
+    width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+}
