@@ -204,7 +204,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 	retry:function(){
 		//todo t.ui.showMessage(t.txt.connection_error);
-		console.warn('Registered connection loss. Trying to restart')
+		console.warn('Registered connection loss. Trying to restart');
 		this.subscriptionCancel();
 		this.subscriptionSend();
 	},
