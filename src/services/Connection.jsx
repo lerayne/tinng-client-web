@@ -16,13 +16,14 @@ export default class Connection extends ConnectionType {
         this.dispatch = dispatch;
     }
 
+    /**
+     * Далее идет интерфейс класса - эти объявления нужны только для того, чтобы явно объявить требования к методам
+     * класса ConnectionType
+     */
+
     // одноразовый запрос
-    query(...args){
-        super.query(...args)
-    }
+    query(...args){ super.query(...args) }
 
     // одноразовая запись
-    write(...args){
-        super.write(...args)
-    }
+    write(...args){ super.write(...args) }
 }
