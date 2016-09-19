@@ -4,8 +4,9 @@
 
 var webpack = require('webpack');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
+var cmdArgs = require('minimist')(process.argv.slice(2))
 
-var NODE_ENV = process.env.NODE_ENV || 'production';
+var NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
 var DEV = NODE_ENV == 'development';
 var PROD = NODE_ENV == 'production';
 
@@ -36,9 +37,12 @@ module.exports = {
         }),
 
         new webpack.optimize.UglifyJsPlugin({
-            compress: PROD,
+            minimize: PROD,
             mangle: PROD,
-            comments: DEV
+            comments: DEV,
+            compress:{
+                warnings:false
+            }
         })
     ],
 
