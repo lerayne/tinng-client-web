@@ -4,43 +4,36 @@
  * Created by lerayne on 31.03.16.
  */
 
+import './global.css';
+
 import React, { Component } from 'react';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, Route, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import { Router, hashHistory } from 'react-router';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
+
+import options from '../options';
 
 import connectionMiddleware from './middleware/connectionMiddleware';
 
-import './global.css';
+import combinedReducers from './Reducers';
+import Routes from './Routes';
 
 import { startConnection } from './actions/global';
 
-import topicsReducer from './reducers/topics';
-
-import IndexPage from './containers/IndexPage';
-
-const connectionOptions = {
-    serverURL: 'http://localhost:8888/tinng-server-php'
-};
-
 const store = createStore(
-    
-    combineReducers({
-        topics: topicsReducer,
-        routing: routerReducer
-    }),
+
+    combinedReducers,
     
     applyMiddleware(
         routerMiddleware(hashHistory),
-        connectionMiddleware(connectionOptions),
+        connectionMiddleware(options),
         thunkMiddleware,
     )
 );
 
 const history = syncHistoryWithStore(hashHistory, store);
-
 
 store.dispatch(startConnection());
 
@@ -48,9 +41,7 @@ export default class App extends Component {
     render (){
         return <Provider store={store}>
             <Router history={history}>
-                <Route path="/" component={IndexPage}>
-
-                </Route>
+                {Routes}
             </Router>
         </Provider>
     }

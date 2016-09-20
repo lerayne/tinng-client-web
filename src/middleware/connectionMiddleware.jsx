@@ -14,6 +14,7 @@ export default function connectionMiddleware (options) {
             return next(action)
         }
 
+        console.log('CONNECTION MIDDLEWARE');
         console.log('state before', store.getState());
 
         store.dispatch(fetchAllRequest());
