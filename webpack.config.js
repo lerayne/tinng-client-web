@@ -12,21 +12,40 @@ var PROD = NODE_ENV == 'production';
 
 module.exports = {
 
-    entry: "./src/main.jsx",
+    entry: {
+        js:"./src/main.jsx",
+        vendor:[
+            "react",
+            "react-dom",
+            "redux",
+            "react-redux",
+            "react-router",
+            "react-router-redux",
+            "redux-thunk",
+            "babel-polyfill",
+            "isomorphic-fetch"
+        ]
+    },
 
     output: {
         path: "./dist",
         filename: "bundle.js"
     },
 
-    resolve:{
-        extensions:['', '.webpack.js', '.web.js', '.ts', '.js', '.min.js', '.jsx']
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.min.js', '.jsx']
     },
 
     plugins: [
 
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor'],
+            minChunks: Infinity,
+            filename: '[name].bundle.js'
+        }),
+
         new webpack.DefinePlugin({
-            "process.env":{
+            "process.env": {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
         }),
@@ -37,30 +56,48 @@ module.exports = {
         }),
 
         new webpack.optimize.UglifyJsPlugin({
-            minimize: PROD,
             mangle: PROD,
-            comments: DEV,
-            compress:{
-                warnings:false
+            compress: {
+                warnings: false
+            },
+            output:{
+                comments:DEV
             }
+        }),
+
+        new webpack.LoaderOptionsPlugin({
+            minimize: PROD
         })
     ],
 
-    module:{
-        loaders:[
+    module: {
+        loaders: [
             {
                 test: /\.jsx$/,
-                exclude: /node_modules/,
-                loaders: DEV ? ['react-hot', 'babel'] : ['babel']
+                loader:"babel?cacheDirectory",
+                exclude: /node_modules/
             }, {
                 test: /\.(png|jpg|jpeg)$/i,
-                loader: "url?limit="+ (32 * 12014) +"&name=[name]-[hash:base64:5].[ext]"
+                loader: "url",
+                query: {
+                    limit: (32 * 12014),
+                    name: "[name]-[hash:base64:5].[ext]"
+                }
             }, {
                 test: /.css$/,
-                loader:'style!css?localIdentName=[name]-[local]-[hash:base64:5]'
+                loaders: [
+                    "style",
+                    {
+                        loader: "css",
+                        query: {
+                            localIdentName: "[name]-[local]-[hash:base64:5]"
+                        }
+                    }
+                ]
             }
         ]
     },
 
     devtool: 'source-map'
-};
+}
+;

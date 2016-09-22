@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "babel-core": "~6.14.0",
-    "babel-loader": "~6.2.5",
+    "babel-loader": "^6.2.5",
     "babel-polyfill": "~6.13.0",
     "babel-preset-es2015": "~6.14.0",
     "babel-preset-react": "~6.11.1",
@@ -26,13 +26,13 @@
     "redux-thunk": "~2.1.0",
     "style-loader": "~0.13.1",
     "url-loader": "~0.5.7",
-    "webpack": "~1.13.0",
+    "webpack": "^2.1.0-beta.24",
     "webpack-dev-server": "~1.14.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development webpack-dev-server --port 8080 --hot --inline",
-    "build": "NODE_ENV=production webpack --color",
+    "build": "NODE_ENV=production node_modules/webpack/bin/webpack.js --color",
     "install-globals": "sudo npm install -g webpack webpack-dev-server"
   },
   "repository": {

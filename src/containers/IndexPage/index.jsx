@@ -10,8 +10,6 @@ import css from './IndexPage.css';
 class IndexPage extends Component {
     constructor(props){
         super(props);
-        
-        
     }
 
     render() {
