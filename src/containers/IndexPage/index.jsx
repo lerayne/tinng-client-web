@@ -17,6 +17,7 @@ class IndexPage extends Component {
             <div className="main-toolbar"></div>
             <div className="main-viewport">
                 {this.props.isFetching && 'fetching new page'}
+            </div>
         </div>
     }
 }
