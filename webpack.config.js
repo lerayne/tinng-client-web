@@ -98,5 +98,5 @@ module.exports = {
         ]
     },
 
-    devtool:'source-map'
+    devtool: DEV ? 'eval-source-map' : 'source-map'
 };
