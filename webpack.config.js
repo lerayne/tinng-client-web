@@ -4,7 +4,8 @@
 
 var webpack = require('webpack');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
-var cmdArgs = require('minimist')(process.argv.slice(2))
+var cmdArgs = require('minimist')(process.argv.slice(2));
+var path = require('path');
 
 var NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
 var DEV = NODE_ENV == 'development';
@@ -13,7 +14,7 @@ var PROD = NODE_ENV == 'production';
 module.exports = {
 
     entry: {
-        js:"./src/main.jsx",
+        js: path.join(__dirname, "src", "main.jsx"),
         vendor:[
             "react",
             "react-dom",
@@ -28,7 +29,7 @@ module.exports = {
     },
 
     output: {
-        path: "./dist",
+        path: path.join(__dirname, "dist"),
         filename: "bundle.js"
     },
 
