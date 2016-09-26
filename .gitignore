@@ -10,3 +10,4 @@
 *-dv.html
 /npm-debug.log
 .DS_Store
+*.bat

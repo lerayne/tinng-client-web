@@ -11,6 +11,8 @@ var NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
 var DEV = NODE_ENV == 'development';
 var PROD = NODE_ENV == 'production';
 
+console.log('MODE:', NODE_ENV);
+
 module.exports = {
 
     entry: {
