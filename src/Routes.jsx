@@ -3,11 +3,13 @@
  */
 
 import React from 'react';
-import {Route} from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 
-import IndexPage from './containers/IndexPage'
+import IndexPage from './containers/IndexPage';
+import Conversation from './containers/Conversation';
 
 export default (
     <Route path="/" component={IndexPage}>
+        <IndexRoute component={Conversation} />
     </Route>
 )

@@ -1,0 +1,6 @@
+:local(.main) {
+    height: calc(100% - 30px);
+    width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+}

@@ -63,7 +63,8 @@ module.exports = {
             },
             output:{
                 comments:DEV
-            }
+            },
+            sourceMap: true
         }),
 
         new webpack.LoaderOptionsPlugin({
@@ -76,7 +77,7 @@ module.exports = {
             {
                 test: /\.jsx$/,
                 loader:"babel?cacheDirectory",
-                exclude: /node_modules/
+                exclude:/node_modules/
             }, {
                 test: /\.(png|jpg|jpeg)$/i,
                 loader: "url",
@@ -97,6 +98,5 @@ module.exports = {
         ]
     },
 
-    devtool: 'source-map'
-}
-;
+    devtool:'source-map'
+};
