@@ -81,7 +81,7 @@ module.exports = {
                 test: /\.(png|jpg|jpeg)$/i,
                 loader: "url",
                 query: {
-                    limit: (32 * 12014),
+                    limit: (5 * 1024),
                     name: "[name]-[hash:base64:5].[ext]"
                 }
             }, {
@@ -90,9 +90,7 @@ module.exports = {
                     "style",
                     {
                         loader: "css",
-                        query: {
-                            localIdentName: "[name]-[local]-[hash:base64:5]"
-                        }
+                        query: { localIdentName: "[name]-[local]-[hash:base64:5]" }
                     }
                 ]
             }
