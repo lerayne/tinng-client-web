@@ -32,8 +32,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --hot --inline",
-    "build": "NODE_ENV=production node_modules/webpack/bin/webpack.js --color",
-    "install-globals": "sudo npm install -g webpack webpack-dev-server"
+    "build": "NODE_ENV=production node_modules/webpack/bin/webpack.js --color"
   },
   "repository": {
     "type": "git",
