@@ -11,6 +11,7 @@ class Conversation extends Component {
     render(){
         return <div className={css.main}>
             {this.props.isFetching && 'fetching'}
+            {!this.props.isFetching && 'fetch done'}
         </div>
     }
 }

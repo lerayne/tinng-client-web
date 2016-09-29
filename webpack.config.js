@@ -25,11 +25,8 @@ module.exports = {
             "react-router",
             "react-router-redux",
             "redux-thunk",
-            "babel-polyfill"
-        ],
-        configLoader:[
-            "isomorphic-fetch",
-            "./src/configLoader.jsx"
+            "babel-polyfill",
+            "isomorphic-fetch"
         ]
     },
 
@@ -45,7 +42,10 @@ module.exports = {
     plugins: [
 
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor', 'configLoader'],
+            names: [
+                'app',
+                'vendor',
+            ],
             minChunks: Infinity,
             filename: '[name].bundle.js'
         }),

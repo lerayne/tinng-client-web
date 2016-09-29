@@ -21,3 +21,12 @@ export function fetchAllRequest(){
         type: FETCH_ALL_REQUEST,
     }
 }
+
+export const FETCH_ALL_RESPONSE = 'FETCH_ALL_RESPONSE';
+
+
+export function fetchAllResponse(){
+    return {
+        type: FETCH_ALL_RESPONSE
+    }
+}

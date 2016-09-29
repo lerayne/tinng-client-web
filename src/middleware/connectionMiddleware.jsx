@@ -4,20 +4,26 @@
  * Created by lerayne on 16.04.16.
  */
 
-import { fetchAllRequest } from '../actions/global';
+import { fetchAllRequest, fetchAllResponse } from '../actions/global';
 
 export default function connectionMiddleware (options) {
-    return store => next => action => {
+    return store => nextMiddleware => action => {
         
         // если экшн не нашего типа - просто пропускаем его дальше
         if (!action.meta || !action.meta.connection) {
-            return next(action)
+            return nextMiddleware(action)
         }
 
         console.log('CONNECTION MIDDLEWARE');
         console.log('state before', store.getState());
 
         store.dispatch(fetchAllRequest());
+
+        fetch(options.serverURL).then(response => {
+            console.log('server responsded', response)
+
+            store.dispatch(fetchAllResponse())
+        })
 
         console.log('state after', store.getState());
         
