@@ -16,7 +16,7 @@ console.log('MODE:', NODE_ENV);
 module.exports = {
 
     entry: {
-        js: path.join(__dirname, "src", "main.jsx"),
+        app: path.join(__dirname, "src", "main.jsx"),
         vendor:[
             "react",
             "react-dom",
@@ -25,8 +25,11 @@ module.exports = {
             "react-router",
             "react-router-redux",
             "redux-thunk",
-            "babel-polyfill",
-            "isomorphic-fetch"
+            "babel-polyfill"
+        ],
+        configLoader:[
+            "isomorphic-fetch",
+            "./src/configLoader.jsx"
         ]
     },
 
@@ -42,7 +45,7 @@ module.exports = {
     plugins: [
 
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor'],
+            names: ['vendor', 'configLoader'],
             minChunks: Infinity,
             filename: '[name].bundle.js'
         }),
