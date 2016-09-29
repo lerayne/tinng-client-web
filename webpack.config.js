@@ -84,6 +84,10 @@ module.exports = {
                 loader:"babel?cacheDirectory",
                 exclude:/node_modules/
             },{
+                test: /\.js$/,
+                loader:"file?name=[name].[ext]",
+                exclude:/node_modules/
+            },{
                 test: /\.json$/,
                 loader:"file?name=[name].[ext]",
                 exclude:/node_modules/
@@ -105,6 +109,10 @@ module.exports = {
                 ]
             }
         ]
+    },
+    
+    externals:{
+        "global-config":"globalConfig"
     },
 
     devtool: DEV ? 'eval-source-map' : 'source-map'

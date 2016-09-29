@@ -4,62 +4,57 @@
  * Created by lerayne on 31.03.16.
  */
 
-//Simple imports
+// Simple imports
 import './global.css';
 
-//3rd party imports
-import React, { Component } from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
+// config
+import {serverURL} from 'global-config';
+
+// 3rd party imports
+import React, {Component} from 'react';
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import {Router, hashHistory} from 'react-router';
+import {syncHistoryWithStore, routerMiddleware} from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 
-//Middlewares
+// Middlewares
 import connectionMiddleware from './middleware/connectionMiddleware';
 
-//Other locals
+// Other locals
 import combinedReducers from './Reducers';
 import Routes from './Routes';
 
-//Actions
-import { startConnection } from './actions/global';
+// Actions
+import {startConnection} from './actions/global';
 
-const routerMiddlewareCreated = routerMiddleware(hashHistory);
+// Creating store
+const store = createStore(
+    combinedReducers,
 
-// Run redux
+    applyMiddleware(
+        routerMiddleware(hashHistory),
+        connectionMiddleware({serverURL}),
+        thunkMiddleware,
+    )
+);
+
+// Creating history
+const history = syncHistoryWithStore(hashHistory, store);
+
+// Starting connection
+store.dispatch(startConnection());
+
+// Main app component
 export default class App extends Component {
+    render() {
 
-    constructor(props){
-        super(props);
-
-        // Creating store
-        this.store = createStore(
-
-            combinedReducers,
-
-            applyMiddleware(
-                routerMiddlewareCreated,
-                connectionMiddleware({serverURL: props.config.serverURL}),
-                thunkMiddleware,
-            )
-        );
-
-        // Creating history
-        this.history = syncHistoryWithStore(hashHistory, this.store);
-
-        // Starting connection
-        this.store.dispatch(startConnection());
-    }
-
-    render (){
-
-        console.log('config', this.props.config);
-
-        return <Provider store={this.store}>
-            <Router history={this.history}>
-                {Routes}
-            </Router>
-        </Provider>
+        return (
+            <Provider store={store}>
+                <Router history={history}>
+                    {Routes}
+                </Router>
+            </Provider>
+        )
     }
 }
