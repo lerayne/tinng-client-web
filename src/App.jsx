@@ -1,5 +1,5 @@
 /**
- * This is main App component responsible for routing, redux store, actions and reducers, etc
+ * This is main App's component responsible for routing, redux store, actions and reducers, etc
  *
  * Created by lerayne on 31.03.16.
  */
@@ -15,9 +15,6 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 
-//System options
-import options from '../options';
-
 //Middlewares
 import connectionMiddleware from './middleware/connectionMiddleware';
 
@@ -28,29 +25,39 @@ import Routes from './Routes';
 //Actions
 import { startConnection } from './actions/global';
 
-// Creating store
-const store = createStore(
-
-    combinedReducers,
-    
-    applyMiddleware(
-        routerMiddleware(hashHistory),
-        connectionMiddleware(options),
-        thunkMiddleware,
-    )
-);
-
-// Creating history
-const history = syncHistoryWithStore(hashHistory, store);
-
-// Starting connection
-store.dispatch(startConnection());
+const routerMiddlewareCreated = routerMiddleware(hashHistory);
 
 // Run redux
 export default class App extends Component {
+
+    constructor(props){
+        super(props);
+
+        // Creating store
+        this.store = createStore(
+
+            combinedReducers,
+
+            applyMiddleware(
+                routerMiddlewareCreated,
+                connectionMiddleware({serverURL: props.config.serverURL}),
+                thunkMiddleware,
+            )
+        );
+
+        // Creating history
+        this.history = syncHistoryWithStore(hashHistory, this.store);
+
+        // Starting connection
+        this.store.dispatch(startConnection());
+    }
+
     render (){
-        return <Provider store={store}>
-            <Router history={history}>
+
+        console.log('config', this.props.config);
+
+        return <Provider store={this.store}>
+            <Router history={this.history}>
                 {Routes}
             </Router>
         </Provider>

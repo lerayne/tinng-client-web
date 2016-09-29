@@ -80,6 +80,10 @@ module.exports = {
                 test: /\.jsx$/,
                 loader:"babel?cacheDirectory",
                 exclude:/node_modules/
+            },{
+                test: /\.json$/,
+                loader:"file?name=[name].[ext]",
+                exclude:/node_modules/
             }, {
                 test: /\.(png|jpg|jpeg)$/i,
                 loader: "url",
