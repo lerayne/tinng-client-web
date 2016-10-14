@@ -4,19 +4,23 @@
  * Created by lerayne on 31.03.16.
  */
 
-// Simple imports
-import './global.css';
-
 // config
 import {serverURL} from 'global-config';
 
 // 3rd party imports
 import React, {Component} from 'react';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import {Provider} from 'react-redux';
 import {Router, hashHistory} from 'react-router';
 import {syncHistoryWithStore, routerMiddleware} from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
+
+/**
+ * Here starts app's own code
+ */
+
+//Developer tools
+import DevTools from './devtools/reduxDevTools';
 
 // Middlewares
 import connectionMiddleware from './middleware/connectionMiddleware';
@@ -28,15 +32,26 @@ import Routes from './Routes';
 // Actions
 import {startConnection} from './actions/global';
 
+const DEV = process.env.NODE_ENV === 'development';
+
+// composing middleware
+let middleware = applyMiddleware(
+    routerMiddleware(hashHistory),
+    connectionMiddleware({serverURL}),
+    thunkMiddleware,
+);
+
+if (DEV) {
+    middleware = compose(
+        middleware,
+        DevTools.instrument()
+    )
+}
+
 // Creating store
 const store = createStore(
     combinedReducers,
-
-    applyMiddleware(
-        routerMiddleware(hashHistory),
-        connectionMiddleware({serverURL}),
-        thunkMiddleware,
-    )
+    middleware
 );
 
 // Creating history
@@ -51,9 +66,13 @@ export default class App extends Component {
 
         return (
             <Provider store={store}>
-                <Router history={history}>
-                    {Routes}
-                </Router>
+                <div style={{height:'100%'}}>
+                    <Router history={history}>
+                        {Routes}
+                    </Router>
+
+                    {DEV && <DevTools />}
+                </div>
             </Provider>
         )
     }

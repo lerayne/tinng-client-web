@@ -26,7 +26,11 @@ module.exports = {
             "react-router-redux",
             "redux-thunk",
             "babel-polyfill",
-            "isomorphic-fetch"
+            "isomorphic-fetch",
+            "redux-devtools",
+            "redux-devtools-log-monitor",
+            "redux-devtools-dock-monitor",
+            "redux-devtools-inspector",
         ]
     },
 

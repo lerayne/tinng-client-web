@@ -12,6 +12,10 @@
     "react-router": "~2.8.1",
     "react-router-redux": "~4.0.5",
     "redux": "~3.6.0",
+    "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-inspector": "^0.8.0",
+    "redux-devtools-log-monitor": "^1.0.11",
     "redux-thunk": "~2.1.0"
   },
   "devDependencies": {
@@ -32,9 +36,11 @@
   },
   "scripts": {
     "start": "NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --hot --inline",
-    "start-win": "set NODE_ENV=development && node node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --hot --inline",
     "build": "NODE_ENV=production node_modules/webpack/bin/webpack.js --color",
-    "build-win": "set NODE_ENV=production && node node_modules/webpack/bin/webpack.js --color"
+    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --color",
+    "start-win": "set NODE_ENV=development && node node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --hot --inline",
+    "build-win": "set NODE_ENV=production && node node_modules/webpack/bin/webpack.js --color",
+    "dev-win": "set NODE_ENV=development && node node_modules/webpack/bin/webpack.js --color"
   },
   "repository": {
     "type": "git",
