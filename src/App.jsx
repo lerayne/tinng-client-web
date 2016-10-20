@@ -26,8 +26,8 @@ import DevTools from './devtools/reduxDevTools';
 import connectionMiddleware from './middleware/connectionMiddleware';
 
 // Other locals
-import combinedReducers from './Reducers';
-import Routes from './Routes';
+import combinedReducers from './reducers';
+import routes from './routes';
 
 // Actions
 import {startConnection} from './actions/global';
@@ -68,7 +68,7 @@ export default class App extends Component {
             <Provider store={store}>
                 <div style={{height:'100%'}}>
                     <Router history={history}>
-                        {Routes}
+                        {routes}
                     </Router>
 
                     {DEV && <DevTools />}

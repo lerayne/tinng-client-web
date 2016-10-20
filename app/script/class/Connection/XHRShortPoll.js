@@ -18,9 +18,6 @@ tinng.class.strategic.XHRShortPoll = function(server, callback, autostart){
 	this.timeout = false; // текущий таймаут
 	this.connectionLossTO = false; // таймаут обрыва связи
 
-	//todo remove
-	this.$stateIndicator = $('.state-ind');
-
 	this.subscriptions = {};
 	this.meta = {};
 	this.actions = {};
@@ -35,19 +32,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 	setMode:function(mode){
-
-		switch (mode){
-			case 'active':
-				this.waitTime = tinng.cfg['poll_timer'];
-				this.refresh();
-
-				break;
-
-			case 'passive':
-				this.waitTime = tinng.cfg['poll_timer_blurred'];
-
-				break;
-		}
+		//reimplemented
 	},
 
 	write:function(params){
@@ -144,8 +129,6 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 		// останавливаем предыдущий запрос/таймер если находим
 		if (this.request || this.timeout) this.subscriptionCancel();
 
-		this.startIndication(); // показываем, что запрос начался
-
 		//console.log('this.subscriptions:', this.subscriptions);
 		// var now = new Date();
 		//if (!t.funcs.objectSize(this.meta)) console.log(now.getTime()+' META EMPTY!');
@@ -217,7 +200,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 		clearTimeout(this.connectionLossTO);
 
 		if (this.request) {
-			// переопределяем, иначе rotor воспринимает экстренную остановку как полноценное завершение запроса
+			// переопределяем, иначе connection воспринимает экстренную остановку как полноценное завершение запроса
 			this.request.done(this.onAbort);
 			this.request.abort();
 			this.request = false;
@@ -254,7 +237,6 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 		this.actions = {}; // this may not be needed 'cause actions are being cleaned in $_subscriptionSend
 
-		this.stopIndication(); // индикация ожидания откл
 		this.request = false;
 
 		// перезапускаем запрос
@@ -263,16 +245,5 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 	// Выполняется при принудительном сбросе запроса
 	onAbort:function () {
-		this.stopIndication();
-	},
-
-	// как-то отмечаем в интерфейсе что запрос ушел
-	startIndication:function () {
-		this.$stateIndicator.addClass('updating');
-	},
-
-	// как-то отмечаем в интерфейсе что запрос закончен
-	stopIndication:function () {
-		this.$stateIndicator.removeClass('updating');
 	}
-}
+};

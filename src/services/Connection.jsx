@@ -10,20 +10,16 @@ import { initialFetchAll } from '../actions/global';
 const ConnectionType = ShortPoll;
 
 export default class Connection extends ConnectionType {
-    constructor(dispatch, options){
+    constructor(dispatch, options = {}){
         super(options);
         
         this.dispatch = dispatch;
+
+        // запрос необходимых методов родительского класса
+        ['query', 'write', 'refresh', 'subscribe'].forEach(methodName => {
+            if (typeof super[methodName] != 'function'){
+                throw(`Implementation of Connection class must have the "${methodName}" method`)
+            }
+        })
     }
-
-    /**
-     * Далее идет интерфейс класса - эти объявления нужны только для того, чтобы явно объявить требования к методам
-     * класса ConnectionType
-     */
-
-    // одноразовый запрос
-    query(...args){ super.query(...args) }
-
-    // одноразовая запись
-    write(...args){ super.write(...args) }
 }

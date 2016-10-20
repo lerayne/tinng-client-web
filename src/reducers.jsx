@@ -7,7 +7,9 @@ import {routerReducer} from 'react-router-redux'
 
 import topics from './reducers/topics';
 
-export default combineReducers({
+const reducers = combineReducers({
     topics,
     routing: routerReducer
-})
+});
+
+export default reducers;

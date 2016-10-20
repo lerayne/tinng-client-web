@@ -5,3 +5,7 @@
 export function refreshTopicsList (){
     
 }
+
+export const SUBSCRIBE_TOPICS = 'SUBSCRIBE_TOPICS';
+export const SUBSCRIBE_TOPICS_ERROR = 'SUBSCRIBE_TOPICS_ERROR';
+export const SUBSCRIBE_TOPICS_SUCCESS = 'SUBSCRIBE_TOPICS_SUCCESS';
