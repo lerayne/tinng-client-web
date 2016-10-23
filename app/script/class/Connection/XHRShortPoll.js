@@ -22,7 +22,7 @@ tinng.class.strategic.XHRShortPoll = function(server, callback, autostart){
 	this.meta = {};
 	this.actions = {};
 	this.latest_change = 0;
-}
+};
 
 tinng.class.strategic.XHRShortPoll.prototype = {
 
@@ -113,8 +113,9 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	subscriptionSend:function () {
 
 		if (this.active && tinng.cfg.maintenance == 0) {
-			// todo: этот враппер-таймаут нужен из-за несовершенства обертки XHR, баг вылазит во время создания новой темы -
-			// отправка запроса сразу после получения предыдущего происходит до закрытия соединения и новое соединение не проходит
+			// todo: этот враппер-таймаут нужен из-за несовершенства обертки XHR, баг вылазит во
+			// время создания новой темы - отправка запроса сразу после получения предыдущего
+			// происходит до закрытия соединения и новое соединение не проходит
 			setTimeout(this.$_subscriptionSend, 0);
 		}
 		// todo  - it can return more useful data!
@@ -124,14 +125,8 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 	$_subscriptionSend:function(){
 
-		//t.notifier.send('connection start', this.waitTime);
-
 		// останавливаем предыдущий запрос/таймер если находим
 		if (this.request || this.timeout) this.subscriptionCancel();
-
-		//console.log('this.subscriptions:', this.subscriptions);
-		// var now = new Date();
-		//if (!t.funcs.objectSize(this.meta)) console.log(now.getTime()+' META EMPTY!');
 
 		this.request = this.query('update', this.onResponse, {
 			subscribe: this.subscriptions,

@@ -15,10 +15,13 @@ class Conversation extends Component {
         this.props.dispatch({
             type: SUBSCRIBE_TOPICS,
             subscription:{
-                content: 'topics',
-                turn:'on',
-                onReceive: SUBSCRIBE_TOPICS_SUCCESS,
-                onFailure: SUBSCRIBE_TOPICS_ERROR
+                name: 'topics_list',
+                contentType: 'topics',
+                turn: 'on',
+                onReceiveData: ::this.onReceive
+            },
+            payload:{
+                searchString: null
             }
         })
     }
@@ -28,6 +31,10 @@ class Conversation extends Component {
             {this.props.isFetching && 'fetching'}
             {!this.props.isFetching && 'fetch done'}
         </div>
+    }
+
+    onReceive(data){
+        console.log('Converssation.onReceive', data)
     }
 }
 

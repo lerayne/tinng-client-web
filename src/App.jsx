@@ -57,9 +57,6 @@ const store = createStore(
 // Creating history
 const history = syncHistoryWithStore(hashHistory, store);
 
-// Starting connection
-store.dispatch(startConnection());
-
 // Main app component
 export default class App extends Component {
     render() {
@@ -76,4 +73,9 @@ export default class App extends Component {
             </Provider>
         )
     }
+}
+
+export function afterInit(){
+    // Starting connection
+    store.dispatch(startConnection());
 }

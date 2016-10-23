@@ -21,29 +21,44 @@ export default function connectionMiddleware (options) {
             }
 
             console.log('CONNECTION MIDDLEWARE');
-            console.log('connection action:', action)
-            //console.log('state before', store.getState());
+            console.log('connection action:', action);
 
-            store.dispatch(fetchAllRequest());
+            if (action.subscription === true) {
+                connection.start();
+                return nextMiddleware(action);
+            }
 
-            switch (action.subscribe.turn){
+            if (action.subscription === false) {
+                connection.stop();
+                return nextMiddleware(action);
+            }
+
+            const {name, turn, contentType, onReceiveData} = action.subscription;
+            const {payload} = action;
+
+            switch (turn){
                 case 'on':
+                    connection.subscribe(name, contentType, payload, onReceiveData);
                     break;
 
                 case 'off':
+                    connection.cancelSubscription(name);
                     break;
 
                 case 're':
+                    connection.updateSubscription(name, payload);
                     break;
 
                 default:
             }
 
-            fetch(options.serverURL + '/_update/', {mode:'cors'}).then(resp => resp.json()).then(json => {
+            return nextMiddleware(action);
+
+            /*fetch(options.serverURL + '/_update/', {mode:'cors'}).then(resp => resp.json()).then(json => {
                 console.log('server responsded', json);
 
                 store.dispatch(fetchAllResponse())
-            });
+            });*/
 
             //console.log('state after', store.getState());
         }

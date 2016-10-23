@@ -16,7 +16,16 @@ export default class Connection extends ConnectionType {
         this.dispatch = dispatch;
 
         // запрос необходимых методов родительского класса
-        ['query', 'write', 'refresh', 'subscribe'].forEach(methodName => {
+        [
+            'start',
+            'stop',
+            'query',
+            'write',
+            'refresh',
+            'subscribe',
+            'cancelSubscription',
+            'updateSubscription'
+        ].forEach(methodName => {
             if (typeof super[methodName] != 'function'){
                 throw(`Implementation of Connection class must have the "${methodName}" method`)
             }

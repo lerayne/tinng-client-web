@@ -21,10 +21,106 @@ export default class ShortPoll {
         this.connectionLossTO = false;
         this.setModePassive();
 
-        this.subscriptions = [];
+        this.subscriptions = {};
         this.actions = [];
         this.meta = {};
     }
+    
+    //INTERFACE METHODS
+
+    /**
+     * Запускает соединение.
+     */
+    start(){
+        if (!this.connectionActive){
+            this.connectionActive = true;
+            this.reStartPolling();
+        }
+    }
+
+    /**
+     * Останавливает соединение. Когда соединение остановлено методы subscribe, updateSubscription 
+     * не вызывают запросов к серверу, а лишь обновляют список подписок
+     */
+    stop(){
+        if (this.connectionActive){
+            this.connectionActive = false;
+            this.stopPolling();
+        }
+    }
+
+    /**
+     * Посылает единичный запрос к серверу, возвращает Promise. Данный запрос может быть послан
+     * даже если соединение остановлено
+     *
+     * @param channel
+     * @param data
+     * @returns {fetch Promise}
+     */
+    query(channel, data){
+        // todo - разобраться с безопасностью этого запроса
+        
+        return fetch(`${serverURL}/_${channel}/`,{
+            method: 'POST',
+            credentials:'include',
+            mode:'cors',
+            cache:'no-cache',
+            body:data
+        }).then(response => {
+            // todo - сделать обработку ошибок
+            response.json()
+        })
+    }
+
+    /**
+     * Посылает единичный _пишущий_ запрос к серверу. Может быть отправлен даже если соединение
+     * остановлено
+     */
+    write(){
+
+    }
+
+    /**
+     * Обновляет подключение. В случае со схемой short poll - перезапускает запрос к серверу с 
+     * новыми параметрами. Используется каждый раз после изменения списка подписок
+     */
+    refresh(){
+        if (this.connectionActive){
+            this.reStartPolling();
+        }
+    }
+
+    /**
+     * Создает подписку на контент.
+     *
+     * @param name - уникальное имя-идентификатор подписки. По нему можно обновлять и удалять
+     * подписку
+     * @param contentType - на какой контент подписываемся. Нужно серверу
+     * @param payload - подробности, параметры подписки
+     * @param onReceiveData - сохраняемый коллбек, который нужно вызвать при прибытии новых данных
+     */
+    subscribe(name, contentType, payload, onReceiveData){
+        console.log('ShortPoll.subscribe', name, contentType, payload, onReceiveData);
+
+        this.subscriptions[name] = {
+            name,
+            contentType,
+            payload,
+            onReceiveData
+        };
+
+        this.refresh();
+    }
+
+    cancelSubscription(name){
+
+    }
+
+    updateSubscription(name, payload){
+
+    }
+    
+    // LOCAL METHODS
 
     setModeActive(){
         this.pollInterval = this.options.pollIntervalActive;
@@ -37,27 +133,24 @@ export default class ShortPoll {
         // we don't have to re-send a query, it will run on schedule, using a new timeout value
         this.pollInterval = this.options.pollIntervalPassive;
     }
-    
-    start(){
-        if (this.connectionActive){
-            this.sendRequest();
-        }
-    }
 
-    sendRequest(){
+    /**
+     * Начинает опрашивать сервер
+     */
+    reStartPolling(){
 
         if (this.request || this.timeoutHandle){
-            this.cancelRequest()
+            this.stopPolling()
         }
 
-        this.request = this.query({
+        this.request = this.query('update', {
             subscribe: this.subscriptions,
             write: this.actions,
             meta:  this.meta
         }).then(::this.onRequestSuccess, ::this.onRequestFailure)
     }
 
-    cancelRequest(){
+    stopPolling(){
         // cancelling upcoming query
         clearTimeout(this.timeoutHandle);
         this.timeoutHandle = false;
@@ -85,10 +178,6 @@ export default class ShortPoll {
         console.error(error)
     }
     
-    query(){
-        
-    }
-    
     setModeActive(){
         this.pollInterval = this.options.pollIntervalActive;
         this.refresh();
@@ -99,18 +188,6 @@ export default class ShortPoll {
     }
 
     onAbort(){
-
-    }
-
-    write(){
-
-    }
-
-    refresh(){
-
-    }
-
-    subscribe(){
 
     }
 }

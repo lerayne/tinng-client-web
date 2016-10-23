@@ -7,9 +7,7 @@ export const START_CONNECTION = 'START_CONNECTION';
 export function startConnection(){
     return {
         type: START_CONNECTION,
-        meta: {
-            connection: true
-        }
+        subscription: true
     }
 }
 

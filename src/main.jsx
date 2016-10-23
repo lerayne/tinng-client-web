@@ -17,11 +17,13 @@ import React from 'react'
 import { render } from 'react-dom'
 
 //Main app
-import App from './App'
+import App, {afterInit} from './App'
 
 //React main binding
 document.addEventListener("DOMContentLoaded", function() {
-    render(<App />, document.getElementById('main'))
+    render(<App />, document.getElementById('main'));
+
+    afterInit();
 });
 
 
