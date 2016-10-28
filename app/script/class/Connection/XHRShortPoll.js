@@ -27,20 +27,20 @@ tinng.class.strategic.XHRShortPoll = function(server, callback, autostart){
 tinng.class.strategic.XHRShortPoll.prototype = {
 
 	// интерфейсные методы
-	refresh:function(){
-		return this.subscriptionSend();
-	},
+	// refresh:function(){
+	// 	return this.subscriptionSend();
+	// },
 
-	setMode:function(mode){
-		//reimplemented
-	},
+	// setMode: function (mode) {
+	// 	//reimplemented
+	// },
 
-	write:function(params){
-
-		if (params instanceof Array) this.actions = params;
-		else this.actions[0] = params;
-
-	},
+	// write:function(params){
+    //
+	// 	if (params instanceof Array) this.actions = params;
+	// 	else this.actions[0] = params;
+    //
+	// },
 
 	// внутренний класс подписки, которым пользуются внешние классы (пере)подписки и ее изменения
 	_subscribe:function(id, feedName, feed, reset){
@@ -73,24 +73,24 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 	// отменяет подписку
-	unscribe:function(id, feedName){
-
-		// если такой вообще есть
-		if (this.subscriptions[id] && this.subscriptions[id][feedName]) {
-
-			delete this.subscriptions[id][feedName];
-
-			if (this.meta[id]) {
-				delete this.meta[id][feedName];
-			}
-
-			// если это была последняя подписка - прибиваем подписчика и мету
-			if (_(this.subscriptions[id]).isEmpty()) {
-				delete this.subscriptions[id];
-				delete this.meta[id];
-			}
-		}
-	},
+	// unscribe:function(id, feedName){
+    //
+	// 	// если такой вообще есть
+	// 	if (this.subscriptions[id] && this.subscriptions[id][feedName]) {
+    //
+	// 		delete this.subscriptions[id][feedName];
+    //
+	// 		if (this.meta[id]) {
+	// 			delete this.meta[id][feedName];
+	// 		}
+    //
+	// 		// если это была последняя подписка - прибиваем подписчика и мету
+	// 		if (_(this.subscriptions[id]).isEmpty()) {
+	// 			delete this.subscriptions[id];
+	// 			delete this.meta[id];
+	// 		}
+	// 	}
+	// },
 
 
 
