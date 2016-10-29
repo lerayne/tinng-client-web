@@ -68,17 +68,20 @@ export default class ShortPoll {
             body: data
         }).then(response => {
             // todo - сделать обработку ошибок
-            return response.json()
+            return response.json().then(json => {
+
+                return Promise.resolve(json)
+            })
         })
     }
 
     /**
-     * Посылает единичный _пишущий_ запрос к серверу. Может быть отправлен даже если соединение
-     * остановлено
+     * Посылает единичный _пишущий_ запрос к серверу. Учитвает состояние поллера, НЕ может быть
+     * отправлен если соединение остановлено
      */
     write(params) {
 
-        if (!params instanceof Array){
+        if (!params instanceof Array) {
             params[0] = params;
         }
 
@@ -90,6 +93,11 @@ export default class ShortPoll {
      * новыми параметрами. Используется каждый раз после изменения списка подписок
      */
     refresh(...args) {
+        if (!!args.actions && !this.connectionActive){
+            // todo - сделать оповещение
+            console.warn('Connection is stopped. Write request has not been sent!')
+        }
+
         if (this.connectionActive) {
             this.reStartPolling(...args);
         }
@@ -98,8 +106,7 @@ export default class ShortPoll {
     /**
      * Создает подписку на контент.
      *
-     * @param name - уникальное имя-идентификатор подписки. По нему можно обновлять и удалять
-     * подписку
+     * @param name - уникальный идентификатор подписки. По нему ее можно обновлять и удалять
      * @param contentType - на какой контент подписываемся. Нужно серверу
      * @param payload - подробности, параметры подписки
      * @param onReceiveData - сохраняемый коллбек, который нужно вызвать при прибытии новых данных
@@ -112,7 +119,7 @@ export default class ShortPoll {
             contentType,
             payload,
             onReceiveData,
-            meta:{}
+            meta: {}
         };
 
         this.refresh();
@@ -124,7 +131,7 @@ export default class ShortPoll {
      * @param name
      */
     cancelSubscription(name) {
-        if (this.subscriptions[name]){
+        if (this.subscriptions[name]) {
             delete this.subscriptions[name]
         }
 
@@ -139,7 +146,7 @@ export default class ShortPoll {
      * @param payload
      */
     updateSubscription(name, payload) {
-        if (this.subscriptions[name]){
+        if (this.subscriptions[name]) {
             this.subscriptions[name] = {
                 ...this.subscriptions[name],
                 payload: {
@@ -148,6 +155,8 @@ export default class ShortPoll {
                 }
             }
         }
+
+        this.refresh()
     }
 
     // LOCAL METHODS
@@ -169,19 +178,27 @@ export default class ShortPoll {
      *
      * @param actions - массив пишущих действий, выполняемых один раз
      */
-    reStartPolling(actions=false) {
+    reStartPolling(actions = false) {
 
         if (this.request || this.timeoutHandle) {
             this.stopPolling()
         }
 
-        this.request = this.query('update', {
-            subscribe: this.subscriptions,
-            write: actions,
-            meta: this.meta
-        }).then(::this.onRequestSuccess, ::this.onRequestFailure)
+        const requestBody = this.transformLegacyBody({
+            subscriptions: this.subscriptions,
+            actions: this.actions
+        });
+
+        this.request = this.query('update', requestBody)
+            .then(::this.onRequestSuccess, ::this.onRequestFailure)
+
+        // если соединение длится 20 секунд - признаем его оборвавшимся
+        this.connectionLossTO = setTimeout(::this.retry, 20000);
     }
 
+    /**
+     * Останавливает поллер
+     */
     stopPolling() {
         // cancelling upcoming query
         clearTimeout(this.timeoutHandle);
@@ -221,5 +238,20 @@ export default class ShortPoll {
 
     onAbort() {
 
+    }
+
+    retry() {
+        console.warn('Registered connection loss. Trying to restart');
+        this.stopPolling();
+        this.reStartPolling();
+    }
+
+    transformToLegacyBody(newBody){
+
+        return {
+            subscribe: subscriptions,
+            write: newBody.actions,
+            meta: meta
+        }
     }
 }

@@ -43,34 +43,34 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	// },
 
 	// внутренний класс подписки, которым пользуются внешние классы (пере)подписки и ее изменения
-	_subscribe:function(id, feedName, feed, reset){
-
-		if (!this.subscriptions[id]) { this.subscriptions[id] = {}; }
-		if (!this.subscriptions[id][feedName]) { this.subscriptions[id][feedName] = feed; }
-
-		// write all new params to this feed (iteration is to keep old params)
-		for (var key in feed) {
-			this.subscriptions[id][feedName][key] = feed[key];
-		}
-
-		// (re)setting metadata
-		// todo - check if there's no problems with protocol if meta is being set on new subscription's creation
-		// note: meta[id] is being created on server side
-		if (reset && this.meta && this.meta[id]) {
-			this.meta[id][feedName] = {};
-		}
-	},
+	// _subscribe:function(id, feedName, feed, reset){
+    //
+	// 	if (!this.subscriptions[id]) { this.subscriptions[id] = {}; }
+	// 	if (!this.subscriptions[id][feedName]) { this.subscriptions[id][feedName] = feed; }
+    //
+	// 	// write all new params to this feed (iteration is to keep old params)
+	// 	for (var key in feed) {
+	// 		this.subscriptions[id][feedName][key] = feed[key];
+	// 	}
+    //
+	// 	// (re)setting metadata
+	// 	// todo - check if there's no problems with protocol if meta is being set on new subscription's creation
+	// 	// note: meta[id] is being created on server side
+	// 	if (reset && this.meta && this.meta[id]) {
+	// 		this.meta[id][feedName] = {};
+	// 	}
+	// },
 
 	// подписывает, или изменяет параметры текущей подписки
-	subscribe:function(id, feedName, feed){
-		this._subscribe(id, feedName, feed, true)
-	},
-
-	// "мягко" изменяет параметры подписки, не меняя ее метаданные
-	// пока-что нужно для динамической подгрузки "страниц"
-	rescribe:function(id, feedName, feed){
-		this._subscribe(id, feedName, feed, false)
-	},
+	// subscribe:function(id, feedName, feed){
+	// 	this._subscribe(id, feedName, feed, true)
+	// },
+    //
+	// // "мягко" изменяет параметры подписки, не меняя ее метаданные
+	// // пока-что нужно для динамической подгрузки "страниц"
+	// rescribe:function(id, feedName, feed){
+	// 	this._subscribe(id, feedName, feed, false)
+	// },
 
 	// отменяет подписку
 	// unscribe:function(id, feedName){
@@ -95,22 +95,22 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 
 
 
-	start:function(){
-		if (!this.active) {
-			this.active = true;
-			this.subscriptionSend();
-		}
-	},
-
-	stop:function(){
-		if (this.active) {
-			this.active = false;
-			this.subscriptionCancel();
-		}
-	},
+	// start:function(){
+	// 	if (!this.active) {
+	// 		this.active = true;
+	// 		this.subscriptionSend();
+	// 	}
+	// },
+    //
+	// stop:function(){
+	// 	if (this.active) {
+	// 		this.active = false;
+	// 		this.subscriptionCancel();
+	// 	}
+	// },
 
 	// отправка запроса
-	subscriptionSend:function () {
+	subscriptionSend: function () {
 
 		if (this.active && tinng.cfg.maintenance == 0) {
 			// todo: этот враппер-таймаут нужен из-за несовершенства обертки XHR, баг вылазит во
@@ -123,7 +123,7 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 
-	$_subscriptionSend:function(){
+	$_subscriptionSend: function(){
 
 		// останавливаем предыдущий запрос/таймер если находим
 		if (this.request || this.timeout) this.subscriptionCancel();
@@ -180,31 +180,31 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 		});
 	},
 
-	retry:function(){
-		//todo t.ui.showMessage(t.txt.connection_error);
-		console.warn('Registered connection loss. Trying to restart');
-		this.subscriptionCancel();
-		this.subscriptionSend();
-	},
+	// retry:function(){
+	// 	//todo t.ui.showMessage(t.txt.connection_error);
+	// 	console.warn('Registered connection loss. Trying to restart');
+	// 	this.subscriptionCancel();
+	// 	this.subscriptionSend();
+	// },
 
 	// Останавливает ротор
-	subscriptionCancel:function () {
-
-		this.timeout = tinng.funcs.advClearTimeout(this.timeout);
-
-		clearTimeout(this.connectionLossTO);
-
-		if (this.request) {
-			// переопределяем, иначе connection воспринимает экстренную остановку как полноценное завершение запроса
-			this.request.done(this.onAbort);
-			this.request.abort();
-			this.request = false;
-
-			console.info('Connection STOP occured while waiting. Previous query has been aborted');
-		}
-
-		return true;
-	},
+	// subscriptionCancel:function () {
+    //
+	// 	this.timeout = tinng.funcs.advClearTimeout(this.timeout);
+    //
+	// 	clearTimeout(this.connectionLossTO);
+    //
+	// 	if (this.request) {
+	// 		// переопределяем, иначе connection воспринимает экстренную остановку как полноценное завершение запроса
+	// 		this.request.done(this.onAbort);
+	// 		this.request.abort();
+	// 		this.request = false;
+    //
+	// 		console.info('Connection STOP occured while waiting. Previous query has been aborted');
+	// 	}
+    //
+	// 	return true;
+	// },
 
 	// Выполняется при удачном возвращении запроса
 	onResponse:function (response) {
