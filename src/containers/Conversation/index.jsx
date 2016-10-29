@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import css from './Conversation.css';
 
 import {SUBSCRIBE_TOPICS, SUBSCRIBE_TOPICS_SUCCESS, SUBSCRIBE_TOPICS_ERROR} from '../../actions/topics'
+import {stopConnection, startConnection} from '../../actions/global'
 
 class Conversation extends Component {
 
@@ -27,9 +28,15 @@ class Conversation extends Component {
     }
 
     render(){
+
+        const {dispatch} = this.props;
+
         return <div className={css.main}>
             {this.props.isFetching && 'fetching'}
             {!this.props.isFetching && 'fetch done'}
+
+            <button onClick={() => dispatch(stopConnection())}>Stop</button>
+            <button onClick={() => dispatch(startConnection())}>Start</button>
         </div>
     }
 

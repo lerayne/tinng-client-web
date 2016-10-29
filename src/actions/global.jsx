@@ -11,6 +11,15 @@ export function startConnection(){
     }
 }
 
+export const STOP_CONNECTION = 'STOP_CONNECTION';
+
+export function stopConnection(){
+    return {
+        type: STOP_CONNECTION,
+        subscription: false
+    }
+}
+
 
 export const FETCH_ALL_REQUEST = 'FETCH_ALL_REQUEST';
 

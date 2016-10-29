@@ -16,11 +16,10 @@ export default function connectionMiddleware (options) {
         return nextMiddleware => action => {
 
             // если экшн не нашего типа - просто пропускаем его дальше
-            if (!action.subscription) {
+            if (action.subscription == undefined) {
                 return nextMiddleware(action)
             }
 
-            console.log('CONNECTION MIDDLEWARE');
             console.log('connection action:', action);
 
             if (action.subscription === true) {

@@ -19,7 +19,7 @@ const DevTools = createDevTools(
         toggleVisibilityKey='ctrl-h'
         changePositionKey='ctrl-q'
         changeMonitorKey='ctrl-m'
-        defaultIsVisible={true}
+        defaultIsVisible={false}
         defaultSize={0.24}
     >
         {/*<LogMonitor theme='tomorrow' style={{fontSize:12}}/>*/}

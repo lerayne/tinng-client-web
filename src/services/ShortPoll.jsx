@@ -2,9 +2,13 @@
  * Created by lerayne on 16.04.16.
  */
 
+import isEmpty from 'lodash/isEmpty'
+import delay from 'delay';
+
 import {serverURL, pollIntervalActive, pollIntervalPassive} from 'global-config';
 
 export default class ShortPoll {
+
     constructor(options = {}) {
 
         const defaultOptions = {
@@ -17,13 +21,10 @@ export default class ShortPoll {
 
         this.connectionActive = false;
         this.timeoutHandle = false;
-        this.request = false;
-        this.connectionLossTO = false;
-        this.setModePassive();
+        this.cancelRequest = false;
+        this.setModeActive(); // todo - стартовать в пассивном режиме, если окно неактивно
 
         this.subscriptions = {};
-        //this.actions = []; теперь передаваемый параметр
-        //this.meta = {}; теперь часть подписки
     }
 
     //INTERFACE METHODS
@@ -32,9 +33,11 @@ export default class ShortPoll {
      * Запускает соединение.
      */
     start() {
+        console.log('connection START!')
+
         if (!this.connectionActive) {
             this.connectionActive = true;
-            this.reStartPolling();
+            this.poll();
         }
     }
 
@@ -43,9 +46,11 @@ export default class ShortPoll {
      * не вызывают запросов к серверу, а лишь обновляют список подписок
      */
     stop() {
+        console.log('connection STOP!')
+
         if (this.connectionActive) {
-            this.connectionActive = false;
             this.stopPolling();
+            this.connectionActive = false;
         }
     }
 
@@ -57,22 +62,55 @@ export default class ShortPoll {
      * @param data
      * @returns {fetch Promise}
      */
-    query(channel, data) {
+    async query(channel, data) {
         // todo - разобраться с безопасностью этого запроса
 
-        return fetch(`${serverURL}/_${channel}/`, {
-            method: 'POST',
-            credentials: 'include',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: data
-        }).then(response => {
-            // todo - сделать обработку ошибок
-            return response.json().then(json => {
-
-                return Promise.resolve(json)
+        try {
+            const fetchPromise = fetch(`${this.options.serverURL}/_${channel}/`, {
+                method: 'POST',
+                credentials: 'include',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: JSON.stringify(data)
             })
-        })
+
+            const cancelPromise = new Promise(async (resolve, reject) => {
+                this.cancelRequest = () => resolve({cancelled: true})
+                await delay(3000);
+                reject('connection_timeout')
+            })
+
+            // выполнится первый из двух промисов. Таким образом реализована отмена запроса
+            const fetchResponse = await Promise.race([fetchPromise, cancelPromise])
+
+            // какой бы не выполнился - сразу стираем отменяющую функцию
+            this.cancelRequest = false;
+
+            if (fetchResponse.ok) {
+
+                const json = await fetchResponse.json()
+
+                if (json.debug) {
+                    console.info('PHP backtrace:\n==============\n', json.debug)
+                }
+
+                // в идеале вывода PHP быть не должно, если есть - значит есть ошибка
+                if (json.php_message) {
+                    console.error('PHP ERROR:\n============\n', json.php_message)
+                }
+
+                return json
+
+            } else if (fetchResponse.cancelled) {
+
+                return false
+            }
+
+        } catch (error) {
+            console.error('ShortPoll.query ERROR:', error, error.stack)
+
+            throw error
+        }
     }
 
     /**
@@ -93,13 +131,13 @@ export default class ShortPoll {
      * новыми параметрами. Используется каждый раз после изменения списка подписок
      */
     refresh(...args) {
-        if (!!args.actions && !this.connectionActive){
+        if (!!args.actions && !this.connectionActive) {
             // todo - сделать оповещение
             console.warn('Connection is stopped. Write request has not been sent!')
         }
 
         if (this.connectionActive) {
-            this.reStartPolling(...args);
+            this.poll(...args);
         }
     }
 
@@ -112,7 +150,6 @@ export default class ShortPoll {
      * @param onReceiveData - сохраняемый коллбек, который нужно вызвать при прибытии новых данных
      */
     subscribe(name, contentType, payload, onReceiveData) {
-        console.log('ShortPoll.subscribe', name, contentType, payload, onReceiveData);
 
         this.subscriptions[name] = {
             name,
@@ -140,7 +177,7 @@ export default class ShortPoll {
 
     /**
      * Обновляет существующую подписку без сброса её внутренних метаданных. Используется, например,
-     * для "догрузки" контента
+     * для "догрузки" контента. Возможно
      *
      * @param name
      * @param payload
@@ -178,22 +215,45 @@ export default class ShortPoll {
      *
      * @param actions - массив пишущих действий, выполняемых один раз
      */
-    reStartPolling(actions = false) {
+    async poll(actions = false) {
 
-        if (this.request || this.timeoutHandle) {
-            this.stopPolling()
+        // todo - возможно это условие лишнее
+        if (this.connectionActive){
+            console.log('executing poll with actions = ', actions)
+
+            if (this.cancelRequest || this.timeoutHandle) {
+                this.stopPolling()
+            }
+
+            const requestBody = this.transformToLegacyBody({
+                subscriptions: this.subscriptions,
+                actions: this.actions
+            });
+
+            try {
+                const response = await this.query('update', requestBody)
+
+                console.log('poller response', response)
+
+                // отмененный запрос возвращает false
+                if (response) {
+
+
+
+                    // рестартуем поллер
+                    this.timeoutHandle = setTimeout(::this.poll, this.pollInterval)
+                }
+            } catch (error) {
+
+                if (error == 'connection_timeout') {
+                    this.retry();
+                } else {
+                    console.error('ShortPoll.poll ERROR:', error.stack)
+                }
+            }
+        } else {
+            console.warn('trying to run poll when is connectionActive:false')
         }
-
-        const requestBody = this.transformLegacyBody({
-            subscriptions: this.subscriptions,
-            actions: this.actions
-        });
-
-        this.request = this.query('update', requestBody)
-            .then(::this.onRequestSuccess, ::this.onRequestFailure)
-
-        // если соединение длится 20 секунд - признаем его оборвавшимся
-        this.connectionLossTO = setTimeout(::this.retry, 20000);
     }
 
     /**
@@ -204,54 +264,45 @@ export default class ShortPoll {
         clearTimeout(this.timeoutHandle);
         this.timeoutHandle = false;
 
-        // resetting connection loss timer
-        clearTimeout(this.connectionLossTO);
-        this.connectionLossTO = false;
-
-        // if the request is still pending - cancelling it
-        if (this.request) {
-            // todo - check how this should work with fetch
-            this.request.done(::this.onAbort);
-            this.request.abort();
-            this.request = false;
-
-            console.info('ShortPoll: request aborted while pending');
+        //cancelling current query if present
+        if (this.cancelRequest){
+            this.cancelRequest();
+            this.cancelRequest = false;
         }
-    }
-
-    onRequestSuccess(response) {
-
-    }
-
-    onRequestFailure(error) {
-        console.error(error)
-    }
-
-    setModeActive() {
-        this.pollInterval = this.options.pollIntervalActive;
-        this.refresh();
-    }
-
-    setModePassive() {
-        this.pollInterval = this.options.pollIntervalPassive;
-    }
-
-    onAbort() {
-
     }
 
     retry() {
         console.warn('Registered connection loss. Trying to restart');
         this.stopPolling();
-        this.reStartPolling();
+        this.poll();
     }
 
-    transformToLegacyBody(newBody){
+    transformToLegacyBody(newBody) {
 
-        return {
-            subscribe: subscriptions,
-            write: newBody.actions,
-            meta: meta
+        const subscriberMeta = {};
+        const subscriber = {};
+
+        for (let name in newBody.subscriptions) {
+
+            const {meta, payload, contentType} = newBody.subscriptions[name];
+
+            subscriberMeta[name] = meta;
+
+            subscriber[name] = {...payload}
+            subscriber[name].feed = contentType
         }
+
+        const legacyBody = {
+            subscribe: [subscriber],
+            meta: [subscriberMeta],
+        }
+
+        if (newBody.actions) {
+            legacyBody.write = newBody.actions
+        }
+
+        console.log('legacyBody', {...legacyBody})
+
+        return legacyBody
     }
 }

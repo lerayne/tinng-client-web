@@ -123,24 +123,24 @@ tinng.class.strategic.XHRShortPoll.prototype = {
 	},
 
 
-	$_subscriptionSend: function(){
-
-		// останавливаем предыдущий запрос/таймер если находим
-		if (this.request || this.timeout) this.subscriptionCancel();
-
-		this.request = this.query('update', this.onResponse, {
-			subscribe: this.subscriptions,
-			write: this.actions,
-			meta:  this.meta
-		});
-
-		this.actions = {}; // actions have to be passed just once in any case!
-
-		// если соединение длится 20 секунд - признаем его оборвавшимся
-		this.connectionLossTO = setTimeout(this.retry, 20000);
-
-		//t.funcs.log('Launching query with timeout ' + this.waitTime);
-	},
+	// $_subscriptionSend: function(){
+    //
+	// 	// останавливаем предыдущий запрос/таймер если находим
+	// 	if (this.request || this.timeout) this.subscriptionCancel();
+    //
+	// 	this.request = this.query('update', this.onResponse, {
+	// 		subscribe: this.subscriptions,
+	// 		write: this.actions,
+	// 		meta:  this.meta
+	// 	});
+    //
+	// 	this.actions = {}; // actions have to be passed just once in any case!
+    //
+	// 	// если соединение длится 20 секунд - признаем его оборвавшимся
+	// 	this.connectionLossTO = setTimeout(this.retry, 20000);
+    //
+	// 	//t.funcs.log('Launching query with timeout ' + this.waitTime);
+	// },
 
 	query:function(channel, callback, data){
 
