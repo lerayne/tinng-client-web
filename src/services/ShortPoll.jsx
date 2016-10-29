@@ -2,10 +2,10 @@
  * Created by lerayne on 16.04.16.
  */
 
-import isEmpty from 'lodash/isEmpty'
-import delay from 'delay';
+import delay from 'delay'
 
-import {serverURL, pollIntervalActive, pollIntervalPassive} from 'global-config';
+import {serverURL, pollIntervalActive, pollIntervalPassive} from 'global-config'
+import {transformFromLegacyResponse, transformToLegacyBody} from './legacyConverters'
 
 export default class ShortPoll {
 
@@ -15,16 +15,16 @@ export default class ShortPoll {
             serverURL,
             pollIntervalActive,
             pollIntervalPassive
-        };
+        }
 
-        this.options = {...defaultOptions, ...options};
+        this.options = {...defaultOptions, ...options}
 
-        this.connectionActive = false;
-        this.timeoutHandle = false;
-        this.cancelRequest = false;
-        this.setModeActive(); // todo - стартовать в пассивном режиме, если окно неактивно
+        this.connectionActive = false
+        this.timeoutHandle = false
+        this.cancelRequest = false
+        this.setModeActive() // todo - стартовать в пассивном режиме, если окно неактивно
 
-        this.subscriptions = {};
+        this.subscriptions = {}
     }
 
     //INTERFACE METHODS
@@ -36,8 +36,8 @@ export default class ShortPoll {
         console.log('connection START!')
 
         if (!this.connectionActive) {
-            this.connectionActive = true;
-            this.poll();
+            this.connectionActive = true
+            this.poll()
         }
     }
 
@@ -49,8 +49,8 @@ export default class ShortPoll {
         console.log('connection STOP!')
 
         if (this.connectionActive) {
-            this.stopPolling();
-            this.connectionActive = false;
+            this.stopPolling()
+            this.connectionActive = false
         }
     }
 
@@ -74,9 +74,9 @@ export default class ShortPoll {
                 body: JSON.stringify(data)
             })
 
-            const cancelPromise = new Promise(async (resolve, reject) => {
+            const cancelPromise = new Promise(async(resolve, reject) => {
                 this.cancelRequest = () => resolve({cancelled: true})
-                await delay(3000);
+                await delay(3000)
                 reject('connection_timeout')
             })
 
@@ -84,7 +84,7 @@ export default class ShortPoll {
             const fetchResponse = await Promise.race([fetchPromise, cancelPromise])
 
             // какой бы не выполнился - сразу стираем отменяющую функцию
-            this.cancelRequest = false;
+            this.cancelRequest = false
 
             if (fetchResponse.ok) {
 
@@ -120,7 +120,7 @@ export default class ShortPoll {
     write(params) {
 
         if (!params instanceof Array) {
-            params[0] = params;
+            params[0] = params
         }
 
         this.refresh(params)
@@ -137,7 +137,7 @@ export default class ShortPoll {
         }
 
         if (this.connectionActive) {
-            this.poll(...args);
+            this.poll(...args)
         }
     }
 
@@ -157,9 +157,9 @@ export default class ShortPoll {
             payload,
             onReceiveData,
             meta: {}
-        };
+        }
 
-        this.refresh();
+        this.refresh()
     }
 
     /**
@@ -199,15 +199,15 @@ export default class ShortPoll {
     // LOCAL METHODS
 
     setModeActive() {
-        this.pollInterval = this.options.pollIntervalActive;
+        this.pollInterval = this.options.pollIntervalActive
         // we have to re-send query right after mode change, cause user watches the window and
         // timeout is changed from long to short
-        this.refresh();
+        this.refresh()
     }
 
     setModePassive() {
         // we don't have to re-send a query, it will run on schedule, using a new timeout value
-        this.pollInterval = this.options.pollIntervalPassive;
+        this.pollInterval = this.options.pollIntervalPassive
     }
 
     /**
@@ -218,27 +218,41 @@ export default class ShortPoll {
     async poll(actions = false) {
 
         // todo - возможно это условие лишнее
-        if (this.connectionActive){
+        if (this.connectionActive) {
             console.log('executing poll with actions = ', actions)
 
             if (this.cancelRequest || this.timeoutHandle) {
                 this.stopPolling()
             }
 
-            const requestBody = this.transformToLegacyBody({
+            const requestBody = transformToLegacyBody({
                 subscriptions: this.subscriptions,
                 actions: this.actions
-            });
+            })
 
             try {
-                const response = await this.query('update', requestBody)
+                let response = await this.query('update', requestBody)
 
                 console.log('poller response', response)
 
                 // отмененный запрос возвращает false
                 if (response) {
 
+                    response = transformFromLegacyResponse(response)
 
+                    // вызываем коллбеки
+                    if (response.data) {
+                        for (let name in response.data) {
+                            this.subscriptions[name].onReceiveData(response.data[name])
+                        }
+                    }
+
+                    // перезаписываем метаданные
+                    if (response.meta) {
+                        for (let name in response.meta) {
+                            this.subscriptions[name].meta = response.meta[name]
+                        }
+                    }
 
                     // рестартуем поллер
                     this.timeoutHandle = setTimeout(::this.poll, this.pollInterval)
@@ -246,7 +260,10 @@ export default class ShortPoll {
             } catch (error) {
 
                 if (error == 'connection_timeout') {
-                    this.retry();
+
+                    console.warn('Сonnection lost. Trying to restart')
+                    this.poll()
+
                 } else {
                     console.error('ShortPoll.poll ERROR:', error.stack)
                 }
@@ -261,48 +278,12 @@ export default class ShortPoll {
      */
     stopPolling() {
         // cancelling upcoming query
-        clearTimeout(this.timeoutHandle);
-        this.timeoutHandle = false;
+        clearTimeout(this.timeoutHandle)
+        this.timeoutHandle = false
 
         //cancelling current query if present
-        if (this.cancelRequest){
-            this.cancelRequest();
-            this.cancelRequest = false;
+        if (this.cancelRequest) {
+            this.cancelRequest()
         }
-    }
-
-    retry() {
-        console.warn('Registered connection loss. Trying to restart');
-        this.stopPolling();
-        this.poll();
-    }
-
-    transformToLegacyBody(newBody) {
-
-        const subscriberMeta = {};
-        const subscriber = {};
-
-        for (let name in newBody.subscriptions) {
-
-            const {meta, payload, contentType} = newBody.subscriptions[name];
-
-            subscriberMeta[name] = meta;
-
-            subscriber[name] = {...payload}
-            subscriber[name].feed = contentType
-        }
-
-        const legacyBody = {
-            subscribe: [subscriber],
-            meta: [subscriberMeta],
-        }
-
-        if (newBody.actions) {
-            legacyBody.write = newBody.actions
-        }
-
-        console.log('legacyBody', {...legacyBody})
-
-        return legacyBody
     }
 }

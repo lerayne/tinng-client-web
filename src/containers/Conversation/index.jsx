@@ -41,7 +41,7 @@ class Conversation extends Component {
     }
 
     onReceive(data){
-        console.log('Converssation.onReceive', data)
+        console.log('Conversation.onReceive', data)
     }
 }
 
