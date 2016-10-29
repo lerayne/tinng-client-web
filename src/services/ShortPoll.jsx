@@ -177,7 +177,7 @@ export default class ShortPoll {
 
     /**
      * Обновляет существующую подписку без сброса её внутренних метаданных. Используется, например,
-     * для "догрузки" контента. Возможно
+     * для "догрузки" контента. Возможно указание только изменившихся параметров в payload
      *
      * @param name
      * @param payload
@@ -225,15 +225,11 @@ export default class ShortPoll {
                 this.stopPolling()
             }
 
-            const requestBody = transformToLegacyBody({
-                subscriptions: this.subscriptions,
-                actions: this.actions
-            })
-
             try {
-                let response = await this.query('update', requestBody)
-
-                console.log('poller response', response)
+                let response = await this.query('update', transformToLegacyBody({
+                    subscriptions: this.subscriptions,
+                    actions: this.actions
+                }))
 
                 // отмененный запрос возвращает false
                 if (response) {
