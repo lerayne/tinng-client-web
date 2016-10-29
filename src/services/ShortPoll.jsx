@@ -219,7 +219,6 @@ export default class ShortPoll {
 
         // todo - возможно это условие лишнее
         if (this.connectionActive) {
-            console.log('executing poll with actions = ', actions)
 
             if (this.cancelRequest || this.timeoutHandle) {
                 this.stopPolling()
@@ -239,7 +238,7 @@ export default class ShortPoll {
                     // вызываем коллбеки
                     if (response.data) {
                         for (let name in response.data) {
-                            this.subscriptions[name].onReceiveData(response.data[name])
+                            this.subscriptions[name].onReceiveData(response.data[name], actions)
                         }
                     }
 

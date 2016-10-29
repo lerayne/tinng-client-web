@@ -7,19 +7,26 @@ import { connect } from 'react-redux';
 
 import css from './Conversation.css';
 
-import {SUBSCRIBE_TOPICS, SUBSCRIBE_TOPICS_SUCCESS, SUBSCRIBE_TOPICS_ERROR} from '../../actions/topics'
-import {stopConnection, startConnection} from '../../actions/global'
+import Topic from '../../components/Topic'
+
+import {
+    SUBSCRIBE_TOPICS,
+    receiveTopics
+} from '../../actions/topics'
 
 class Conversation extends Component {
 
     componentDidMount(){
-        this.props.dispatch({
+
+        const {dispatch} = this.props;
+
+        dispatch({
             type: SUBSCRIBE_TOPICS,
             subscription:{
                 name: 'topics_list',
                 contentType: 'topics',
                 turn: 'on',
-                onReceiveData: ::this.onReceive
+                onReceiveData: (data, actions) => dispatch(receiveTopics(data, actions))
             },
             payload:{
                 searchString: null
@@ -29,22 +36,18 @@ class Conversation extends Component {
 
     render(){
 
-        const {dispatch} = this.props;
+        const {dispatch, list, isFetching} = this.props;
 
         return <div className={css.main}>
-            {this.props.isFetching && 'fetching'}
-            {!this.props.isFetching && 'fetch done'}
-
-            <button onClick={() => dispatch(stopConnection())}>Stop</button>
-            <button onClick={() => dispatch(startConnection())}>Start</button>
+            {isFetching && 'fetching'}
+            {list.map(topic =>
+                <Topic key={topic.id} {...topic} />
+            )}
         </div>
-    }
-
-    onReceive(data){
-        console.log('Conversation.onReceive', data)
     }
 }
 
 export default Conversation = connect(state => ({
-    isFetching: state.topics.isFetching
+    isFetching: state.topics.isFetching,
+    list: state.topics.list
 }))(Conversation)

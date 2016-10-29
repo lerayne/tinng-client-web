@@ -3,6 +3,7 @@
  */
 
 import { FETCH_ALL_REQUEST, FETCH_ALL_RESPONSE } from '../actions/global';
+import { TOPICS_RECEIVE } from '../actions/topics'
 
 const defaultTopicsState = {
     isFetching: false,
@@ -23,7 +24,14 @@ export default function topicsReducer (state = {...defaultTopicsState}, action) 
                 ...state,
                 isFetching: false
             };
-        
+
+        case TOPICS_RECEIVE:
+            return {
+                ...state,
+                isFetching: false,
+                list: action.payload.list
+            }
+
         default: 
             return state;
     }

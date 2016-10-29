@@ -52,14 +52,6 @@ export default function connectionMiddleware (options) {
             }
 
             return nextMiddleware(action);
-
-            /*fetch(options.serverURL + '/_update/', {mode:'cors'}).then(resp => resp.json()).then(json => {
-                console.log('server responsded', json);
-
-                store.dispatch(fetchAllResponse())
-            });*/
-
-            //console.log('state after', store.getState());
         }
     }
 }
