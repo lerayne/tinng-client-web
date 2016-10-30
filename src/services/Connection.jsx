@@ -10,10 +10,8 @@ import { initialFetchAll } from '../actions/global';
 const ConnectionType = ShortPoll;
 
 export default class Connection extends ConnectionType {
-    constructor(dispatch, options = {}){
+    constructor(options = {}){
         super(options);
-        
-        this.dispatch = dispatch;
 
         // запрос необходимых методов родительского класса
         [

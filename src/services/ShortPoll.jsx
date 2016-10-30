@@ -22,9 +22,17 @@ export default class ShortPoll {
         this.connectionActive = false
         this.timeoutHandle = false
         this.cancelRequest = false
-        this.setModeActive() // todo - стартовать в пассивном режиме, если окно неактивно
-
         this.subscriptions = {}
+
+        if (document.hasFocus()){
+            this.setModeActive()
+        } else {
+            this.setModePassive()
+        }
+
+        window.addEventListener('blur', e => this.setModePassive())
+
+        window.addEventListener('focus', e => this.setModeActive())
     }
 
     //INTERFACE METHODS
@@ -199,6 +207,7 @@ export default class ShortPoll {
     // LOCAL METHODS
 
     setModeActive() {
+        console.log('switching to ACTIVE')
         this.pollInterval = this.options.pollIntervalActive
         // we have to re-send query right after mode change, cause user watches the window and
         // timeout is changed from long to short
@@ -206,6 +215,7 @@ export default class ShortPoll {
     }
 
     setModePassive() {
+        console.log('switching to PASSIVE')
         // we don't have to re-send a query, it will run on schedule, using a new timeout value
         this.pollInterval = this.options.pollIntervalPassive
     }
@@ -256,6 +266,7 @@ export default class ShortPoll {
 
                 if (error == 'connection_timeout') {
 
+                    // todo - make UI notification
                     console.warn('Сonnection lost. Trying to restart')
                     this.poll()
 
