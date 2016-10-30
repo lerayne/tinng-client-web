@@ -24,6 +24,7 @@ export default class ShortPoll {
         this.cancelRequest = false
         this.subscriptions = {}
 
+        // focus/blur functionality
         if (document.hasFocus()){
             this.setModeActive()
         } else {
@@ -93,6 +94,8 @@ export default class ShortPoll {
 
             // какой бы не выполнился - сразу стираем отменяющую функцию
             this.cancelRequest = false
+
+            console.log('request with data:', data, 'resulted in', fetchResponse)
 
             if (fetchResponse.ok) {
 
@@ -267,6 +270,7 @@ export default class ShortPoll {
                 if (error == 'connection_timeout') {
 
                     // todo - make UI notification
+                    // возможно вынести в query, продумать
                     console.warn('Сonnection lost. Trying to restart')
                     this.poll()
 
