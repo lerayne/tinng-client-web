@@ -12,11 +12,27 @@ export function transformFromLegacyResponse (oldResponse) {
             const {data} = oldResponse;
 
             if (data.meta && data.meta[0]) {
-                newResponse.meta = data.meta[0]
+
+                for (let name in data.meta[0]){
+
+                    if (!newResponse[name]){
+                        newResponse[name] = {}
+                    }
+
+                    newResponse[name].meta = data.meta[0][name]
+                }
             }
 
             if (data.feeds && data.feeds[0]) {
-                newResponse.data = data.feeds[0]
+
+                for (let name in data.feeds[0]){
+
+                    if (!newResponse[name]){
+                        newResponse[name] = {}
+                    }
+
+                    newResponse[name].payload = data.feeds[0][name]
+                }
             }
         }
 

@@ -95,7 +95,7 @@ export default class ShortPoll {
             // какой бы не выполнился - сразу стираем отменяющую функцию
             this.cancelRequest = false
 
-            console.log('request with data:', data, 'resulted in', fetchResponse)
+            //console.log('request with data:', data, 'resulted in', fetchResponse)
 
             if (fetchResponse.ok) {
 
@@ -242,27 +242,31 @@ export default class ShortPoll {
             }
 
             try {
-                let response = await this.query('update', transformToLegacyBody({
+
+                const query = {
                     subscriptions: this.subscriptions,
                     actions: this.actions
-                }))
+                }
+
+                let response = await this.query('update', transformToLegacyBody(query))
 
                 // отмененный запрос возвращает false
                 if (response) {
 
                     response = transformFromLegacyResponse(response)
 
-                    // вызываем коллбеки
-                    if (response.data) {
-                        for (let name in response.data) {
-                            this.subscriptions[name].onReceiveData(response.data[name], actions)
-                        }
-                    }
+                    console.log('poll with query', query, 'returned with', response)
 
-                    // перезаписываем метаданные
-                    if (response.meta) {
-                        for (let name in response.meta) {
-                            this.subscriptions[name].meta = response.meta[name]
+                    for (let name in response) {
+
+                        // перезаписываем метаданные
+                        if (response[name].meta){
+                            this.subscriptions[name].meta = response[name].meta
+                        }
+
+                        // вызываем коллбеки
+                        if (response[name].payload) {
+                            this.subscriptions[name].onReceiveData(response[name].payload, actions)
                         }
                     }
 
