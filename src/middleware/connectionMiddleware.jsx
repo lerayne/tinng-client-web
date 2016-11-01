@@ -1,14 +1,14 @@
 /**
  * Я подумал и решил, что движок соединения, согласно парадигме редукс, должен быть миддлвером
- * 
+ *
  * Created by lerayne on 16.04.16.
  */
 
 import Connection from '../services/Connection';
 
-import { fetchAllRequest, fetchAllResponse } from '../actions/global';
+import {fetchAllRequest, fetchAllResponse} from '../actions/global';
 
-export default function connectionMiddleware (options) {
+export default function connectionMiddleware(options) {
     return store => {
 
         const connection = new Connection(store.dispatch);
@@ -35,7 +35,7 @@ export default function connectionMiddleware (options) {
             const {name, turn, contentType, onReceiveData} = action.subscription;
             const {payload} = action;
 
-            switch (turn){
+            switch (turn) {
                 case 'on':
                     connection.subscribe(
                         name,

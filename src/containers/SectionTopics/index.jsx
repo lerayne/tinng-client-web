@@ -12,12 +12,12 @@ import css from './SectionTopics.css'
 
 class SectionTopics extends Component {
     /*constructor(props) {
-        super(props)
+     super(props)
 
-        this.state = {}
-    }*/
+     this.state = {}
+     }*/
 
-    componentDidMount(){
+    componentDidMount() {
 
         const {dispatch} = this.props
 

@@ -63,7 +63,7 @@ export default class App extends Component {
 
         return (
             <Provider store={store}>
-                <div style={{height:'100%'}}>
+                <div style={{height: '100%'}}>
                     <Router history={history}>
                         {routes}
                     </Router>
@@ -75,7 +75,7 @@ export default class App extends Component {
     }
 }
 
-export function afterInit(){
+export function afterInit() {
     // Starting connection
     store.dispatch(startConnection());
 }

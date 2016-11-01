@@ -4,13 +4,13 @@
 
 import ShortPoll from './ShortPoll';
 
-import { initialFetchAll } from '../actions/global';
+import {initialFetchAll} from '../actions/global';
 
 //тут будет выбор типа подключени в зависимости от условий
 const ConnectionType = ShortPoll;
 
 export default class Connection extends ConnectionType {
-    constructor(options = {}){
+    constructor(options = {}) {
         super(options);
 
         // запрос необходимых методов родительского класса
@@ -24,7 +24,7 @@ export default class Connection extends ConnectionType {
             'cancelSubscription',
             'updateSubscription'
         ].forEach(methodName => {
-            if (typeof super[methodName] != 'function'){
+            if (typeof super[methodName] != 'function') {
                 throw(`Implementation of Connection class must have the "${methodName}" method`)
             }
         })

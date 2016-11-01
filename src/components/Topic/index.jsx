@@ -6,7 +6,7 @@ import React from 'react'
 
 import css from './Topic.css'
 
-export default function Topic ({
+export default function Topic({
     topic_name
 }) {
     return <div className={css.main}>

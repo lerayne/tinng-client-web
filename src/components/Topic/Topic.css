@@ -1,5 +1,5 @@
-:local(.main){
+:local(.main) {
     margin: 2px;
     padding: 5px 10px;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
 }

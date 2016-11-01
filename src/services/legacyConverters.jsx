@@ -2,7 +2,7 @@
  * Created by lerayne on 30.10.16.
  */
 
-export function transformFromLegacyResponse (oldResponse) {
+export function transformFromLegacyResponse(oldResponse) {
     try {
 
         const newResponse = {}
@@ -13,9 +13,9 @@ export function transformFromLegacyResponse (oldResponse) {
 
             if (data.meta && data.meta[0]) {
 
-                for (let name in data.meta[0]){
+                for (let name in data.meta[0]) {
 
-                    if (!newResponse[name]){
+                    if (!newResponse[name]) {
                         newResponse[name] = {}
                     }
 
@@ -25,9 +25,9 @@ export function transformFromLegacyResponse (oldResponse) {
 
             if (data.feeds && data.feeds[0]) {
 
-                for (let name in data.feeds[0]){
+                for (let name in data.feeds[0]) {
 
-                    if (!newResponse[name]){
+                    if (!newResponse[name]) {
                         newResponse[name] = {}
                     }
 

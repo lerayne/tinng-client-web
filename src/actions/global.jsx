@@ -4,7 +4,7 @@
 
 export const START_CONNECTION = 'START_CONNECTION';
 
-export function startConnection(){
+export function startConnection() {
     return {
         type: START_CONNECTION,
         subscription: true
@@ -13,7 +13,7 @@ export function startConnection(){
 
 export const STOP_CONNECTION = 'STOP_CONNECTION';
 
-export function stopConnection(){
+export function stopConnection() {
     return {
         type: STOP_CONNECTION,
         subscription: false
@@ -23,7 +23,7 @@ export function stopConnection(){
 
 export const FETCH_ALL_REQUEST = 'FETCH_ALL_REQUEST';
 
-export function fetchAllRequest(){
+export function fetchAllRequest() {
     return {
         type: FETCH_ALL_REQUEST,
     }
@@ -32,7 +32,7 @@ export function fetchAllRequest(){
 export const FETCH_ALL_RESPONSE = 'FETCH_ALL_RESPONSE';
 
 
-export function fetchAllResponse(){
+export function fetchAllResponse() {
     return {
         type: FETCH_ALL_RESPONSE
     }

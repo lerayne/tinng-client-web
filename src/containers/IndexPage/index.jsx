@@ -2,8 +2,8 @@
  * Created by lerayne on 31.03.16.
  */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import {stopConnection, startConnection} from '../../actions/global'
 

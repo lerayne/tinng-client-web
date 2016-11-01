@@ -25,7 +25,7 @@ export default class ShortPoll {
         this.subscriptions = {}
 
         // focus/blur functionality
-        if (document.hasFocus()){
+        if (document.hasFocus()) {
             this.setModeActive()
         } else {
             this.setModePassive()
@@ -260,7 +260,7 @@ export default class ShortPoll {
                     for (let name in response) {
 
                         // перезаписываем метаданные
-                        if (response[name].meta){
+                        if (response[name].meta) {
                             this.subscriptions[name].meta = response[name].meta
                         }
 

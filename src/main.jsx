@@ -14,13 +14,13 @@ import './global.css'
 
 // Binding react App to dom node
 import React from 'react'
-import { render } from 'react-dom'
+import {render} from 'react-dom'
 
 //Main app
 import App, {afterInit} from './App'
 
 //React main binding
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     render(<App />, document.getElementById('main'));
 
     afterInit();

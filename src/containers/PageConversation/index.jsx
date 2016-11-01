@@ -4,14 +4,14 @@
 
 // todo - если не будет связи со стейтом - переделать в компонент
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import SectionTopics from '../SectionTopics'
 
 class PageConversation extends Component {
 
-    render(){
+    render() {
 
         const mainStyle = {
             height: 'calc(100% - 30px)'
@@ -23,6 +23,4 @@ class PageConversation extends Component {
     }
 }
 
-export default PageConversation = connect(state => ({
-
-}))(PageConversation)
+export default PageConversation = connect(state => ({}))(PageConversation)

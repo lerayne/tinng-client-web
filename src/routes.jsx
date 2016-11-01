@@ -10,7 +10,7 @@ import PageConversation from './containers/PageConversation';
 
 const routes = (
     <Route path="/" component={IndexPage}>
-        <IndexRoute component={PageConversation} />
+        <IndexRoute component={PageConversation}/>
     </Route>
 )
 

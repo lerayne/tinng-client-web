@@ -2,19 +2,19 @@
  * Created by lerayne on 16.04.16.
  */
 
-import { FETCH_ALL_REQUEST, FETCH_ALL_RESPONSE } from '../actions/global';
-import { TOPICS_RECEIVE } from '../actions/topics'
+import {FETCH_ALL_REQUEST, FETCH_ALL_RESPONSE} from '../actions/global';
+import {TOPICS_RECEIVE} from '../actions/topics'
 
 export const defaultTopicsState = {
     isFetching: false,
-    list:[],
-    sortField:'created',
-    sortOrder:'desc'
+    list: [],
+    sortField: 'created',
+    sortOrder: 'desc'
 };
 
-export default function topicsReducer (state = {...defaultTopicsState}, action) {
+export default function topicsReducer(state = {...defaultTopicsState}, action) {
     switch (action.type) {
-        
+
         case FETCH_ALL_REQUEST:
             return {
                 ...state,
@@ -34,7 +34,7 @@ export default function topicsReducer (state = {...defaultTopicsState}, action) 
                 list: action.payload.list
             }
 
-        default: 
+        default:
             return state;
     }
 }
