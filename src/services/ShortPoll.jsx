@@ -115,6 +115,10 @@ export default class ShortPoll {
             } else if (fetchResponse.cancelled) {
 
                 return false
+
+            } else {
+
+                console.warn('request ended unsuccessfuly:', fetchResponse)
             }
 
         } catch (error) {

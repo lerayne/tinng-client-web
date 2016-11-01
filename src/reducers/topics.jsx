@@ -5,9 +5,11 @@
 import { FETCH_ALL_REQUEST, FETCH_ALL_RESPONSE } from '../actions/global';
 import { TOPICS_RECEIVE } from '../actions/topics'
 
-const defaultTopicsState = {
+export const defaultTopicsState = {
     isFetching: false,
-    list:[]
+    list:[],
+    sortField:'created',
+    sortOrder:'desc'
 };
 
 export default function topicsReducer (state = {...defaultTopicsState}, action) {

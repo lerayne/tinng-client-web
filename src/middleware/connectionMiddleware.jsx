@@ -37,7 +37,12 @@ export default function connectionMiddleware (options) {
 
             switch (turn){
                 case 'on':
-                    connection.subscribe(name, contentType, payload, onReceiveData);
+                    connection.subscribe(
+                        name,
+                        contentType,
+                        payload,
+                        (...args) => store.dispatch(onReceiveData(...args))
+                    );
                     break;
 
                 case 'off':

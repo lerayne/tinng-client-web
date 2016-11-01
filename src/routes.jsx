@@ -6,11 +6,11 @@ import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
 import IndexPage from './containers/IndexPage';
-import Conversation from './containers/Conversation';
+import PageConversation from './containers/PageConversation';
 
 const routes = (
     <Route path="/" component={IndexPage}>
-        <IndexRoute component={Conversation} />
+        <IndexRoute component={PageConversation} />
     </Route>
 )
 

@@ -1,5 +1,5 @@
 :local(.main) {
-    height: calc(100% - 30px);
+    height:100%;
     width: 70%;
     margin: 0 auto;
     background-color: #fff;

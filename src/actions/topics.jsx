@@ -2,14 +2,23 @@
  * Created by lerayne on 16.04.16.
  */
 
-export function refreshTopicsList (){
-    
-}
-
-export const SUBSCRIBE_TOPICS = 'SUBSCRIBE_TOPICS';
-export const SUBSCRIBE_TOPICS_ERROR = 'SUBSCRIBE_TOPICS_ERROR';
-export const SUBSCRIBE_TOPICS_SUCCESS = 'SUBSCRIBE_TOPICS_SUCCESS';
+export const TOPICS_SUBSCRIBE = 'TOPICS_SUBSCRIBE';
 export const TOPICS_RECEIVE = 'TOPICS_RECEIVE';
+
+export function subscribeOnTopics(name, searchString=null){
+    return {
+        type: TOPICS_SUBSCRIBE,
+        subscription:{
+            name,
+            contentType: 'topics',
+            turn: 'on',
+            onReceiveData: receiveTopics
+        },
+        payload:{
+            searchString
+        }
+    }
+}
 
 export function receiveTopics(list, actions){
     return {
