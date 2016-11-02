@@ -2,13 +2,15 @@
  * Created by lerayne on 16.04.16.
  */
 
+import sortBy from 'lodash/sortBy';
+
 import {FETCH_ALL_REQUEST, FETCH_ALL_RESPONSE} from '../actions/global';
 import {TOPICS_RECEIVE} from '../actions/topics'
 
 export const defaultTopicsState = {
     isFetching: false,
     list: [],
-    sortField: 'created',
+    sortField: 'updated',
     sortOrder: 'desc'
 };
 
@@ -31,10 +33,26 @@ export default function topicsReducer(state = {...defaultTopicsState}, action) {
             return {
                 ...state,
                 isFetching: false,
-                list: action.payload.list
+                list: parseTopicsList(state, action.payload.list)
             }
 
         default:
             return state;
+    }
+}
+
+function sort(list, sortField, sortOrder) {
+    const sorted = sortBy(list, [sortField])
+
+    return sortOrder == 'asc' ? sorted : sorted.reverse();
+}
+
+function parseTopicsList(state, list) {
+
+    // если первичная загрузка
+    if (!state.list.length) {
+        return sort(list, state.sortField, state.sortOrder)
+    } else {
+
     }
 }
