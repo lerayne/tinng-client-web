@@ -41,22 +41,19 @@ var plugins = [
             comments:DEV
         },
         sourceMap: true
-    }),
-
-    new webpack.LoaderOptionsPlugin({
-        minimize: PROD
-    }),
-
-
-    new BundleAnalyzerPlugin({
-        analyzerMode: PROD ? 'static' : 'disabled',
-        reportFilename: 'report.html',
-        openAnalyzer: PROD,
     })
 ]
 
 if (PROD) {
     plugins.push(new webpack.optimize.DedupePlugin())
+
+    plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}))
+
+    plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'report.html',
+        openAnalyzer: true,
+    }))
 }
 
 module.exports = {
