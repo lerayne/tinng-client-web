@@ -1,7 +1,15 @@
 {
   "presets": [
     [ "es2015", { "modules": false } ],
-    "stage-0",
-    "react"
-  ]
+    "react",
+    "stage-0"
+  ],
+  "env":{
+    "production":{
+      "plugins":[
+        "transform-react-constant-elements",
+        "transform-react-inline-elements"
+      ]
+    }
+  }
 }

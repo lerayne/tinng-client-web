@@ -6,6 +6,7 @@ var webpack = require('webpack');
 var HTMLWebpackPlugin = require('html-webpack-plugin');
 var cmdArgs = require('minimist')(process.argv.slice(2));
 var path = require('path');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
 var DEV = NODE_ENV == 'development';
@@ -13,25 +14,55 @@ var PROD = NODE_ENV == 'production';
 
 console.log('MODE:', NODE_ENV);
 
+var plugins = [
+    new webpack.optimize.CommonsChunkPlugin({
+        names: ['app',],
+        minChunks: Infinity,
+        filename: '[name].bundle.js'
+    }),
+
+    new webpack.DefinePlugin({
+        "process.env": {
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
+    }),
+
+    new HTMLWebpackPlugin({
+        template: './src/index.html',
+        inject: false
+    }),
+
+    new webpack.optimize.UglifyJsPlugin({
+        mangle: PROD,
+        compress: {
+            warnings: false
+        },
+        output:{
+            comments:DEV
+        },
+        sourceMap: true
+    }),
+
+    new webpack.LoaderOptionsPlugin({
+        minimize: PROD
+    }),
+
+
+    new BundleAnalyzerPlugin({
+        analyzerMode: PROD ? 'static' : 'disabled',
+        reportFilename: 'report.html',
+        openAnalyzer: PROD,
+    })
+]
+
+if (PROD) {
+    plugins.push(new webpack.optimize.DedupePlugin())
+}
+
 module.exports = {
 
     entry: {
         app: path.join(__dirname, "src", "main.jsx"),
-        vendor:[
-            "react",
-            "react-dom",
-            "redux",
-            "react-redux",
-            "react-router",
-            "react-router-redux",
-            "redux-thunk",
-            "babel-polyfill",
-            "isomorphic-fetch",
-            "redux-devtools",
-            "redux-devtools-log-monitor",
-            "redux-devtools-dock-monitor",
-            "redux-devtools-inspector",
-        ]
     },
 
     output: {
@@ -43,43 +74,7 @@ module.exports = {
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.min.js', '.jsx']
     },
 
-    plugins: [
-
-        new webpack.optimize.CommonsChunkPlugin({
-            names: [
-                'app',
-                'vendor',
-            ],
-            minChunks: Infinity,
-            filename: '[name].bundle.js'
-        }),
-
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-            }
-        }),
-
-        new HTMLWebpackPlugin({
-            template: './src/index.html',
-            inject: false
-        }),
-
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: PROD,
-            compress: {
-                warnings: false
-            },
-            output:{
-                comments:DEV
-            },
-            sourceMap: true
-        }),
-
-        new webpack.LoaderOptionsPlugin({
-            minimize: PROD
-        })
-    ],
+    plugins: plugins,
 
     module: {
         loaders: [
@@ -119,5 +114,5 @@ module.exports = {
         "global-config":"globalConfig"
     },
 
-    devtool: DEV ? 'eval-source-map' : 'source-map'
+    devtool: DEV ? 'cheap-inline-source-map' : 'source-map'
 };

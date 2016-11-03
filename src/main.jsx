@@ -2,8 +2,12 @@
  * Created by lerayne on 31.03.16.
  */
 
-// Applying glovbal polyfills
-import 'babel-polyfill'
+// Applying global polyfills
+import 'core-js/web'
+import 'core-js/es6/promise'
+import 'core-js/es6/symbol'
+
+import 'regenerator-runtime/runtime'
 import 'isomorphic-fetch'
 
 // just copying config to the destination folder

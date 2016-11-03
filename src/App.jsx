@@ -19,9 +19,6 @@ import thunkMiddleware from 'redux-thunk';
  * Here starts app's own code
  */
 
-//Developer tools
-import DevTools from './devtools/reduxDevTools';
-
 // Middlewares
 import connectionMiddleware from './middleware/connectionMiddleware';
 
@@ -32,8 +29,6 @@ import routes from './routes';
 // Actions
 import {startConnection} from './actions/global';
 
-const DEV = process.env.NODE_ENV === 'development';
-
 // composing middleware
 let middleware = applyMiddleware(
     routerMiddleware(hashHistory),
@@ -41,7 +36,11 @@ let middleware = applyMiddleware(
     thunkMiddleware,
 );
 
-if (DEV) {
+let DevTools
+
+if (process.env.NODE_ENV === 'development') {
+    DevTools = require('./devtools/reduxDevTools').default
+
     middleware = compose(
         middleware,
         DevTools.instrument()
@@ -68,7 +67,7 @@ export default class App extends Component {
                         {routes}
                     </Router>
 
-                    {DEV && <DevTools />}
+                    {process.env.NODE_ENV === 'development' && <DevTools />}
                 </div>
             </Provider>
         )
