@@ -2,19 +2,19 @@
  * Created by lerayne on 03.02.16.
  */
 
-var webpack = require('webpack');
-var HTMLWebpackPlugin = require('html-webpack-plugin');
-var cmdArgs = require('minimist')(process.argv.slice(2));
-var path = require('path');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const webpack = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const cmdArgs = require('minimist')(process.argv.slice(2));
+const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-var NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
-var DEV = NODE_ENV == 'development';
-var PROD = NODE_ENV == 'production';
+const NODE_ENV = process.env.NODE_ENV || cmdArgs.NODE_ENV || 'production';
+const DEV = NODE_ENV === 'development';
+const PROD = NODE_ENV === 'production';
 
 console.log('MODE:', NODE_ENV);
 
-var plugins = [
+let plugins = [
     new webpack.optimize.CommonsChunkPlugin({
         names: ['app',],
         minChunks: Infinity,
@@ -45,15 +45,17 @@ var plugins = [
 ]
 
 if (PROD) {
-    plugins.push(new webpack.optimize.DedupePlugin())
 
-    plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}))
-
-    plugins.push(new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        reportFilename: 'report.html',
-        openAnalyzer: true,
-    }))
+    plugins = [
+        ...plugins,
+        new webpack.optimize.DedupePlugin(),
+        new webpack.LoaderOptionsPlugin({minimize: true}),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'static',
+            reportFilename: 'report.html',
+            openAnalyzer: true,
+        })
+    ]
 }
 
 module.exports = {
@@ -71,7 +73,7 @@ module.exports = {
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.min.js', '.jsx']
     },
 
-    plugins: plugins,
+    plugins,
 
     module: {
         loaders: [
