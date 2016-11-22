@@ -1,5 +1,15 @@
 html, body, #main {
     height: 100%;
+    font-family: 'Calibri', 'Roboto', 'Noto', 'Tahoma', 'helvetica', sans-serif;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 html {
@@ -8,4 +18,20 @@ html {
 
 body {
     margin: 0;
+}
+
+.reveal-1 {
+    visibility: hidden;
+}
+
+.revealer-1:hover .reveal-1 {
+    visibility: visible;
+}
+
+.left {
+    float:left
+}
+
+.right {
+    float:right
 }

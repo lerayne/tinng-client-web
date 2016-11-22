@@ -31,9 +31,9 @@ import {startConnection} from './actions/global';
 
 // composing middleware
 let middleware = applyMiddleware(
-    routerMiddleware(hashHistory),
-    connectionMiddleware({serverURL}),
     thunkMiddleware,
+    routerMiddleware(hashHistory),
+    connectionMiddleware({serverURL})
 );
 
 let DevTools

@@ -79,19 +79,19 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loader:"babel?cacheDirectory",
+                loader:"babel-loader?cacheDirectory",
                 exclude:/node_modules/
             },{
                 test: /\.js$/,
-                loader:"file?name=[name].[ext]",
+                loader:"file-loader?name=[name].[ext]",
                 exclude:/node_modules/
             },{
                 test: /\.json$/,
-                loader:"file?name=[name].[ext]",
+                loader:"file-loader?name=[name].[ext]",
                 exclude:/node_modules/
             }, {
                 test: /\.(png|jpg|jpeg)$/i,
-                loader: "url",
+                loader: "url-loader",
                 query: {
                     limit: (5 * 1024),
                     name: "[name]-[hash:base64:5].[ext]"
@@ -99,9 +99,9 @@ module.exports = {
             }, {
                 test: /.css$/,
                 loaders: [
-                    "style",
+                    "style-loader",
                     {
-                        loader: "css",
+                        loader: "css-loader",
                         query: { localIdentName: "[name]-[local]-[hash:base64:5]" }
                     }
                 ]
@@ -113,5 +113,5 @@ module.exports = {
         "global-config":"globalConfig"
     },
 
-    devtool: DEV ? 'cheap-inline-source-map' : 'source-map'
+    devtool: DEV ? 'inline-source-map' : 'source-map'
 };

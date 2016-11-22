@@ -2,6 +2,8 @@
  * Created by lerayne on 16.04.16.
  */
 
+import {push} from 'react-router-redux'
+
 export const TOPICS_SUBSCRIBE = 'TOPICS_SUBSCRIBE';
 export const TOPICS_RECEIVE = 'TOPICS_RECEIVE';
 
@@ -17,6 +19,13 @@ export function subscribeOnTopics(name, searchString = null) {
         payload: {
             searchString
         }
+    }
+}
+
+export function goToTopic(id) {
+    return dispatch => {
+        console.log('thunk goToTopic')
+        dispatch(push(`/topic/${id}`))
     }
 }
 

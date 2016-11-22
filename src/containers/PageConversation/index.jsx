@@ -19,6 +19,7 @@ class PageConversation extends Component {
 
         return <div style={mainStyle}>
             <SectionTopics />
+            <div>{this.props.children}</div>
         </div>
     }
 }

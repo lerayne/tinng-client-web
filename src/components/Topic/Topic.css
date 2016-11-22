@@ -1,5 +1,25 @@
 :local(.main) {
     margin: 2px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border: 1px solid #ccc;
+}
+
+:local(.main) header {
+    margin-bottom: 5px;
+}
+
+:local(.main) header .author {
+    display: inline-block;
+    color: #777;
+}
+
+:local(.main) header .date {
+    color: #999;
+    font-size: small;
+}
+
+:local(.main) section .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2266bb;
 }
