@@ -8,21 +8,16 @@ import {connect} from 'react-redux'
 import {subscribeOnTopics, goToTopic} from '../../actions/topics'
 import {goToUser} from '../../actions/user'
 import Topic from '../../components/Topic'
+import Scrollable from '../../components/Scrollable'
 
 import css from './SectionTopics.css'
 
 class SectionTopics extends Component {
-    /*constructor(props) {
-     super(props)
-
-     this.state = {}
-     }*/
-
     componentDidMount() {
 
         const {dispatch} = this.props
 
-        dispatch(subscribeOnTopics('topics_list'));
+        dispatch(subscribeOnTopics('topics_list'))
     }
 
     render() {
@@ -30,14 +25,16 @@ class SectionTopics extends Component {
 
         return <div className={css.main}>
             {isFetching && 'fetching'}
-            {list.map(topic =>
-                <Topic
-                    key={topic.id}
-                    onTopicClick={id => dispatch(goToTopic(id))}
-                    onAuthorClick={id => dispatch(goToUser(id))}
-                    {...topic}
-                />
-            )}
+            <Scrollable>
+                {list.map(topic =>
+                    <Topic
+                        key={topic.id}
+                        onTopicClick={id => dispatch(goToTopic(id))}
+                        onAuthorClick={id => dispatch(goToUser(id))}
+                        {...topic}
+                    />
+                )}
+            </Scrollable>
         </div>
     }
 }

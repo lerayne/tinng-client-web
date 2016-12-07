@@ -1,0 +1,26 @@
+:local(.main) {
+    height: 100%;
+    position: relative;
+}
+
+:local(.main) > .scrollable {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+:local(.main) > .fade {
+    position: absolute;
+    height: 40px;
+    width: 100%;
+}
+
+:local(.main) > .fade.bottom {
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 19%, rgba(255, 255, 255, 0) 100%);
+    bottom: 0;
+}
+
+:local(.main) > .fade.top {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 19%, rgba(255, 255, 255, 0) 100%);
+    top: 0
+}

@@ -37,3 +37,9 @@ export function fetchAllResponse() {
         type: FETCH_ALL_RESPONSE
     }
 }
+
+export function test(){
+    return {
+        type: 'add_test_topic'
+    }
+}
