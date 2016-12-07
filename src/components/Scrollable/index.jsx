@@ -1,5 +1,10 @@
 /**
  * Created by lerayne on 08.12.16.
+ *
+ * Makes some list scrollable within the desired block.
+ * Adds fade on top or bottom if list is scrollable in corresponding direction (helps detect
+ * scrollable state on touch devices and those with no visible scrollbar)
+ * Positions scroll view (todo)
  */
 
 import React, {Component} from 'react'
@@ -18,7 +23,7 @@ export default class Scrollable extends Component {
         this.handleScroll = this.handleScroll.bind(this)
     }
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(){
         this.handleScroll()
     }
 
@@ -37,10 +42,13 @@ export default class Scrollable extends Component {
         return <div className={css.main}>
             <div
                 className="scrollable"
-                ref={el => this._scrollable = el}
+                ref={el => {if (!this._scrollable) this._scrollable = el}}
                 onScroll={this.handleScroll}
             >
-                <div className="scrollBody">
+                <div
+                    className="scrollBody"
+                    ref={el => {if (!this._scrollBody) this._scrollBody = el}}
+                >
                     {this.props.children}
                 </div>
             </div>
@@ -63,5 +71,13 @@ export default class Scrollable extends Component {
                 scrollIsAtBottom: scrollNowAtBottom
             })
         }
+    }
+
+    goTop(){
+        this._scrollBody.scrollIntoView(true)
+    }
+
+    goBottom(){
+        this._scrollBody.scrollIntoView(false)
     }
 }

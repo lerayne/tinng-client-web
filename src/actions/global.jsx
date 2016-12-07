@@ -40,6 +40,6 @@ export function fetchAllResponse() {
 
 export function test(){
     return {
-        type: 'add_test_topic'
+        type: 'test'
     }
 }

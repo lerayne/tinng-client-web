@@ -36,7 +36,7 @@ export default function topicsReducer(state = {...defaultTopicsState}, action) {
                 list: parseTopicsList(state, action.payload.list)
             }
 
-        case 'add_test_topic':
+        case 'test':
             return {
                 ...state,
                 list: [
