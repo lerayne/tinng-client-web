@@ -1,14 +1,8 @@
 {
   "presets": [
-    [ "es2015", { "modules": false } ],
-    "react",
+    ["env", {
+        target: {node: "current"}
+    }],
     "stage-0"
-  ],
-  "env":{
-    "production":{
-      "presets":[
-        "react-optimize"
-      ]
-    }
-  }
+  ]
 }
