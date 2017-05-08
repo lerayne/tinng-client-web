@@ -3,10 +3,10 @@ tinng-client-web
 
 Standard web client for the "tinng" communication service
 
-Draft PHP server: https://github.com/lerayne/tinng-server-php
+Draft server: https://github.com/lerayne/tinng-server-nodejs
 
 ## Important notice:
-This service is beng re-developed with react farmework. The build is not stable in any way!
+This service is beng re-developed with react farmework. The build is not stable in any way!  
 The previous working build is in this repository: https://github.com/lerayne/Tinng
 
 ##Development notes
@@ -21,5 +21,5 @@ The previous working build is in this repository: https://github.com/lerayne/Tin
 
 ####Needed software to be installed globaly:
 
-* Node.js (NPM included): http://nodejs.org
+* Node.js (with NPM included): http://nodejs.org
 * webpack (installed globally by npm with -g key)

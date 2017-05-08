@@ -1,13 +1,5 @@
 /.idea
-/bower_components
 /node_modules
-/index.html
-/index-dev.html
-/config.html
 /config.js
-/dist
-*-v.html
-*-dv.html
-/npm-debug.log
 .DS_Store
 *.bat
