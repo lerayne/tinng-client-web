@@ -51,8 +51,5 @@
   },
   "author": "Michael Yegorov",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lerayne/tinng-client-web/issues"
-  },
   "homepage": "https://github.com/lerayne/tinng-client-web"
 }

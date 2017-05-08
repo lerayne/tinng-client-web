@@ -9,6 +9,7 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer'
 
 export default env => {
 
+    // environment definitions (prod/dev)
     console.log('env', env)
 
     if (!env.mode) {
@@ -18,19 +19,25 @@ export default env => {
     const PROD = env.mode == 'production'
     const DEV = env.mode == 'development'
 
+    // webpack plugins
     const plugins = [
+
+        // global variables export
         new webpack.DefinePlugin({
             "process.env": {
+                BROWSER: JSON.stringify(true),
                 NODE_ENV: JSON.stringify(env.mode)
             }
         }),
 
+        // html template
         new HTMLWebpackPlugin({
             template: './src/index.html',
             inject: false
         })
     ]
 
+    // babel options
     const babelOptions = {
         babelrc: false,
         presets: [
@@ -43,6 +50,7 @@ export default env => {
         ]
     }
 
+    // dev babel options (build for chrome to reduce script size and execution time)
     if (DEV) {
         babelOptions.presets[0][1].targets = {
             chrome: 57
@@ -50,19 +58,23 @@ export default env => {
     }
 
     if (PROD) {
+        // prod: uglify code
         plugins.push(new webpack.optimize.UglifyJsPlugin({
             mangle: true,
             comments: false
         }))
 
-        plugins.push(new webpack.LoaderOptionsPlugin({minimize: true})),
+        // prod: minimize for babel & possible other loaders
+        plugins.push(new webpack.LoaderOptionsPlugin({minimize: true}))
 
+        // prod: analyze bundle
         plugins.push(new BundleAnalyzerPlugin({
             analyzerMode: 'static',
             reportFilename: 'webpack-analyzer-report.html',
             openAnalyzer: true
-        })),
+        }))
 
+        // prod: optimize react code
         babelOptions.presets.push('react-optimize')
     }
 
