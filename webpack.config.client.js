@@ -85,14 +85,16 @@ module.exports = function (env) {
         babelOptions.presets.push('react-optimize')
     }
 
-    const publicPath = DEV ? '//localhost:8050/public/assets' : '/public/'
+    const publicPath = DEV ? '//localhost:8050/public/' : '/public/'
 
     return {
-        entry: path.join(__dirname, "src", "client.jsx"),
+        entry: {
+            client: path.join(__dirname, "src", "client.jsx")
+        },
 
         output: {
             path: path.join(__dirname, "public"),
-            filename: "bundle.js",
+            filename: "[name].js",
             publicPath
         },
 

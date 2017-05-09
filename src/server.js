@@ -9,7 +9,6 @@ import cookieParser from 'cookie-parser'
 //local
 import isomorphicRender from './server/isomorphicRender'
 
-
 // create app
 const app = express()
 
@@ -20,7 +19,9 @@ app.use(cookieParser())
 
 app.use('*', isomorphicRender)
 
-const PORT = process.env.LISTEN || 3001
+const PORT = process.env.PORT || 3002
+
+console.log('PORT:', process.env.PORT)
 
 //launch server
 app.listen(PORT, () => {

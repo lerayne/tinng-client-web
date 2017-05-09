@@ -27,12 +27,12 @@ export default function configureStore(initialState = {}) {
     const store = createStore(rootReducer, initialState, enhancer)
 
     // I don't remember what is it for, probably for dynamic modules
-    if (module.hot) {
+    /*if (module.hot) {
         module.hot.accept('./reducers', () =>
             //store.replaceReducer(require('./reducers/index').default)
             store.replaceReducer(require('./rootReducer').default)
         )
-    }
+    }*/
 
     return store
 }

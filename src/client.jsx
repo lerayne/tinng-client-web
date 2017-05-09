@@ -17,7 +17,10 @@ const store = configureStore(initialState)
 
 if (process.env.NODE_ENV === 'development') {
     const DevTools = require('./client/components/DevTools').default
-    ReactDOM.render(<DevTools store={store}/>, document.getElementById('dev-tools'));
+    ReactDOM.render(<DevTools store={store}/>, document.getElementById('dev-tools'))
+
+    //importing a file in dev mode - just to copy it to webpack-dev-server static files
+    require('file-loader?name=[name].js!../client-config.js')
 }
 
 ReactDOM.render(
