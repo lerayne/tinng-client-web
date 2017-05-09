@@ -16,6 +16,7 @@ export default function renderHTML(componentHTML, initialState) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tinng web client</title>
         <link rel="stylesheet" href="${assetUrl}styles.css">
+        <!--<script src="${assetUrl}config.js"></script>-->
         <script>
           window.REDUX_INITIAL_STATE = ${JSON.stringify(initialState)}
         </script>
@@ -26,6 +27,6 @@ export default function renderHTML(componentHTML, initialState) {
         <script type="application/javascript" src="${assetUrl}bundle.js"></script>
       </body>
     </html>
-  `
+    `
     return html
 }

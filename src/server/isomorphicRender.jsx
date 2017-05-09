@@ -8,11 +8,11 @@ import {match, RouterContext} from 'react-router'
 import {Provider} from 'react-redux'
 
 //todo: make these right
-import checkUserAuth from './security/checkUserAuth'
-import grantAccess from './security/grantAccess'
 import routes from '../shared/routes'
 import getHTML from './getHTML'
 import configureStore from '../shared/configureStore'
+import checkUserAuth from './auth/checkUserAuth'
+import grantAccess from './auth/grantAccess'
 
 export default async function createIsomorphicPage(req, res) {
 
@@ -53,6 +53,7 @@ export default async function createIsomorphicPage(req, res) {
                 return res.status(404).send('Not found')
             }
 
+            // Collect initial promises for components
             const promises = renderProps.routes.reduce((arr, route) => {
                 const comp = route.component.WrappedComponent || route.component
                 if (comp.initialize) {
@@ -60,6 +61,7 @@ export default async function createIsomorphicPage(req, res) {
                 } else return arr
             }, [])
 
+            // when all promises are resolved - store is already filled with their results
             if (promises.length) {
                 await Promise.all(promises)
             }
@@ -70,7 +72,8 @@ export default async function createIsomorphicPage(req, res) {
                 </Provider>
             )
 
-            // рендерим html, включая в него текущий state для передачи клиентскому redux
+            // get HTML string
             res.send(getHTML(componentHTML, store.getState()))
-        })
+        }
+    )
 }
