@@ -21,8 +21,6 @@ app.use('*', isomorphicRender)
 
 const PORT = process.env.PORT || 3002
 
-console.log('PORT:', process.env.PORT)
-
 //launch server
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`)

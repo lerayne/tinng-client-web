@@ -50,8 +50,9 @@
     "restart": "pm2 restart tinng-client-web.js",
     "prod-client": "webpack --env.mode=production --config=webpack.config.client.js --progress",
     "prod-server": "webpack --env.mode=production --config=webpack.config.server.js --progress",
-    "dev-client": "webpack-dev-server --env.mode=development --config=webpack.config.client.js --debug --hot --devtool inline-source-map --output-pathinfo --watch --colors --inline --content-base public --port 8050 --host 0.0.0.0",
-    "dev-server": "webpack --env.mode=development --config=webpack.config.server.js --progress",
+    "dev-client": "webpack-dev-server --port 8050 --host 0.0.0.0 --env.mode=development --config=webpack.config.client.js --debug --hot --devtool inline-source-map --output-pathinfo --watch --colors --inline --content-base public",
+    "dev-server": "npm run dev-server-pack && node tinng-client-web.js",
+    "dev-server-pack": "webpack --env.mode=development --config=webpack.config.server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

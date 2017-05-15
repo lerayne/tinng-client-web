@@ -3,5 +3,5 @@
  */
 
 window.config = {
-    tinngServerURL: 'http://localhost:3003'
+    tinngServerURL: 'http://localhost:3010'
 }

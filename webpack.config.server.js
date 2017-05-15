@@ -37,10 +37,8 @@ module.exports = function (env) {
 
         // global variables export
         new webpack.DefinePlugin({
-            'process.env': {
-                BROWSER: JSON.stringify(false),
-                NODE_ENV: JSON.stringify(env.mode || 'development')
-            }
+            'process.env.BROWSER': JSON.stringify(false),
+            'process.env.NODE_ENV': JSON.stringify(env.mode)
         }),
 
         // prod: minimize for babel & possible other loaders
