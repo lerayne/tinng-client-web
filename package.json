@@ -7,6 +7,7 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "immutability-helper": "^2.2.2",
     "jsonwebtoken": "^7.4.0",
     "ms": "^1.0.0",
     "react": "^15.5.4",
