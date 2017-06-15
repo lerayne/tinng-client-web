@@ -5,23 +5,40 @@
 import React, {Component} from 'react'
 import update from 'immutability-helper'
 
-let socket = false
+let connection = false
 
 if (process.env.BROWSER){
-    socket = require('../../client/socket').default
+    connection = require('../../client/socket').default
 }
 
 export default class TestApp extends Component{
 
     state = {
         inputText:'',
-        messages: []
+        messages: [],
+        user: {
+            id: -1,
+            name:'anonymous',
+            displayName: 'Anonymous',
+            role: 'anonymous'
+        },
+        canPost: false
     }
 
     componentDidMount(){
-        if (socket){
-            socket.on('new-message', msg => {
+
+        if (connection) {
+
+            connection.userReady.then(user => {
+                this.setState({
+                    user: user,
+                    canPost: user.role !== 'anonymous'
+                })
+            })
+
+            connection.on('new-message', msg => {
                 console.log('msg received', msg)
+
                 this.setState(update(this.state, {
                     messages: {$push: [msg.payload]}
                 }))
@@ -34,7 +51,7 @@ export default class TestApp extends Component{
     }
 
     render(){
-        const {inputText} = this.state
+        const {inputText, user, canPost} = this.state
 
         return <div>
             <div>
@@ -48,12 +65,15 @@ export default class TestApp extends Component{
                         this.send()
                     }
                 }}
+                disabled={!canPost}
             />
-            <button onClick={::this.send}>Send</button>
+
+            <button disabled={!canPost} onClick={::this.send}>Send</button>
+
             <div>
-                {this.state.messages.map(message =>
-                    <div>
-                        {message.text}
+                {this.state.messages.map((message, i) =>
+                    <div key={i}>
+                        <strong>{user.displayName}:</strong> {message.text}
                     </div>
                 )}
             </div>
@@ -61,9 +81,10 @@ export default class TestApp extends Component{
     }
 
     send(){
-        console.log('msg sent', this.state.inputText)
-        if (socket){
-            socket.emit('chat-message', {
+        console.log('trying to send message', this.state.inputText)
+
+        if (connection && this.state.canPost){
+            connection.emit('chat-message', {
                 payload: {
                     text: this.state.inputText
                 }
