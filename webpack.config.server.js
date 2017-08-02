@@ -18,6 +18,7 @@ module.exports = function (env) {
 
     const DEV = env.mode === 'development'
     const PROD = env.mode === 'production'
+    const ECO = !!env.eco
 
     // babel options
     const babelOptions = {
@@ -38,7 +39,8 @@ module.exports = function (env) {
         // global variables export
         new webpack.DefinePlugin({
             'process.env.BROWSER': JSON.stringify(false),
-            'process.env.NODE_ENV': JSON.stringify(env.mode)
+            'process.env.NODE_ENV': JSON.stringify(env.mode),
+            'process.env.ECO': JSON.stringify(ECO)
         }),
 
         // prod: minimize for babel & possible other loaders
@@ -99,13 +101,17 @@ module.exports = function (env) {
             ]
         },
 
+        /**
+         * Server should not embed external dependencies, it should require them as regular
+         * ES6/CommonJS so we list every dependency as an webpack "external"
+         */
         externals: [
             {
-                config: 'require("./config.js")' // require config as separate file
+                config: 'require("./config.js")' // require 'config' as separate file
             },
             getExternals({
                 whitelist: [
-                    /\.css$/i //CSS files whitelisted so we can omit them by loader
+                    /\.css$/i //CSS files whitelisted so we can explicitly omit them by loader
                 ]
             })
         ],

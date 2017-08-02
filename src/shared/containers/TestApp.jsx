@@ -4,6 +4,8 @@
 
 import React, {Component} from 'react'
 import update from 'immutability-helper'
+import {Link} from 'react-router'
+import css from './TestApp.css'
 
 let connection = false
 
@@ -53,10 +55,7 @@ export default class TestApp extends Component{
     render(){
         const {inputText, user, canPost} = this.state
 
-        return <div>
-            <div>
-
-            </div>
+        return <div className={css.main}>
             <textarea
                 value={inputText}
                 onChange={e => this.setState({inputText: e.target.value})}

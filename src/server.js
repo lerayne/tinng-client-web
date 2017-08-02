@@ -17,7 +17,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cookieParser())
 
-app.use('*', isomorphicRender)
+if (process.env.NODE_ENV === 'development') {
+    app.use('/public', express.static('public'))
+    app.use('/favicon.ico', express.static('public/favicon.ico'))
+}
+
+app.get('*', isomorphicRender)
 
 const PORT = process.env.PORT || 3002
 

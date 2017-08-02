@@ -16,8 +16,9 @@ module.exports = function (env) {
         env.mode = 'production'
     }
 
-    const PROD = env.mode == 'production'
-    const DEV = env.mode == 'development'
+    const PROD = env.mode === 'production'
+    const DEV = env.mode === 'development'
+    const ECO = !!env.eco
 
     // babel options
     const babelOptions = {
@@ -38,7 +39,8 @@ module.exports = function (env) {
         new webpack.DefinePlugin({
             "process.env": {
                 BROWSER: JSON.stringify(true),
-                NODE_ENV: JSON.stringify(env.mode)
+                NODE_ENV: JSON.stringify(env.mode),
+                ECO: JSON.stringify(ECO)
             }
         }),
 
@@ -85,7 +87,7 @@ module.exports = function (env) {
         babelOptions.presets.push('react-optimize')
     }
 
-    const publicPath = DEV ? '//localhost:8050/public/' : '/public/'
+    const publicPath = (DEV && !ECO) ? '//localhost:8050/public/' : '/public/'
 
     return {
         entry: {

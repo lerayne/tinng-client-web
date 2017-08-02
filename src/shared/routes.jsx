@@ -6,7 +6,9 @@ import React from 'react'
 import {IndexRoute, Route}  from 'react-router'
 import {authOnEnter, authOnChange} from './routesAuth'
 //local
+import Root from './containers/Root'
 import TestApp from './containers/TestApp'
+import LoginPage from './containers/LoginPage'
 
 function onEnter(store){
     return function (...args){
@@ -21,8 +23,8 @@ function onChange(store){
 }
 
 export default function routes(store) {
-    return <Route path='/' component={TestApp} onEnter={onEnter(store)} onChange={onChange(store)}>
-        {/*<IndexRoute component={}/>*/}
-        {/*<Route path="login" component={LoginPage}/>*/}
+    return <Route path='/' component={Root} onEnter={onEnter(store)} onChange={onChange(store)}>
+        <IndexRoute component={TestApp}/>
+        <Route path="login" component={LoginPage}/>
     </Route>
 }

@@ -40,6 +40,7 @@ function redirectionsCheck(globalState, routerState, redirectFunc) {
         const component = route.component.WrappedComponent || route.component
 
         if (component.loginRequired && user.id === -1) {
+            console.log('redirected to /login')
             redirected = true
             redirectFunc(getRedirectUrl('/login', location))
         }
@@ -50,6 +51,7 @@ function redirectionsCheck(globalState, routerState, redirectFunc) {
             // не при помощи набора в адрессной строке (тогда будет простой редирект), а
             // при помощи инструментов router'а - видимо нужно перенаправить юзера откуда
             // пришел
+            console.log('redirected to /')
             redirectFunc(getRedirectUrl('/'))
         }
     })
