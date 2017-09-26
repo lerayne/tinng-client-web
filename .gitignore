@@ -1,6 +1,7 @@
 /.idea
 /node_modules
 /config.js
+/client-config.js
 /public
 .DS_Store
 *.bat

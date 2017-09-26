@@ -8,6 +8,8 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "immutability-helper": "^2.2.2",
+    "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.1.4",
     "jsonwebtoken": "^7.4.0",
     "ms": "^1.0.0",
     "react": "^15.5.4",

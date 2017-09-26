@@ -14,24 +14,42 @@ import configureStore from '../shared/configureStore'
 import checkUserAuth from './auth/checkUserAuth'
 import grantAccess from './auth/grantAccess'
 
+/**
+ * On http request does all necessary data manipulations and sends back HTML page. This includes:
+ * redux store configuration, authentication
+ *
+ * @param req
+ * @param res
+ * @returns {Promise.<void>}
+ */
 export default async function createIsomorphicPage(req, res) {
 
     // creating local (per connection) store
     const store = configureStore()
 
-    const {payload: currentUser} = await checkUserAuth(req)
+    //temporary auth
+    try {
+        const {payload: currentUser} = await checkUserAuth(req.cookies && req.cookies.access_token)
+    } catch (err) {
+        console.error('createIsomorphicPage auth error:', err)
+    }
 
+    // this assumes jwt-token contains all necessary user data for redux
     if (currentUser) {
         store.dispatch({
             type: 'SET_USER',
             payload: currentUser
         })
 
-        // todo - only reauthorize near expiration (performance)
-        // todo - check ip
-
-        // sliding - now only on static page render
-        await grantAccess(req, res, currentUser)
+        // todo: now reauth each page load. Reauthorize only needed near expiration (performance)
+        // todo: check ip
+        // sliding cookie-auth prolongation - now only on static page render
+        // read about jwt-token prolongation.
+        try {
+            await grantAccess(req, res, currentUser)
+        } catch (err) {
+            console.error('createIsomorphicPage grantAccess error:', err)
+        }
     }
 
     // matching routing
@@ -54,16 +72,23 @@ export default async function createIsomorphicPage(req, res) {
             }
 
             // Collect initial promises for components
+            // to make this possible the container component has to have "initilaize" static method
+            // which takes dispatch and location and returns a promise
             const promises = renderProps.routes.reduce((arr, route) => {
-                const comp = route.component.WrappedComponent || route.component
-                if (comp.initialize) {
-                    return arr.concat([comp.initialize(store.dispatch, renderProps.location)])
+                const component = route.component.WrappedComponent || route.component
+                if (component.initialize) {
+                    return arr.concat([component.initialize(store.dispatch, renderProps.location)])
                 } else return arr
             }, [])
 
-            // when all promises are resolved - store is already filled with their results
+            // When all promises are resolved - store is already filled with their results.
+            // Parsing promise response not needed
             if (promises.length) {
-                await Promise.all(promises)
+                try {
+                    await Promise.all(promises)
+                } catch (err) {
+                    console.error('createIsomorphicPage initialize error:', err)
+                }
             }
 
             const componentHTML = ReactDom.renderToString(

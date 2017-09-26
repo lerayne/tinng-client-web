@@ -107,7 +107,8 @@ module.exports = function (env) {
          */
         externals: [
             {
-                config: 'require("./config.js")' // require 'config' as separate file
+                // require 'config' as separate file
+                'config': 'require("./config.js")'
             },
             getExternals({
                 whitelist: [

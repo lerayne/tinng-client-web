@@ -5,17 +5,17 @@
 import jwt from 'jsonwebtoken'
 import {secretKey} from 'config'
 
-export default function checkUserAuth(req){
+export default function checkUserAuth(accessToken){
     return new Promise((resolve, reject) => {
 
-        if (!req.cookies.access_token) {
+        if (accessToken === undefined || !accessToken) {
             resolve(false)
         } else {
-            jwt.verify(req.cookies.access_token, secretKey, (err, decoded) => {
+            jwt.verify(accessToken, secretKey, (err, decodedUserInfo) => {
                 if (err) {
                     resolve(false)
                 } else {
-                    resolve(decoded)
+                    resolve(decodedUserInfo)
                 }
             })
         }

@@ -8,6 +8,13 @@ import {domain} from 'config'
 import {keyExpiresIn} from 'config'
 import createToken from './createToken'
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param insecureUser - insecure because contains password hash
+ * @returns {Promise.<void>}
+ */
 export default async function grantAccess(req, res, insecureUser) {
 
     try {
@@ -19,7 +26,7 @@ export default async function grantAccess(req, res, insecureUser) {
             ip: '0.0.0.0' // todo - current IP
         }
 
-        // todo - get domain from env (doesnt work now on prod)
+        // todo - get domain from env (doesn't work now on prod)
         // const host = req.get('host')
         // const hostname = host.split(':')[0]
 
@@ -31,6 +38,6 @@ export default async function grantAccess(req, res, insecureUser) {
             maxAge: ms(keyExpiresIn)
         })
     } catch (error) {
-        console.error('grantAccess:', error)
+        console.error('grantAccess error:', error)
     }
 }

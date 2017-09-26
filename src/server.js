@@ -22,6 +22,10 @@ if (process.env.NODE_ENV === 'development') {
     app.use('/favicon.ico', express.static('public/favicon.ico'))
 }
 
+/*app.post('/login', (req, res) => {
+    console.log(req.body)
+})*/
+
 app.get('*', isomorphicRender)
 
 const PORT = process.env.PORT || 3002

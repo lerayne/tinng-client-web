@@ -3,7 +3,7 @@
  */
 
 import socketClient from 'socket.io-client'
-window.config.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwibmFtZSI6ImFkbWluIiwiZGlzcGxheU5hbWUiOiJBZG1pbiIsImlhdCI6MTQ5NzUzNjcyMywiZXhwIjoxNDk3NTQwMzIzfQ.ACXEH9d9bTIrq-YbH4T5H3lvEKoaMxWnB9FGFHR0yNo'
+window.config.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwibmFtZSI6ImFkbWluIiwiZGlzcGxheU5hbWUiOiJBZG1pbiIsImlhdCI6MTUwMjc0MDg3OCwiZXhwIjoxNTAyNzQ0NDc4fQ.SFmHFHjIPxrDdLUHIfXu6ATDtqu0Of2KrE7SGmYsxho'
 
 class Connection {
     constructor(config) {
@@ -29,8 +29,8 @@ class Connection {
             .then(user => {
                 console.info('user recognized', user)
             })
-            .catch(error => {
-                console.warn('auth error')
+            .catch(err => {
+                console.warn('socket auth error', err)
             })
     }
 
