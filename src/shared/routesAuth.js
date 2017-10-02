@@ -61,8 +61,10 @@ function redirectionsCheck(globalState, routerState, redirectFunc) {
 
 /**
  * Handle initial server authorization redirects
+ *
  * @param store
- * @returns {Function}
+ * @param nextRouterState
+ * @param redirect
  */
 export function authOnEnter(store, nextRouterState, redirect) {
     if (!process.env.BROWSER) {
@@ -72,13 +74,16 @@ export function authOnEnter(store, nextRouterState, redirect) {
 
 /**
  * Handle client authorization redirects
+ *
  * @param store
- * @returns {Function}
+ * @param prevRouterState
+ * @param nextRouterState
+ * @param redirect
  */
 export function authOnChange(store, prevRouterState, nextRouterState, redirect) {
     if (process.env.BROWSER) {
-        // onChange is also called under URL query change, we want to omit this, only check on
-        // pathname change
+        // this func is also called under URL query parameters change, we want to omit this, only
+        // check on pathname change
         if (prevRouterState.location.pathname !== nextRouterState.location.pathname) {
             redirectionsCheck(store.getState(), nextRouterState, redirect)
         }

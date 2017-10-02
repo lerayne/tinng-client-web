@@ -3,11 +3,12 @@
  */
 
 import 'babel-polyfill'
+import 'isomorphic-fetch'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 //local
-import isomorphicRender from './server/isomorphicRender'
+import createStaticPage from './server/createStaticPage'
 
 // create app
 const app = express()
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
     console.log(req.body)
 })*/
 
-app.get('*', isomorphicRender)
+app.get('*', createStaticPage)
 
 const PORT = process.env.PORT || 3002
 

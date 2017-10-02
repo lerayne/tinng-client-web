@@ -4,7 +4,6 @@
 
 import React, {Component} from 'react'
 import update from 'immutability-helper'
-import {Link} from 'react-router'
 import css from './TestApp.css'
 
 let connection = false

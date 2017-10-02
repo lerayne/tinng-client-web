@@ -8,7 +8,15 @@ export const defaultUserState = {
 
 export default function userReducer(state=defaultUserState, action){
     const {type, payload} = action
+
     switch (type) {
+        case 'SET_USER':
+            console.log('set_user payload', payload)
+            return {
+                ...state,
+                ...payload
+            }
+
         default:
             return state
     }

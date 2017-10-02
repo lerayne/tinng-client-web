@@ -3,8 +3,8 @@
  */
 
 import React, {Component} from 'react'
-import Cookie from 'js-cookie'
-import url from 'url'
+//local
+import loginRequest from '../../client/loginRequest'
 
 export default class LoginPage extends Component {
 
@@ -46,29 +46,10 @@ export default class LoginPage extends Component {
     // previous/default page
     // only for development!
     async logIn() {
-        try {
-            const {loginInput, passwordInput} = this.state
-            const {location} = this.props
 
-            const loginResponse = await fetch(window.config.tinngServerURL + '/login', {
-                method: 'post',
-                mode: 'cors',
-                body: JSON.stringify({login: loginInput, password: passwordInput}),
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            })
+        const {loginInput, passwordInput} = this.state
+        const {location} = this.props
 
-            const token = await loginResponse.text()
-
-            Cookie.set('access_token', token, {expires: 30,})
-
-            const newLocation = url.parse((location.query && location.query.ref) || '/', true)
-
-            //todo: currently no host here
-            window.location.href = url.format(newLocation)
-        } catch (err) {
-            console.error('LoginPage logIn error:', err)
-        }
+        loginRequest(loginInput, passwordInput, location)
     }
 }

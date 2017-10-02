@@ -8,30 +8,28 @@ import {match, RouterContext} from 'react-router'
 import {Provider} from 'react-redux'
 
 //todo: make these right
-import routes from '../shared/routes'
+import getRoutingScheme from '../shared/routes'
 import getHTML from './getHTML'
 import configureStore from '../shared/configureStore'
-import checkUserAuth from './auth/checkUserAuth'
-import grantAccess from './auth/grantAccess'
+import {verifyUserAuth} from './requests/auth'
 
 /**
  * On http request does all necessary data manipulations and sends back HTML page. This includes:
- * redux store configuration, authentication
- *
- * @param req
- * @param res
- * @returns {Promise.<void>}
+ * redux store configuration, authentication check, API server calls
  */
-export default async function createIsomorphicPage(req, res) {
+export default async function createStaticPage(req, res) {
 
     // creating local (per connection) store
     const store = configureStore()
 
+    let currentUser = false
+
     //temporary auth
     try {
-        const {payload: currentUser} = await checkUserAuth(req.cookies && req.cookies.access_token)
+        currentUser = await verifyUserAuth(req.cookies && req.cookies.access_token)
+        console.log('currentUser', currentUser)
     } catch (err) {
-        console.error('createIsomorphicPage auth error:', err)
+        console.error('createStaticPage auth error:', err)
     }
 
     // this assumes jwt-token contains all necessary user data for redux
@@ -41,24 +39,18 @@ export default async function createIsomorphicPage(req, res) {
             payload: currentUser
         })
 
-        // todo: now reauth each page load. Reauthorize only needed near expiration (performance)
-        // todo: check ip
-        // sliding cookie-auth prolongation - now only on static page render
-        // read about jwt-token prolongation.
-        try {
-            await grantAccess(req, res, currentUser)
-        } catch (err) {
-            console.error('createIsomorphicPage grantAccess error:', err)
-        }
+        // todo: was reauth each page load. Now reauth turned off. Reauthorize only needed near
+        // expiration
     }
 
-    // matching routing
+    // checks location URL against routing scheme and renders what's found (even if 404 found)
     match({
-            routes: routes(store),
+            routes: getRoutingScheme(store),
             location: req.url
         },
         async (error, redirectLocation, renderProps) => {
 
+            // regular error responses
             if (redirectLocation) { // Redirect
                 return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
             }
@@ -72,33 +64,40 @@ export default async function createIsomorphicPage(req, res) {
             }
 
             // Collect initial promises for components
-            // to make this possible the container component has to have "initilaize" static method
-            // which takes dispatch and location and returns a promise
-            const promises = renderProps.routes.reduce((arr, route) => {
-                const component = route.component.WrappedComponent || route.component
-                if (component.initialize) {
-                    return arr.concat([component.initialize(store.dispatch, renderProps.location)])
-                } else return arr
-            }, [])
+            // to make this possible the container component has to have "initilaize" _static_
+            // method which takes dispatch and location and returns a promise
+            const promises = []
 
-            // When all promises are resolved - store is already filled with their results.
-            // Parsing promise response not needed
+            renderProps.routes.forEach(route => {
+                const component = route.component.WrappedComponent || route.component
+
+                if (component.initialize) {
+                    promises.push([component.initialize(store.dispatch, renderProps.location)])
+                }
+            })
+
+            // Since reducer change is syncronous, when all promises are resolved - store is
+            // already filled with their results. Parsing promise response not needed
             if (promises.length) {
                 try {
                     await Promise.all(promises)
                 } catch (err) {
-                    console.error('createIsomorphicPage initialize error:', err)
+                    console.error('createStaticPage initialize error:', err)
+                    return res.status(500).send('error rendering static page: one of async initializers failed')
                 }
             }
 
+            // actually renders store to HTML string
             const componentHTML = ReactDom.renderToString(
                 <Provider store={store}>
                     <RouterContext {...renderProps} />
                 </Provider>
             )
 
+            const currentState = store.getState()
+
             // get HTML string
-            res.send(getHTML(componentHTML, store.getState()))
+            res.send(getHTML(componentHTML, currentState))
         }
     )
 }

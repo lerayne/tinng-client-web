@@ -9,9 +9,11 @@ import promiseMiddleware from './promiseMiddleware'
 
 export default function configureStore(initialState = {}) {
 
+    // apply middlewares
     let enhancer
     const middlewares = applyMiddleware(thunk, promiseMiddleware)
 
+    // apply devtools
     if (process.env.NODE_ENV === 'development'){
 
         const DevTools = require('../client/components/DevTools/index').default
@@ -24,6 +26,7 @@ export default function configureStore(initialState = {}) {
         enhancer = middlewares
     }
 
+    // creates store from root reducer, initial state and middlewares
     const store = createStore(rootReducer, initialState, enhancer)
 
     // I don't remember what is it for, probably for dynamic modules
